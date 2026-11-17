@@ -94,6 +94,25 @@ window.addEventListener('load', function () { setTimeout(function () {
       if (cr.right > r.right + 1) add('error', 'fit', 'slide ' + (i + 1) + ': content is cut off at the right (' + name(c) + ')');
     });
   });
+  /* ---- fit: covers */
+  [].forEach.call(document.querySelectorAll('.tc-cover'), function (c, i) {
+    var r = c.getBoundingClientRect();
+    [].forEach.call(c.querySelectorAll('.tc-cover__title'), function (t) {
+      var lines = Math.round(t.getBoundingClientRect().height / parseFloat(getComputedStyle(t).lineHeight));
+      if (lines > 3) add('error', 'fit', 'cover ' + (i + 1) + ': the title runs to ' + lines + ' lines (3 at most)');
+    });
+    [].forEach.call(c.querySelectorAll('.tc-cover__caption'), function (t) {
+      var lh = parseFloat(getComputedStyle(t).lineHeight), lab = t.querySelector('.tc-label'), hh = t.getBoundingClientRect().height - (lab ? lab.getBoundingClientRect().height + 12 : 0);
+      if (Math.round(hh / lh) > 2) add('warn', 'fit', 'cover ' + (i + 1) + ': the caption beside the figure runs to ' + Math.round(hh / lh) + ' lines (1 or 2)');
+    });
+    [].forEach.call(c.querySelectorAll('*'), function (el) {
+      if (el.closest('svg')) return;
+      var has = false; for (var n = el.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.nodeValue.trim()) { has = true; break; }
+      if (!has) return;
+      var cr = el.getBoundingClientRect();
+      if (cr.right > r.right - 8 || cr.left < r.left + 8 || cr.bottom > r.bottom - 8 || cr.top < r.top + 8) add('error', 'fit', 'cover ' + (i + 1) + ': text touches or leaves the edge (' + name(el) + ')');
+    });
+  });
   /* ---- fit: clipped and off-screen content */
   var all = document.body.querySelectorAll('*');
   [].forEach.call(all, function (el) {
@@ -106,6 +125,9 @@ window.addEventListener('load', function () { setTimeout(function () {
       if (cs.textOverflow === 'ellipsis' && dx > 1) add('warn', 'fit', 'label is shortened with "...": ' + name(el));
       else if ((hidY && dy > 3) || (hidX && dx > 3)) add('error', 'fit', 'content is cut inside ' + name(el) + ' (' + Math.max(dy, dx) + 'px hidden)');
     }
+    var own = false; for (var tn = el.firstChild; tn; tn = tn.nextSibling) if (tn.nodeType === 3 && tn.nodeValue.trim()) { own = true; break; }
+    if (own && cs.overflowX === 'visible' && cs.display.indexOf('inline') !== 0 && el.clientWidth > 0 && el.scrollWidth - el.clientWidth > 2 && !el.closest('.tc-rail, .tc-marquee'))
+      add('error', 'fit', 'text is ' + (el.scrollWidth - el.clientWidth) + 'px wider than its box and runs into what is next to it: ' + name(el) + ' (shorten it, or use fewer columns)');
     if (/auto|scroll/.test(cs.overflowX) && el.scrollWidth - el.clientWidth > 4 && !/tc-rail|tc-app__tabs/.test(cl))
       add('warn', 'fit', (el.scrollWidth - el.clientWidth) + 'px of ' + name(el).split('"')[0] + 'is off-screen at ' + vw + 'px: a screenshot or PDF will not show it (fewer columns, or class tc-app__tablewrap--wrap)');
   });
@@ -152,12 +174,12 @@ window.addEventListener('load', function () { setTimeout(function () {
   [].forEach.call(document.querySelectorAll('[data-tc-logo]'), function (el) { if (!el.querySelector('svg')) add('error', 'brand', 'logo placeholder was never filled in: run scripts/inline.py'); });
   [].forEach.call(document.querySelectorAll('img'), function (im) { if (!skipped(im) && im.complete && im.naturalWidth === 0) add('error', 'brand', 'image did not load: ' + (im.getAttribute('src') || '').slice(0, 60)); });
   if (document.querySelector('link[rel="stylesheet"][href*="tacto.css"]')) add('warn', 'brand', 'tacto.css is linked, not bundled: run scripts/inline.py before sending the file');
-  var hasWordmark = document.querySelectorAll('.tc-wordmark .tc-wordmark__mark').length;
+  var wmNames = []; [].forEach.call(document.querySelectorAll('.tc-wordmark'), function (w) { if (w.querySelector('.tc-wordmark__mark')) wmNames.push((w.textContent || '').replace(/\s+/g, ' ').trim()); });
   var fontOk = false; try { document.fonts.forEach(function (f) { if (/Aspekta/.test(f.family) && f.status === 'loaded') fontOk = true; }); } catch (e) {}
   if (!fontOk) add('warn', 'look', 'Aspekta did not load: the text is set in a fallback font (run scripts/inline.py, which embeds the fonts)');
 
-  var res = { vw: vw, lang: document.documentElement.lang || '', sheets: document.querySelectorAll('.tc-sheet').length, slides: document.querySelectorAll('.tc-slide').length,
-              wordmarks: hasWordmark, text: visibleText().slice(0, 200000), findings: out };
+  var res = { vw: vw, lang: document.documentElement.lang || '', sheets: document.querySelectorAll('.tc-sheet').length, slides: document.querySelectorAll('.tc-slide').length, covers: document.querySelectorAll('.tc-cover').length,
+              wordmarks: wmNames, text: visibleText().slice(0, 200000), findings: out };
   document.documentElement.setAttribute('data-tc-check', btoa(unescape(encodeURIComponent(JSON.stringify(res)))));
 }, 4500); });
 </script>
@@ -241,9 +263,13 @@ def main() -> int:
         print("tacto_check: the page could not be read in Chrome (script error on the page, or it never finished loading)", file=sys.stderr)
         return 2
     canvases = first["sheets"] + first["slides"]
+    covers = first.get("covers", 0) if not canvases else 0
     if first["slides"]:
         res = run_probe(chrome, src, query, 1320)
         take(res, "slides")
+    elif covers:
+        res = run_probe(chrome, src, query, 1320, 1300)   # a cover is a fixed canvas: no phone check
+        take(res, "cover")
     elif first["sheets"]:
         res = run_probe(chrome, src, query, 900)
         take(res, "pages")
@@ -272,8 +298,14 @@ def main() -> int:
         for level, _line, kind, msg in rep.items:
             findings.append((level, "rendered", kind, msg))
         if res["wordmarks"] and (ROOT / "brand.local" / "brand.json").is_file():
-            brand = json.loads((ROOT / "brand.local" / "brand.json").read_text(encoding="utf-8")).get("name", "")
-            findings.append(("error", "rendered", "brand", f"{res['wordmarks']} text wordmark(s) left where the {brand} logo belongs: run scripts/inline.py"))
+            # Only wordmarks that carry the private brand's own name (or a template sample name) should have
+            # become its logo. A wordmark with another sender's name is that sender's, and stays as text.
+            cfg = json.loads((ROOT / "brand.local" / "brand.json").read_text(encoding="utf-8"))
+            brand = cfg.get("name", "")
+            ours = {brand.lower()} | {a.lower() for a in cfg.get("aliases", [])} | {"northdesk", "your company", "yourcompany"}
+            left = [w for w in res["wordmarks"] if w.lower() in ours]
+            if left:
+                findings.append(("error", "rendered", "brand", f"{len(left)} text wordmark(s) left where the {brand} logo belongs: run scripts/inline.py (without --no-brand)"))
         # source
         srep = tacto_lint.lint_file(src, set())
         for level, line, kind, msg in srep.items:
@@ -292,7 +324,8 @@ def main() -> int:
     errors = sum(1 for f in uniq if f[0] == "error")
     warns = sum(1 for f in uniq if f[0] == "warn")
     verdict = "PASS" if errors == 0 and not (strict and warns) else "FAIL"
-    kind = f"{first['slides']} slide(s)" if first["slides"] else f"{first['sheets']} page(s)" if first["sheets"] else "web page, checked at 1440px and 500px"
+    kind = (f"{first['slides']} slide(s)" if first["slides"] else f"{first['sheets']} page(s)" if first["sheets"]
+            else f"{covers} cover(s)" if covers else "web page, checked at 1440px and 500px")
     print(f"{verdict}: {errors} error(s), {warns} warning(s) - {src.name} ({kind})")
     if verdict == "PASS":
         print("Now look at it: scripts/shoot.sh for the screenshot" + (" and the PDF page pictures." if canvases else "."))

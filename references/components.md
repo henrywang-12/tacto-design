@@ -65,7 +65,7 @@ A pill menu: half-transparent white, fully rounded, 3px padding, tabs 12.8px san
 
 - `tc-list`: capabilities inside a card. Each line 23px with a 1px hairline on its left; the open one gets a black hairline and a 17px description at 50%.
 - `tc-points`: rows with a hairline above, a mono label in a 64px left column (a date, "01", a role) and text right. For plans, results and agendas.
-- `tc-steps`: three to four boxes in a row (strategy, execution, monitoring): mono label on top, one sentence below. On a photograph or ember they are dark glass.
+- `tc-steps`: three to four boxes in a row (strategy, execution, monitoring): mono label on top, one sentence below. On a photograph or ember they are dark glass. A step's sentence is dimmed unless the step is marked `is-active`: in a plan, mark all of them.
 - `tc-meta`: facts in columns, each with a left hairline: mono label over a plain value. For the fact strip of a story or a one-pager.
 
 ## Numbers — `.tc-figure`, `.tc-stats`, `.tc-proof`

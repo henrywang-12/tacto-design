@@ -99,6 +99,7 @@ Read from the German home page. The voice is the same; these are the differences
 - Numbers: "700.000 €" and "3,1 %" in running text and quotes; compact in big figures: "€1Mrd", "€2Mio", "€500k", "10 Mio+", "80%".
 - Formal address ("Sie"), used rarely: most sentences have no address at all. Spaced en dashes. No exclamation marks.
 - Labels: "Im Einsatz bei 400+ produzierenden Unternehmen", "Technologieführer", "Gespräch vereinbaren".
+- In mono capitals an "ß" becomes "SS" ("GROSSKÜCHENTECHNIK"). That is correct German. If a customer's name contains an ß, make sure the name also appears once in normal case (a title, a lockup, the running text).
 
 Set `<html lang="de">` so numbers count up in the German format and long words hyphenate.
 

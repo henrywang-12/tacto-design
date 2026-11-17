@@ -193,6 +193,7 @@ Derived, since the site has neither. The root is 16px on these canvases.
 | Display 45px | title 33/39 | title 52/60 (title slide 104/100) | 104/104 |
 | Body 17px | 12.5/19 | 18/27, lead 22/32 | - |
 | Mono label 12px | 9.5px | 10 to 12px | 18px |
-| Counter 48px | 30/34 | 64px | - |
+| Counter 48px | 30/34 | 96px weight 200 (68px with four) | - |
+| Quote 36px | - | 48/56 | - |
 | Figure 116px | - | 136px | 300px |
 | Page margin | 14mm | 64px | 80px |

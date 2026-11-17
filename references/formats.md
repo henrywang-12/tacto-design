@@ -63,12 +63,14 @@ Never run to a second page; cut content instead. The template is already full, s
 |---|---|
 | Title | Ember or black. Brand row at the top: our logo left; the lockup with the customer, or the date in mono, right. The title at 104px light at the bottom left, three lines at most, second sentence dimmed. |
 | Claim | Grey. Mono label, the two-tone headline at 52px, optionally one lead of two lines at 50% black. Nothing else. |
-| Numbers | Black or white. Three or four counters divided by hairlines (64px numbers), or one figure at 136px with its label and whose number it is. |
+| Numbers | Grey, white or black. Three counters divided by hairlines at 96px weight 200 (with four they step down to 68px by themselves), or one figure at 136px with its label and whose number it is. Keep each number compact (€640k, not €640,000): the check fails when numbers touch. |
 | Product | Split: text left, an ember panel right with one white fragment running off its edge. |
 | How it works | Three hairlined rows with mono labels (`tc-points`), or three step boxes. |
-| Voice | Black. One quote at 40px, the person below with role and company. |
-| Plan | Dated rows, or a comparison as thin bars. |
+| Voice | Black. One quote at 48px, the person below with role and company. Only with a real quote from a named person. |
+| Plan | Three step boxes with a dated mono label, a one-word title and one sentence, all marked `is-active` (dim a step only to show where you are); or dated rows; or a comparison as thin bars. |
 | Closing | Black or ember. Three giant words, one next step as a white button label, our logo. |
+
+A shorter deck: six slides are title, numbers, product, how it works, plan, closing. Four are title, numbers, plan, closing. Drop the voice slide when there is no real quote and the claim slide when the numbers already make the claim; never drop the closing slide.
 
 Every slide except title and closing has a foot 28px from the bottom: wordmark left, mono page label right ("Northdesk × Hollweg · 03"). Headlines are sentences, three lines at most (the check fails on four). No bullet glyphs, no clip art, no slide transitions.
 
@@ -82,7 +84,7 @@ Label "Blog" → title at 45px → a mono byline (author · date · reading time
 
 Text rules: `voice.md` (derived). Image: `templates/cover.html` (1200×1200, feed) or `templates/cover-landscape.html` (1200×627, link previews).
 
-- Ember or noir. Top row: logo left, one chip right. Then either a light title of at most three lines at the bottom left (about 45 characters on the square, 40 on the landscape), second sentence dimmed, or one figure at 300px weight 200 with a one-line label and whose number it is.
+- Ember or noir. Top row: logo left, one chip right. Then either a light title of at most three lines at the bottom left (about 45 characters on the square, 40 on the landscape), second sentence dimmed, or one figure at 300px weight 200 with a caption of one or two lines and, above the caption in mono, whose number it is (`<span class="tc-label">` inside `tc-cover__caption`). Text on the orange part of the panel is full white; dimmed text only where the panel is black.
 - The cover says what the first line of the post says.
 - Export: `scripts/shoot.sh cover.html cover.png 1200 1200` · `scripts/shoot.sh cover-landscape.html cover.png 1200 627`.
 - Naming a real customer in a public post needs that customer's consent; say so to the user.

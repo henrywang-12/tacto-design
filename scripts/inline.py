@@ -35,7 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "assets"
 BRAND_DIR = ROOT / "brand.local"
-PLACEHOLDER_NAMES = {"northdesk", "your company", "yourcompany", "brand", "company"}
+PLACEHOLDER_NAMES = {"northdesk", "your company", "yourcompany"}
 COMMENT = re.compile(r"(<!--.*?-->)", re.S)
 
 
@@ -98,7 +98,7 @@ class Brander:
 
     def logo(self, force: str = "", style: str = "") -> str:
         self.count += 1
-        uid = f"gm{self.count}"
+        uid = f"tc{self.count}"
         dark = prep_svg(self.brand["_dark"], "tc-logo__dark", uid + "d", True)
         white = prep_svg(self.brand["_white"], "tc-logo__white", uid + "w", False) if self.brand["_white"] else ""
         attr = f' data-tc-logo="{force}"' if force in ("dark", "white") else ""
