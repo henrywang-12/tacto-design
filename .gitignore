@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.pyc
+/out/
+/tmp/
+*-workspace/
+
+# private brand: your company name, logo and saved customer logos. Never published.
+brand.local/
+/logos/

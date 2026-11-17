@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>Northdesk - Cover, square</title>
+<!-- COVER IMAGE for a post or an article in the Tacto design language, square 1200x1200
+     (LinkedIn feed, blog index). Landscape 1200x627: cover-landscape.html.
+     Recipe: ember (black burning into grainy orange), the logo row on top (wordmark left,
+     one chip right), and at the bottom left EITHER a light white title of at most three
+     lines (first sentence white, the rest in <em> at 50%) OR one giant numeral with a
+     one-line label (the variant in the comment below). No photo, no icons, no logo wall.
+     For a black cover add tc-cover--noir.
+     Then: python3 scripts/inline.py cover.html out/cover.html && python3 scripts/tacto_check.py out/cover.html
+           bash scripts/shoot.sh out/cover.html out/cover.png 1200 1200 -->
+<link rel="stylesheet" href="../tacto.css">
+<style>body { margin: 0; background: var(--tc-line); }</style>
+</head>
+<body>
+<div class="tc-cover">
+  <header class="tc-cover__top">
+    <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+    <span class="tc-chip"><span class="tc-spark"></span>Success story</span>
+  </header>
+  <div class="tc-cover__body">
+    <span class="tc-label">Auerberg Guss · Drive technology</span>
+    <h1 class="tc-cover__title">3.2% saved on castings. <em>In one year, across 14 sites.</em></h1>
+  </div>
+</div>
+<!-- Numeral variant: replace tc-cover__body with
+  <div class="tc-cover__body">
+    <b class="tc-cover__figure">€4.2M</b>
+    <span class="tc-cover__caption">Savings potential found in one year of invoices</span>
+  </div>
+-->
+</body>
+</html>

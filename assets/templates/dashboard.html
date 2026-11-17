@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northdesk - Control tower</title>
+<!-- App screen in the Tacto design language: a procurement control tower. Start from this file.
+     Replace the sample company (Northdesk), the customer workspace (Auerberg Guss), the person
+     (Jana Petrovic) and every number with the real ones. Supplier names below are invented.
+     Patterns, top to bottom, each one reusable on its own:
+     sidebar (wordmark, customer chip, nav groups with counts) · top bar (two-tone greeting,
+     search, ONE black primary action) · mono tabs with counts · four KPI panels ·
+     black agent panel (findings in orange, one white button) · step-line price chart ·
+     savings table (entity mark, tc-code tags, rating bars, dot status, right-aligned numbers) ·
+     spend bars · framework agreements table.
+     Colour rule: orange marks the agent and the one finding that matters. Blue, sea, green and
+     yellow appear only as 5px dots and 2px bars. Panels are white with one hairline, no shadow.
+     The root is pinned to 16px; write sizes in rem. Below 992px the sidebar hides and panels stack.
+     Then: python3 scripts/inline.py this.html out.html && python3 scripts/tacto_check.py out.html -->
+<link rel="stylesheet" href="../tacto.css">
+<style>
+  /* layout only: every colour, type size and radius comes from tacto.css */
+  .db-kpis > .tc-app__panel { justify-content: space-between; min-height: 9.5rem; }
+  .db-kpi-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; }
+  .db-table td:first-child, .db-table th:first-child { padding-left: 1.25rem; }
+  .db-table td:last-child, .db-table th:last-child { padding-right: 1rem; }
+  .db-table td { padding-top: 0.875rem; padding-bottom: 0.875rem; }
+  .db-agent, .db-chart { justify-content: space-between; }
+  @media (max-width: 991px) {
+    .db-kpis > .tc-app__panel { grid-column: span 6 !important; }
+  }
+  @media (max-width: 560px) {
+    .db-kpis > .tc-app__panel { grid-column: span 12 !important; min-height: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="tc-app">
+
+  <!-- sidebar: wordmark, whose workspace this is, nav groups. Counts are mono, grey, right-aligned. -->
+  <aside class="tc-app__side">
+    <div class="tc-app__brand">
+      <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+    </div>
+    <!-- with a logo: <img class="tc-clogo" src="auerberg.svg" alt="Auerberg Guss"> instead of the text -->
+    <div class="tc-app__customer">
+      <span class="tc-clogo-text">Auerberg Guss</span>
+      <small class="tc-app__customer-meta">14 sites</small>
+    </div>
+
+    <nav class="tc-app__group">
+      <span>Overview</span>
+      <a class="tc-app__item is-active" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></g></svg>Control tower</a>
+      <a class="tc-app__item" href="#"><span class="tc-app__item-spark"><span class="tc-spark"></span></span>Agents<small>4</small></a>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M3 8.5l3 3 7-7"/></g></svg>Approvals<small>3</small></a>
+    </nav>
+    <nav class="tc-app__group">
+      <span>Spend and cost</span>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M2 13h12M4 13V8M8 13V4M12 13V6"/></g></svg>Savings pipeline<small>46</small></a>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><circle cx="8" cy="8" r="5.5"/><path d="M8 4.5V8l2.5 1.5"/></g></svg>Should-cost<small>1,920</small></a>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M2 11h4V7h4V4h4"/></g></svg>Price development</a>
+    </nav>
+    <nav class="tc-app__group">
+      <span>Suppliers</span>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M2 14V6l4 2.5V6l4 2.5V3h4v11z"/></g></svg>Supplier base<small>1,284</small></a>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M8 2l6 11H2z"/><path d="M8 6.5v3M8 11.2v.3"/></g></svg>Risk monitor<small>5</small></a>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M4 2h5.5L12 4.5V14H4z"/><path d="M6 8h4M6 10.5h4"/></g></svg>Documents</a>
+    </nav>
+    <nav class="tc-app__group">
+      <span>Sourcing</span>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><path d="M2 4h12M2 8h12M2 12h7"/></g></svg>RFQs<small>12</small></a>
+      <a class="tc-app__item" href="#"><svg viewBox="0 0 16 16"><g class="tc-lineart"><rect x="3" y="2" width="10" height="12"/><path d="M6 5.5h4M6 8h4M6 10.5h2"/></g></svg>Framework agreements</a>
+    </nav>
+
+    <div class="tc-app__side-foot">
+      <b class="tc-app__user">Jana Petrovic</b>
+      <span>Head of purchasing</span>
+    </div>
+  </aside>
+
+  <div class="tc-app__main">
+    <!-- top bar: mono eyebrow, a two-tone greeting, search, one black primary action -->
+    <header class="tc-app__top">
+      <div class="tc-stack" style="gap: 0.5rem;">
+        <span class="tc-label tc-label--10 tc-label--quiet">Control tower · Week 47 · 17 Nov 2026</span>
+        <h1 class="tc-app__title">Good morning, Jana. <em>Three things need your approval.</em></h1>
+      </div>
+      <div class="tc-app__actions">
+        <label class="tc-app__search"><svg viewBox="0 0 16 16" width="14" height="14"><g class="tc-lineart"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></g></svg>Search parts, suppliers, RFQs</label>
+        <a class="tc-btn" href="#">New RFQ</a>
+      </div>
+    </header>
+
+    <div class="tc-app__content">
+      <nav class="tc-app__tabs">
+        <a class="tc-app__tab is-active" href="#">Overview</a>
+        <a class="tc-app__tab" href="#">Savings <small>46</small></a>
+        <a class="tc-app__tab" href="#">Price increases <small>27</small></a>
+        <a class="tc-app__tab" href="#">RFQs <small>12</small></a>
+        <a class="tc-app__tab" href="#">Supplier risk <small>5</small></a>
+      </nav>
+
+      <!-- KPI row: small sans label, a light number, a mono line with a dot -->
+      <div class="tc-app__grid db-kpis">
+        <section class="tc-app__panel tc-col-3">
+          <div class="tc-app__panel-head"><span class="tc-app__panel-title">Savings realised</span><small class="tc-app__meta">YTD</small></div>
+          <div class="db-kpi-row">
+            <div class="tc-app__kpi"><b>€4.82M</b><small><i class="tc-dot tc-dot--green"></i>3.1% of spend</small></div>
+            <svg class="tc-chart tc-app__minichart" viewBox="0 0 80 32" preserveAspectRatio="none" aria-hidden="true"><path class="line" d="M1 30H12V25H24V22H35V18H47V14H58V9H69V4H79"/></svg>
+          </div>
+        </section>
+        <section class="tc-app__panel tc-col-3">
+          <div class="tc-app__panel-head"><span class="tc-app__panel-title">Savings pipeline</span><small class="tc-app__meta">Open</small></div>
+          <div class="tc-app__kpi"><b>€11.3M</b><small><i class="tc-dot tc-dot--blue"></i>12 new this week</small></div>
+        </section>
+        <section class="tc-app__panel tc-col-3">
+          <div class="tc-app__panel-head"><span class="tc-app__panel-title">Price increases</span><small class="tc-app__meta">90 days</small></div>
+          <div class="tc-app__kpi"><b>27</b><small><i class="tc-dot tc-dot--yellow"></i>€1.06M at stake</small></div>
+        </section>
+        <section class="tc-app__panel tc-col-3">
+          <div class="tc-app__panel-head"><span class="tc-app__panel-title">Should-cost coverage</span><small class="tc-app__meta">Parts</small></div>
+          <div class="tc-app__kpi"><b>64%</b><small><i class="tc-dot tc-dot--sea"></i>1,920 of 3,004 parts</small></div>
+        </section>
+      </div>
+
+      <div class="tc-app__grid">
+        <!-- agent panel: black, the spark, each finding in orange, one white button -->
+        <section class="tc-app__panel tc-app__panel--agent db-agent tc-col-4">
+          <div class="tc-stack" style="gap: 1.25rem; align-items: stretch;">
+            <div class="tc-app__panel-head">
+              <div class="tc-row" style="gap: 0.75rem;"><span class="tc-spark-tile"><span class="tc-spark"></span></span><span class="tc-app__panel-title">Requires your approval</span></div>
+              <small class="tc-app__meta">3 open</small>
+            </div>
+            <ul class="tc-app__todo">
+              <li><span class="tc-app__todo-index">01</span><div><small>Price defence agent</small><p>Hollweg Präzision asks for <b>+2.1% on 38 drawing parts</b>. Should-cost for the same parts fell 7.6% in twelve months.</p></div></li>
+              <li><span class="tc-app__todo-index">02</span><div><small>Should-cost agent</small><p>The manifold block HM-0418 is bought <b>18% above should-cost</b>. A new RFQ is worth €212k a year.</p></div></li>
+              <li><span class="tc-app__todo-index">03</span><div><small>Contract agent</small><p>The framework agreement with Feldmark Stanztechnik <b>ends in 41 days</b>. Renewal is drafted at today's terms.</p></div></li>
+            </ul>
+          </div>
+          <a class="tc-btn tc-btn--white" href="#" style="align-self: flex-start;">Review all three</a>
+        </section>
+
+        <!-- chart: price paid as one orange step line, should-cost as a dashed grey reference -->
+        <section class="tc-app__panel db-chart tc-col-8">
+          <div class="tc-app__panel-head">
+            <div>
+              <span class="tc-app__panel-title">Price development</span>
+              <div class="tc-row" style="gap: 0.5rem; margin-top: 0.375rem;"><span class="tc-code">AG-2210</span><span class="tc-muted tc-tiny">Cast housing, Hollweg Präzision</span></div>
+            </div>
+            <div class="tc-app__legend"><span><i></i>Price paid</span><span><i class="ref"></i>Should-cost</span></div>
+          </div>
+          <svg class="tc-chart" viewBox="0 0 720 236" role="img" aria-label="Price paid for AG-2210 rose from 14.20 to 15.21 euros in two steps while should-cost fell from 13.10 to 12.10 euros">
+            <path class="grid" d="M40 16H712M40 53.6H712M40 91.2H712M40 128.8H712M40 166.4H712M40 204H712"/>
+            <text x="0" y="19">€16</text><text x="0" y="56.6">€15</text><text x="0" y="94.2">€14</text><text x="0" y="131.8">€13</text><text x="0" y="169.4">€12</text><text x="0" y="207">€11</text>
+            <g text-anchor="middle"><text x="60" y="226">Dec</text><text x="118" y="226">Jan</text><text x="176" y="226">Feb</text><text x="234" y="226">Mar</text><text x="292" y="226">Apr</text><text x="350" y="226">May</text><text x="408" y="226">Jun</text><text x="466" y="226">Jul</text><text x="524" y="226">Aug</text><text x="582" y="226">Sep</text><text x="640" y="226">Oct</text><text x="698" y="226">Nov</text></g>
+            <polyline class="line line--ref" points="60,125 118,128.8 176,130.7 234,136.3 292,132.6 350,140.1 408,145.7 466,143.8 524,149.5 582,155.1 640,158.9 698,162.6"/>
+            <path class="line" d="M60 83.7H292V57.4H582V45.7H698"/>
+            <path class="grid" d="M698 49V159"/>
+            <circle class="pt" cx="698" cy="45.7" r="3"/>
+            <text class="hl" x="690" y="38" text-anchor="end">€15.21 paid</text>
+            <text x="690" y="180" text-anchor="end">€12.10 should-cost</text>
+            <text class="hl" x="690" y="108" text-anchor="end">+26%</text>
+          </svg>
+          <dl class="tc-app__facts">
+            <div><dt>Price paid</dt><dd>€15.21 <small>per piece</small></dd></div>
+            <div><dt>Should-cost</dt><dd>€12.10 <small>per piece</small></dd></div>
+            <div><dt>Annual volume</dt><dd>121,000 <small>pieces</small></dd></div>
+            <div><dt>Gap per year</dt><dd class="tc-hl">€376k</dd></div>
+          </dl>
+        </section>
+      </div>
+
+      <!-- main table: one opportunity per row. Numbers right-aligned, a quiet action at the end. -->
+      <section class="tc-app__panel tc-app__panel--bare">
+        <div class="tc-app__panel-head">
+          <div class="tc-row" style="gap: 0.75rem;"><span class="tc-app__panel-title">Savings opportunities</span><span class="tc-status tc-status--box"><i class="tc-dot tc-dot--orange"></i>7 need a decision</span></div>
+          <div class="tc-row"><a class="tc-btn tc-btn--quiet" href="#">Filter</a><a class="tc-btn tc-btn--quiet" href="#">Export</a></div>
+        </div>
+        <div class="tc-app__tablewrap">
+          <table class="db-table">
+            <thead><tr><th>Opportunity</th><th>Parts</th><th>Lever</th><th>Supplier rating</th><th>Status</th><th class="num">Volume p.a.</th><th class="num">Potential</th><th></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent tc-ent--orange"></span><div>Cast housings<small>Hollweg Präzision GmbH</small></div></div></td>
+                <td><span class="tc-code">AG-2210</span> <span class="tc-code tc-code--more">+37</span></td>
+                <td>Price defence</td>
+                <td><span class="tc-rating"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot tc-dot--orange"></i>Awaiting approval</span></td>
+                <td class="num">€1.84M</td><td class="num">€96k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent"></span><div>Hydraulic manifold blocks<small>Varga Hidraulika Kft.</small></div></div></td>
+                <td><span class="tc-code">HM-0418</span> <span class="tc-code tc-code--more">+4</span></td>
+                <td>Should-cost</td>
+                <td><span class="tc-rating tc-rating--warn"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot tc-dot--blue"></i>In RFQ</span></td>
+                <td class="num">€2.31M</td><td class="num">€212k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent tc-ent--sea"></span><div>Gear motors<small>Sentec Antriebe AG</small></div></div></td>
+                <td><span class="tc-code">GM-0090</span></td>
+                <td>Framework agreement</td>
+                <td><span class="tc-rating"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot"></i>Identified</span></td>
+                <td class="num">€2.05M</td><td class="num">€118k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent tc-ent--green"></span><div>Turned shafts<small>Brenner Zerspanung GmbH</small></div></div></td>
+                <td><span class="tc-code">TS-3301</span> <span class="tc-code tc-code--more">+11</span></td>
+                <td>RFQ</td>
+                <td><span class="tc-rating tc-rating--warn"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot tc-dot--blue"></i>In RFQ</span></td>
+                <td class="num">€1.12M</td><td class="num">€134k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent tc-ent--sea"></span><div>Stamped bracket sets<small>Feldmark Stanztechnik GmbH</small></div></div></td>
+                <td><span class="tc-code">SB-1120</span> <span class="tc-code">SB-1121</span></td>
+                <td>Bundling</td>
+                <td><span class="tc-rating"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot tc-dot--green"></i>Realised</span></td>
+                <td class="num">€0.96M</td><td class="num">€58k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent tc-ent--yellow"></span><div>Injection-moulded covers<small>Nordhain Kunststofftechnik</small></div></div></td>
+                <td><span class="tc-code">IC-0702</span> <span class="tc-code tc-code--more">+2</span></td>
+                <td>Should-cost</td>
+                <td><span class="tc-rating"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot tc-dot--sea"></i>In negotiation</span></td>
+                <td class="num">€0.74M</td><td class="num">€41k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+              <tr>
+                <td><div class="tc-cell"><span class="tc-ent tc-ent--orange"></span><div>Compression springs<small>Molberg Federnwerk</small></div></div></td>
+                <td><span class="tc-code">CS-5520</span></td>
+                <td>Index clause</td>
+                <td><span class="tc-rating tc-rating--bad"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></span></td>
+                <td><span class="tc-status"><i class="tc-dot tc-dot--yellow"></i>Supply at risk</span></td>
+                <td class="num">€0.38M</td><td class="num">€27k</td>
+                <td class="num"><a class="tc-app__row-action" href="#">Open</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tc-app__panel-foot"><span>Showing 7 of 46 opportunities</span><span>€3.94M potential in the pipeline</span></div>
+      </section>
+
+      <div class="tc-app__grid">
+        <!-- spend split: 2px bars, black. Keep orange for the agent's finding. -->
+        <section class="tc-app__panel tc-col-4">
+          <div class="tc-app__panel-head"><span class="tc-app__panel-title">Spend by category</span><small class="tc-app__meta">€156M · 12 months</small></div>
+          <div class="tc-bars">
+            <div class="tc-bar" style="--v: 100%;"><span>Castings</span><i></i><b>€48.4M</b></div>
+            <div class="tc-bar" style="--v: 77%;"><span>Machined parts</span><i></i><b>€37.4M</b></div>
+            <div class="tc-bar" style="--v: 55%;"><span>Electronics</span><i></i><b>€26.5M</b></div>
+            <div class="tc-bar" style="--v: 35%;"><span>Plastics</span><i></i><b>€17.2M</b></div>
+            <div class="tc-bar" style="--v: 29%;"><span>Standard parts</span><i></i><b>€14.0M</b></div>
+            <div class="tc-bar" style="--v: 26%;"><span>Packaging</span><i></i><b>€12.5M</b></div>
+          </div>
+        </section>
+
+        <!-- a second, smaller table: what runs out soon -->
+        <section class="tc-app__panel tc-app__panel--bare tc-col-8">
+          <div class="tc-app__panel-head"><span class="tc-app__panel-title">Framework agreements ending</span><small class="tc-app__meta">Next 120 days</small></div>
+          <div class="tc-app__tablewrap">
+            <table>
+              <thead><tr><th>Supplier</th><th>Agreement</th><th>Ends</th><th>Status</th><th class="num">Volume</th></tr></thead>
+              <tbody>
+                <tr><td>Feldmark Stanztechnik GmbH</td><td><span class="tc-code">FA-2023-114</span></td><td>28 Dec 2026</td><td><span class="tc-status"><i class="tc-dot tc-dot--yellow"></i>41 days</span></td><td class="num">€3.10M</td></tr>
+                <tr><td>Sentec Antriebe AG</td><td><span class="tc-code">FA-2024-027</span></td><td>31 Jan 2027</td><td><span class="tc-status"><i class="tc-dot tc-dot--blue"></i>Drafted</span></td><td class="num">€2.05M</td></tr>
+                <tr><td>Kestrel Elektronik GmbH</td><td><span class="tc-code">FA-2022-301</span></td><td>28 Feb 2027</td><td><span class="tc-status"><i class="tc-dot"></i>Not started</span></td><td class="num">€4.62M</td></tr>
+                <tr><td>Brenner Zerspanung GmbH</td><td><span class="tc-code">FA-2024-090</span></td><td>15 Mar 2027</td><td><span class="tc-status"><i class="tc-dot tc-dot--green"></i>Renewed</span></td><td class="num">€1.12M</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

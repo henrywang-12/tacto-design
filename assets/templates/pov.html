@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Point of view - Hollweg Präzision - Northdesk</title>
+<!-- CUSTOMER POINT OF VIEW in the Tacto design language: ONE A4 page.
+     Replace the sample company (Northdesk) and customer (Hollweg Präzision) with the real ones.
+     Order: who it is for > one two-tone claim with an outcome and a time frame > the facts >
+     what we see | what it costs > the numbers on black > three dated steps > the offer > sources.
+     Numbers the customer gave you stay plain. Numbers you worked out end in "(est.)",
+     and the footer says which is which.
+     If an orange "A4 ends here" line shows on screen, the page is too long: cut copy, never shrink type.
+     Customer logo in the lockup: <img class="tc-clogo" src="hollweg.svg" alt="Hollweg Präzision">
+     (find one with scripts/logo.py), otherwise keep the tc-clogo-text.
+     Then: python3 scripts/inline.py pov.html out/pov.html && python3 scripts/tacto_check.py out/pov.html
+           bash scripts/shoot.sh out/pov.html out/pov.pdf   (must exit 0; read out/pov-page-1.png) -->
+<link rel="stylesheet" href="../tacto.css">
+<style>@page { size: A4; margin: 0; }</style>
+</head>
+<body>
+<div class="tc-sheets">
+  <article class="tc-sheet">
+    <header class="tc-sheet__top">
+      <span class="tc-lockup"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span class="tc-lockup__x">×</span><span class="tc-clogo-text">Hollweg Präzision</span></span>
+      <span class="tc-label">Point of view · November 2026</span>
+    </header>
+
+    <div class="tc-sheet__head">
+      <span class="tc-chip"><span class="tc-spark"></span>Turned and milled parts</span>
+      <h1 class="tc-sheet__title">€1.1M less for the same parts. <em>Within the first year, starting with one category.</em></h1>
+      <p class="tc-lead">Hollweg Präzision buys 3,870 drawing parts from 214 suppliers. We read twelve months of your invoices. Four in ten parts are priced above what they should cost.</p>
+    </div>
+
+    <dl class="tc-meta">
+      <div><dt>Purchasing volume</dt><dd>€86M a year</dd></div>
+      <div><dt>Drawing parts</dt><dd>3,870 active</dd></div>
+      <div><dt>Suppliers</dt><dd>214, in 9 countries</dd></div>
+      <div><dt>Team</dt><dd>7 buyers, 2 sites</dd></div>
+    </dl>
+
+    <div class="tc-sheet__cols">
+      <section>
+        <h2>What we see</h2>
+        <ul class="tc-sheet__list">
+          <li>Prices for drawing parts were set at first order and have moved with every increase since. Never with a decrease.</li>
+          <li>Two suppliers carry 46% of turned parts. Nobody has asked a third for a price in three years.</li>
+          <li>Framework agreements expire in March, with two weeks to prepare.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>What it costs</h2>
+        <ul class="tc-sheet__list">
+          <li>Turned parts are paid 11% above should-cost on average: €1.1M a year (est.).</li>
+          <li>Steel fell 9% since the last round. Your prices did not move (est. €310K).</li>
+          <li>An RFQ takes four days. Only 60 parts get tendered.</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="tc-noir tc-sheet__band">
+      <span class="tc-label">What the pilot is built to show</span>
+      <div class="tc-stats">
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--orange"></i>Savings potential</span><b>€4.2M</b></div>
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--sea"></i>Parts above should-cost</span><b>41%</b></div>
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--blue"></i>Saved in year one</span><b>€1.1M</b></div>
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--green"></i>RFQ time saved</span><b>75%</b></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>What we would do</h2>
+      <ol class="tc-points">
+        <li><small>1 to 12 Dec</small><div><b>Connect.</b> Twelve months of turned-part spend from an ERP export. No integration, no IT project.</div></li>
+        <li><small>15 Dec to 23 Jan</small><div><b>Price.</b> A should-cost for every drawing part, reviewed with your cost engineers.</div></li>
+        <li><small>26 Jan to 6 Mar</small><div><b>Negotiate.</b> Briefs for the ten largest gaps, ready before the framework agreements run out.</div></li>
+      </ol>
+    </section>
+
+    <div class="tc-agent tc-agent--light tc-sheet__offer">
+      <span class="tc-spark-tile"><span class="tc-spark"></span></span>
+      <p>Our offer: an eight-week pilot on turned parts, <b>free of charge</b>. If it finds less than €250K in savings potential, you have lost nothing but an export.</p>
+      <span class="tc-btn">Book the kick-off</span>
+    </div>
+
+    <footer class="tc-sheet__foot">
+      <span>Volume, parts, suppliers, team: Hollweg Präzision, 4 Nov 2026. Should-cost, savings: Northdesk, from 12 months of invoices. (est.): our estimate, to confirm in the pilot.</span>
+      <span>hello@northdesk.example</span>
+    </footer>
+  </article>
+</div>
+</body>
+</html>

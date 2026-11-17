@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auerberg Guss success story - Northdesk</title>
+<!-- Success story (case study) in the Tacto design language. Start from this file.
+     Replace the sample company (Northdesk), the customer (Auerberg Guss), the person and every
+     number with real, approved ones. Keep the order; it is the order of every story on the site:
+     nav · head (label, title) · wide media with the customer's name · facts strip · headline figure ·
+     narrow column: customer description > without us > with us > proven impact ·
+     quote on a black card · more stories · short closing band · footer
+     Parts open with a mono label, never a heading. Paragraphs are short and stand far apart.
+     Then: python3 scripts/inline.py this.html out.html && python3 scripts/tacto_check.py out.html -->
+<link rel="stylesheet" href="../tacto.css">
+<style>
+  .cs-media { margin-top: 4.5rem; display: flex; flex-direction: column; justify-content: space-between; align-items: stretch; padding: 2rem; }
+  .cs-media__mid { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .cs-media__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; flex-wrap: wrap; }
+  .cs-media__foot .tc-label { color: var(--tc-white-50); max-width: 22rem; text-align: right; }
+  .cs-facts { margin-top: 3rem; }
+  .cs-lead { margin-top: 10rem; align-items: end; }
+  .cs-lead p { max-width: 27rem; justify-self: end; }
+  .cs-body { padding-top: 10rem; }
+  .cs-shot { aspect-ratio: 3 / 2; }
+  .cs-story { min-height: 30rem; }
+  .cs-story .tc-figure > b { font-size: 4.75rem; }
+  @media (max-width: 991px) {
+    .cs-lead { margin-top: 6rem; }
+    .cs-lead p { justify-self: start; }
+    .cs-body { padding-top: 6rem; }
+    .cs-media { aspect-ratio: 4 / 3; }
+    .cs-media__foot .tc-label { text-align: left; }
+    .tc-card.cs-logo { min-height: 12rem; }
+  }
+  @media (max-width: 479px) {
+    .cs-media { aspect-ratio: 4 / 5; padding: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="tc-nav">
+  <div class="tc-container">
+    <div class="tc-nav__bar">
+      <div class="tc-nav__left">
+        <a class="tc-wordmark" href="#"><span class="tc-wordmark__mark"></span>Northdesk</a>
+        <nav class="tc-nav__links">
+          <a class="tc-nav__link" href="#">Product</a>
+          <a class="tc-nav__link" href="#">Agents</a>
+          <a class="tc-nav__link" href="#">Customers</a>
+          <a class="tc-nav__link" href="#">Industries</a>
+        </nav>
+      </div>
+      <div class="tc-nav__right">
+        <span class="tc-nav__meta">EN</span>
+        <div class="tc-nav__cta">
+          <a class="tc-btn tc-btn--quiet" href="#">Login</a>
+          <a class="tc-btn tc-btn--header" href="#contact">Book a demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- head: label, then the title at 45px light, left aligned, two lines at most -->
+<section class="tc-story-head">
+  <div class="tc-container">
+    <span class="tc-label">Success story</span>
+    <h1 class="tc-display">How Auerberg Guss found €310,000 in drawing parts that never had a price basis</h1>
+
+    <!-- wide media, 16:9. Put the customer's film or photograph in:
+         <div class="tc-photo tc-photo--fade tc-media cs-media"><img src="auerberg-plant.jpg" alt="..."> ...
+         and the customer's white logo bottom-left: <img class="tc-clogo tc-clogo--lg" src="auerberg-white.svg" alt="Auerberg Guss"> -->
+    <div class="tc-photo tc-photo--empty tc-photo--fade tc-media cs-media tc-reveal">
+      <div class="cs-media__mid"><a class="tc-btn tc-btn--glass" href="#">Watch the story <span class="tc-play"></span></a></div>
+      <div class="cs-media__foot">
+        <span class="tc-clogo-text">Auerberg Guss</span>
+        <span class="tc-label">Photograph: the casting hall in Kempten, a ladle being poured</span>
+      </div>
+    </div>
+
+    <!-- facts strip: mono label over a plain value -->
+    <dl class="tc-meta cs-facts">
+      <div><dt>Industry</dt><dd>Iron and aluminium casting</dd></div>
+      <div><dt>Employees</dt><dd>1,900</dd></div>
+      <div><dt>Sites</dt><dd>6 in Germany and Czechia</dd></div>
+      <div><dt>ERP</dt><dd>SAP S/4HANA</dd></div>
+      <div><dt>Live since</dt><dd>March 2026</dd></div>
+    </dl>
+
+    <!-- the headline number: huge, light, plain. One sentence beside it says what it covers. -->
+    <div class="tc-grid cs-lead">
+      <div class="tc-figure tc-col-7 tc-reveal"><span>Savings in 9 months</span><b data-tc-count="310000" data-tc-prefix="€">€310,000</b></div>
+      <p class="tc-text-19 tc-dim tc-col-5">Across 2,700 drawing parts and 140 suppliers, with a buying team that stayed the same size.</p>
+    </div>
+  </div>
+</section>
+
+<!-- the story: one narrow column, centred. Each part opens with a mono label; a hairline separates parts. -->
+<section class="cs-body">
+  <div class="tc-container">
+    <article class="tc-article tc-prose">
+      <span class="tc-label">Customer description</span>
+      <p>Auerberg Guss casts housings, brackets and pump bodies for machine builders and the automotive industry.</p>
+      <p>Six plants, 1,900 people and about €210 million in annual purchasing volume. A large share of that volume is machined drawing parts, bought from a long tail of small and mid-sized suppliers.</p>
+      <hr>
+
+      <span class="tc-label">Without Northdesk</span>
+      <p>Every drawing part had a price. None had a price basis.</p>
+      <p>Buyers knew what they paid last year, not what a part should cost. Quotes arrived as PDF files and were compared by hand, one spreadsheet per request.</p>
+      <p>With 2,700 active part numbers and eleven buyers, most framework agreements were renewed at the old price, plus whatever increase the supplier asked for. The team negotiated where it had time, not where the money was.</p>
+      <!-- a smaller photograph inside the column, 8px corner, mono caption below -->
+      <figure>
+        <div class="tc-photo tc-photo--empty cs-shot"><span>Photograph: a buyer at the plant, drawing and quote side by side</span></div>
+        <figcaption>Kempten plant: 640 drawing parts are bought for this site alone</figcaption>
+      </figure>
+      <hr>
+
+      <span class="tc-label">With Northdesk</span>
+      <p>Northdesk read the ERP data, the drawings and four years of quotes, and built a should-cost model for every part: material, machining time, set-up, surface treatment, overhead.</p>
+      <p>Indices for aluminium, steel and energy flow in every day. When a new quote arrives, an agent compares it with the model and with similar parts from other suppliers, and shows the gap in euros.</p>
+      <p>Buyers now open every negotiation with a number and a reason. RFQs for C-parts go out on their own, bundled by supplier and material group.</p>
+      <p>Live in eleven weeks. The ERP stayed as it was.</p>
+      <hr>
+
+      <span class="tc-label">Proven impact</span>
+      <ol class="tc-results" data-tc-stagger>
+        <li class="tc-reveal"><b>€310,000</b><span>saved in the first nine months, confirmed against purchase orders in the ERP.</span></li>
+        <li class="tc-reveal"><b>3.4%</b><span>lower material costs on drawing parts, against a target of 2%.</span></li>
+        <li class="tc-reveal"><b>2,700</b><span>drawing parts with a should-cost model. Before, there were none.</span></li>
+        <li class="tc-reveal"><b>4 days</b><span>per RFQ round, down from eleven.</span></li>
+        <li class="tc-reveal"><b>31</b><span>framework agreements renegotiated with index clauses for aluminium and energy.</span></li>
+      </ol>
+    </article>
+  </div>
+</section>
+
+<!-- one large quote on a black card, the customer's name beside it -->
+<section class="tc-section">
+  <div class="tc-container">
+    <div class="tc-grid">
+      <figure class="tc-card tc-card--short tc-card--black tc-col-8 tc-reveal">
+        <blockquote class="tc-quote">“For the first time we know what a part should cost before the supplier tells us. That changed every conversation we have.”</blockquote>
+        <figcaption class="tc-person"><span class="tc-person__img"></span><div><b>Jana Petrovic</b><span>Head of purchasing, Auerberg Guss</span></div></figcaption>
+      </figure>
+      <!-- the customer's logo, dark, on a white card: <img class="tc-clogo tc-clogo--lg" src="auerberg.svg" alt="Auerberg Guss"> -->
+      <div class="tc-card tc-card--short tc-card--center cs-logo tc-col-4"><span class="tc-clogo-text">Auerberg Guss</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- more stories: tall white cards, chip on top, number and title at the bottom -->
+<section class="tc-section" style="padding-top: 4rem;">
+  <div class="tc-container">
+    <div class="tc-head tc-head--row">
+      <div class="tc-stack" style="gap: 1rem;">
+        <span class="tc-label">More success stories</span>
+        <h2 class="tc-display" style="max-width: 36rem;">Buyers who changed how they work.</h2>
+      </div>
+      <a class="tc-btn tc-btn--quiet" href="#">All stories</a>
+    </div>
+    <div class="tc-grid" data-tc-stagger>
+      <a class="tc-card cs-story tc-col-4 tc-reveal" href="#">
+        <span class="tc-chip"><i class="tc-dot tc-dot--blue"></i>Precision engineering</span>
+        <div class="tc-card__body">
+          <div class="tc-figure"><span>Less time per RFQ</span><b>70%</b></div>
+          <h3 class="tc-title-26">How Hollweg Präzision sends 900 RFQs a year without a single spreadsheet</h3>
+        </div>
+      </a>
+      <a class="tc-card cs-story tc-col-4 tc-reveal" href="#">
+        <span class="tc-chip"><i class="tc-dot tc-dot--sea"></i>Hydraulics</span>
+        <div class="tc-card__body">
+          <div class="tc-figure"><span>Price increases averted</span><b>€1.2M</b></div>
+          <h3 class="tc-title-26">How Lindqvist Hydraulik answers price increases with index data</h3>
+        </div>
+      </a>
+      <a class="tc-ember cs-story tc-col-4 tc-pad tc-reveal" href="#" style="display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: 2rem;">
+        <span class="tc-chip"><span class="tc-spark"></span>Customers</span>
+        <div class="tc-stack">
+          <h3 class="tc-title-26" style="max-width: 20rem;">120 manufacturers, one way to buy better.</h3>
+          <span class="tc-btn tc-btn--white">Read all stories</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- closing band, short: one line and one button -->
+<section class="tc-band tc-band--short" id="contact">
+  <div class="tc-container">
+    <div class="tc-band__row" style="justify-content: space-between;">
+      <h2 class="tc-title-68" style="max-width: 50rem;">Know what your parts should cost.</h2>
+      <a class="tc-btn tc-btn--white" href="#" style="padding: 1.375rem 3.125rem;">Book a demo</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="tc-footer">
+  <div class="tc-container">
+    <div class="tc-footer__grid">
+      <div class="tc-footer__col">
+        <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+        <div class="tc-footer__certs">
+          <div class="tc-footer__cert"><b>ISO 27001 certified</b><span>Information security to ISO/IEC 27001</span></div>
+          <div class="tc-footer__cert"><b>GDPR compliant</b><span>Hosted in the EU</span></div>
+        </div>
+      </div>
+      <div class="tc-footer__col"><span>Product</span><a href="#">Suppliers</a><a href="#">Spend and cost</a><a href="#">Sourcing</a><a href="#">Compliance</a></div>
+      <div class="tc-footer__col"><span>Customers</span><a href="#">Success stories</a><a href="#">Industries</a><a href="#">References</a></div>
+      <div class="tc-footer__col"><span>Resources</span><a href="#">Blog</a><a href="#">Events</a><a href="#">Glossary</a></div>
+      <div class="tc-footer__col"><span>Company</span><a href="#">About us</a><a href="#">Careers</a><a href="#">Contact</a></div>
+    </div>
+    <div class="tc-footer__base">
+      <p>© 2026 Northdesk GmbH.</p>
+      <div class="tc-row" style="gap: 1.75rem;"><a href="#">Imprint</a><a href="#">Privacy</a><a href="#">Cookie settings</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../tacto.js"></script>
+</body>
+</html>

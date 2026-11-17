@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280">
+<title>Northdesk - Intro for Hollweg Präzision</title>
+<!-- DECK in the Tacto design language: 1280x720 slides, one claim per slide.
+     Replace the sample company (Northdesk), customer (Hollweg Präzision) and people.
+     Recipe per slide: a mono label or chip, then a light two-tone headline (first
+     sentence full colour, the rest inside <em> dimmed), then ONE of: a lead, counters,
+     a huge figure, points, a UI fragment on ember, a quote. Headlines: 3 lines at most.
+     Grey is the default slide; white for lists and plans; black for a voice; ember
+     only to open and to close. Every slide except the first and the last has a
+     tc-slide__foot: wordmark left, mono page label right.
+     Customer logo in the lockup: <img class="tc-clogo" src="hollweg.svg" alt="Hollweg Präzision">
+     (find one with scripts/logo.py), otherwise keep the tc-clogo-text.
+     Then: python3 scripts/inline.py deck.html out/deck.html && python3 scripts/tacto_check.py out/deck.html
+           bash scripts/shoot.sh out/deck.html out/deck.pdf   (one slide per page; read the page pictures) -->
+<link rel="stylesheet" href="../tacto.css">
+<style>@page { size: 1280px 720px; margin: 0; }</style>
+</head>
+<body>
+<div class="tc-deck">
+
+  <!-- 1 TITLE: ember, the logo row on top, a giant light title at the bottom. No footer. -->
+  <section class="tc-slide tc-slide--ember tc-slide--end">
+    <header class="tc-slide__brand">
+      <span class="tc-lockup"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span class="tc-lockup__x">×</span><span class="tc-clogo-text">Hollweg Präzision</span></span>
+      <span class="tc-label">17 November 2026</span>
+    </header>
+    <span class="tc-chip"><span class="tc-spark"></span>Industrial AI for procurement</span>
+    <h1 class="tc-slide__title tc-slide__title--xl">Know what a part should cost. <em>Before you ask.</em></h1>
+  </section>
+
+  <!-- 2 CLAIM: grey, a label, a two-tone headline, one lead. Nothing else. -->
+  <section class="tc-slide tc-slide--center">
+    <span class="tc-label">Why procurement, why now</span>
+    <h2 class="tc-slide__title tc-slide__title--lg">Material decides your margin. <em>Your buyers see a fraction of it.</em></h2>
+    <p class="tc-slide__lead">Sixty percent of every euro Hollweg Präzision earns leaves again through purchasing. Most of it is negotiated part by part, from memory and spreadsheets.</p>
+    <footer class="tc-slide__foot"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span>Hollweg Präzision · 02 / 08</span></footer>
+  </section>
+
+  <!-- 3 NUMBERS: a headline on top, three counters at the bottom, hairlines between them -->
+  <section class="tc-slide">
+    <span class="tc-label">What we found in your spend</span>
+    <h2 class="tc-slide__title">€4.2M on the table. <em>In twelve months of your own invoices.</em></h2>
+    <div class="tc-slide__body tc-slide__body--end">
+      <div class="tc-stats">
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--sea"></i>Drawing parts analysed</span><b>3,870</b></div>
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--blue"></i>Above should-cost</span><b>41%</b></div>
+        <div class="tc-stat"><span><i class="tc-dot tc-dot--orange"></i>Savings potential</span><b>€4.2M</b></div>
+      </div>
+    </div>
+    <footer class="tc-slide__foot"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span>Hollweg Präzision · 03 / 08</span></footer>
+  </section>
+
+  <!-- 4 SPLIT: words on the left, a piece of product on an ember panel on the right -->
+  <section class="tc-slide tc-slide--split">
+    <div class="tc-slide__text">
+      <span class="tc-label">Should-cost agent</span>
+      <h2 class="tc-slide__title">Every drawing gets a price. <em>Every price gets a reason.</em></h2>
+      <p class="tc-slide__lead">The agent reads the drawing, the material and the process, and prices the part the way a cost engineer would. In seconds, for every part number.</p>
+    </div>
+    <div class="tc-ember tc-ember--right tc-slide__visual">
+      <div class="tc-frag">
+        <div class="tc-frag__head">
+          <span class="tc-spark-tile"><span class="tc-spark"></span></span>
+          <div><small>Should-cost agent · Turned parts</small><b>4 parts priced above should-cost</b></div>
+        </div>
+        <table>
+          <thead><tr><th>Part</th><th>Supplier</th><th class="num">Paid</th><th class="num">Should</th></tr></thead>
+          <tbody>
+            <tr><td><span class="tc-code">HP-20417</span></td><td>Auerberg Guss</td><td class="num">€14.80</td><td class="num tc-hl">€11.90</td></tr>
+            <tr><td><span class="tc-code">HP-20533</span></td><td>Lindqvist Hydraulik</td><td class="num">€6.25</td><td class="num tc-hl">€5.10</td></tr>
+            <tr><td><span class="tc-code">HP-31102</span></td><td>Auerberg Guss</td><td class="num">€38.40</td><td class="num tc-hl">€33.70</td></tr>
+            <tr><td><span class="tc-code">HP-31877</span></td><td>Lindqvist Hydraulik</td><td class="num">€2.95</td><td class="num tc-hl">€2.40</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <footer class="tc-slide__foot"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span>Hollweg Präzision · 04 / 08</span></footer>
+  </section>
+
+  <!-- 5 HOW IT WORKS: three numbered points, a hairline above each -->
+  <section class="tc-slide tc-slide--white">
+    <span class="tc-label">How it works</span>
+    <h2 class="tc-slide__title">You set the targets. <em>Agents do the legwork.</em></h2>
+    <ol class="tc-slide__body tc-points">
+      <li><small>01</small><div><b>Read</b><p>Invoices, orders, drawings and contracts from your ERP, joined part by part.</p></div></li>
+      <li><small>02</small><div><b>Price</b><p>A should-cost for every drawing part, checked against index prices for steel, aluminium and energy.</p></div></li>
+      <li><small>03</small><div><b>Act</b><p>RFQs, price defence and negotiation briefs, ready for your buyer to send.</p></div></li>
+    </ol>
+    <footer class="tc-slide__foot"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span>Hollweg Präzision · 05 / 08</span></footer>
+  </section>
+
+  <!-- 6 VOICE: one customer quote on black, the person below -->
+  <section class="tc-slide tc-slide--black tc-slide--center">
+    <span class="tc-label">Auerberg Guss, 14 sites</span>
+    <blockquote class="tc-quote">“For drawing parts we never had a price we could defend. Now our buyers walk into every negotiation with one.”</blockquote>
+    <div class="tc-person"><span class="tc-person__img"></span><div><b>Jana Petrovic</b><span>Head of purchasing, Auerberg Guss</span></div></div>
+    <footer class="tc-slide__foot"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span>Hollweg Präzision · 06 / 08</span></footer>
+  </section>
+
+  <!-- 7 PLAN: three dated steps side by side, the first one active -->
+  <section class="tc-slide">
+    <span class="tc-label">The pilot</span>
+    <h2 class="tc-slide__title">One category. Eight weeks. <em>Savings you can count.</em></h2>
+    <div class="tc-slide__body tc-slide__body--end">
+      <div class="tc-steps">
+        <div class="tc-step is-active"><span><i class="tc-dot tc-dot--orange"></i>Weeks 1 to 2</span><b>Connect</b><p>Twelve months of turned-part spend, from an ERP export.</p></div>
+        <div class="tc-step"><span><i class="tc-dot tc-dot--blue"></i>Weeks 3 to 5</span><b>Price</b><p>Should-cost for every drawing part, reviewed with your cost engineers.</p></div>
+        <div class="tc-step"><span><i class="tc-dot tc-dot--green"></i>Weeks 6 to 8</span><b>Negotiate</b><p>Briefs for the ten largest gaps. Your buyers run the talks.</p></div>
+      </div>
+    </div>
+    <footer class="tc-slide__foot"><span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span><span>Hollweg Präzision · 07 / 08</span></footer>
+  </section>
+
+  <!-- 8 CLOSE: black burning into orange, giant light words, one action -->
+  <section class="tc-slide tc-slide--ember tc-slide--streak tc-slide--end">
+    <header class="tc-slide__brand">
+      <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+      <span class="tc-label">hello@northdesk.example</span>
+    </header>
+    <h2 class="tc-slide__giant">Start with</h2>
+    <div class="tc-slide__giant-row">
+      <h2 class="tc-slide__giant">one category.</h2>
+      <span class="tc-btn tc-btn--white">Book the pilot</span>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

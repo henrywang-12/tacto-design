@@ -1,0 +1,20 @@
+{
+  "skill_name": "tacto-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build me a dashboard for the purchasing team of a pump manufacturer. They buy about 2,400 drawing parts from 180 suppliers. I want: this year's realised savings, open savings pipeline, how many supplier price increases came in over the last 90 days, a list of the ten biggest savings opportunities (part, supplier, what we pay, what it should cost, status), and a box with the three things an AI agent thinks the head of purchasing should decide today. Plus a small chart of the price of one cast housing against its should-cost over twelve months. Make it in the Tacto style. The company is called Holm & Ek, the software vendor is Tallgrass.",
+      "expected_output": "A single self-contained HTML app screen using tc-app: light grey page, white hairline panels, Aspekta light, mono capital labels, a two-tone greeting, mono tab chips, four KPI panels with weight-200 numbers, one black agent panel with findings in orange and one button, a table with entity marks, mono code tags, status as dot plus mono capitals and right-aligned numbers, and one orange step-line chart with a dashed grey reference. One black primary button. Passes scripts/tacto_check.py."
+    },
+    {
+      "id": 2,
+      "prompt": "I have a call with Brenner Maschinenbau tomorrow. Quick customer POV I can send afterwards, one page, Tacto look. What I know: they make packaging machines, about 1,400 employees, 3 plants, SAP S/4HANA, purchasing volume roughly 210 million euros a year. Around 6,000 active drawing parts from 320 suppliers, 9 buyers. Prices were mostly set years ago and only ever went up; they got 40 price increase letters this year. They want to know where they overpay. We'd propose an eight-week pilot on turned and milled parts, free of charge. I'm at a company called Tallgrass (AI for procurement).",
+      "expected_output": "One A4 page (tc-sheet): lockup Tallgrass x Brenner Maschinenbau and a mono 'Point of view' line, a two-tone outcome title with a time frame, a fact strip of the customer's facts, 'What we see' and 'What it costs' columns, a black band with three or four light counters with dots, three dated steps, the offer as an agent-style row with one button label, and a mono foot stating which numbers are the customer's and which are estimates. Light weights only, no invented facts presented as real, exactly one PDF page. Passes scripts/tacto_check.py and the PDF export exits 0."
+    },
+    {
+      "id": 3,
+      "prompt": "We just finished a pilot with a manufacturer of commercial kitchen equipment (Saale Großküchentechnik, 4 plants): our agents priced 1,850 sheet-metal and turned parts against should-cost. Result after 10 weeks: 38% of parts were bought above should-cost, 640,000 euros of savings identified, 210,000 already agreed with suppliers in renegotiations, and preparing a negotiation now takes the buyers about an hour, down from a day. I need two things in the Tacto style: (1) a LinkedIn post with its square image, and (2) a short 6-slide deck I can show their CPO next week to propose rolling it out to all categories. My company is called Tallgrass.",
+      "expected_output": "A post in the house voice (a flat first line with the customer result and its number, short single-sentence paragraphs, the buyer as the one who decides, no emoji or exclamation marks, a quiet last line), a 1200x1200 cover on ember with either a light two-tone title or one huge weight-200 figure with a one-line label and a chip, and a 6-slide 1280x720 deck with sentence headlines in two tones, one idea per slide, a counters slide, a quote or product slide, and a black or ember closing slide with giant words and one next step. All pass scripts/tacto_check.py; the deck PDF has six pages."
+    }
+  ]
+}

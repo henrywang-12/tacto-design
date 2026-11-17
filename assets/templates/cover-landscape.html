@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>Northdesk - Cover, landscape</title>
+<!-- COVER IMAGE for a post or an article in the Tacto design language, landscape 1200x627
+     (link previews, article heroes). Square 1200x1200: cover.html.
+     Recipe: ember (black burning into grainy orange), the logo row on top (wordmark left,
+     one chip right), and at the bottom left EITHER one giant numeral with a one-line
+     label (shown here) OR a light white title of at most three lines (the variant in
+     the comment below). No photo, no icons, no logo wall. For a black cover add tc-cover--noir.
+     Then: python3 scripts/inline.py cover-landscape.html out/cover-landscape.html
+           python3 scripts/tacto_check.py out/cover-landscape.html
+           bash scripts/shoot.sh out/cover-landscape.html out/cover-landscape.png 1200 627 -->
+<link rel="stylesheet" href="../tacto.css">
+<style>body { margin: 0; background: var(--tc-line); }</style>
+</head>
+<body>
+<div class="tc-cover tc-cover--landscape">
+  <header class="tc-cover__top">
+    <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+    <span class="tc-chip"><span class="tc-spark"></span>Should-cost report 2026</span>
+  </header>
+  <div class="tc-cover__body tc-cover__body--row">
+    <b class="tc-cover__figure">41%</b>
+    <span class="tc-cover__caption">of drawing parts are bought above what they should cost</span>
+  </div>
+</div>
+<!-- Title variant: replace tc-cover__body with
+  <div class="tc-cover__body">
+    <span class="tc-label">Lindqvist Hydraulik · Hydraulics</span>
+    <h1 class="tc-cover__title">Every drawing part priced. <em>Before the RFQ goes out.</em></h1>
+  </div>
+-->
+</body>
+</html>

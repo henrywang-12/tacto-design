@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northdesk - Industrial AI for procurement</title>
+<!-- Landing page in the Tacto design language. Start from this file.
+     Replace the sample company (Northdesk), customers and people with the real ones.
+     Every section below is a pattern you can reorder, repeat or drop:
+     nav · hero · stage (product tabs) · proof on black (logo wall, counters) · statement + cards ·
+     agents orbit · case · impact · agents on black · industries rail · voices · closing band · footer
+     Then: python3 scripts/inline.py this.html out.html && python3 scripts/tacto_check.py out.html -->
+<link rel="stylesheet" href="../tacto.css">
+</head>
+<body>
+
+<header class="tc-nav">
+  <div class="tc-container">
+    <div class="tc-nav__bar">
+      <div class="tc-nav__left">
+        <a class="tc-wordmark" href="#"><span class="tc-wordmark__mark"></span>Northdesk</a>
+        <nav class="tc-nav__links">
+          <a class="tc-nav__link" href="#product">Product</a>
+          <a class="tc-nav__link" href="#agents">Agents</a>
+          <a class="tc-nav__link" href="#customers">Customers</a>
+          <a class="tc-nav__link" href="#industries">Industries</a>
+        </nav>
+      </div>
+      <div class="tc-nav__right">
+        <span class="tc-nav__meta">EN</span>
+        <div class="tc-nav__cta">
+          <a class="tc-btn tc-btn--quiet" href="#">Login</a>
+          <a class="tc-btn tc-btn--header" href="#contact">Book a demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- hero: one chip, one two-tone headline, two actions. Left aligned, lots of air above. -->
+<section class="tc-section" style="padding-top: 18rem; padding-bottom: 10rem;">
+  <div class="tc-container">
+    <span class="tc-chip">Technology leader</span>
+    <h1 class="tc-display" style="max-width: 68rem; margin-top: 1rem; letter-spacing: -0.05rem;">Industrial AI for procurement in manufacturing. <em>Built for thousands of parts. Automating what takes time. Finding what saves money.</em></h1>
+    <div class="tc-row" style="margin-top: 4rem;">
+      <a class="tc-btn tc-btn--lg" href="#contact">Book a meeting</a>
+      <a class="tc-btn tc-btn--media" href="#product"><span class="tc-btn__thumb"><span class="tc-play" style="color: #ffffff;"></span></span>Product tour</a>
+    </div>
+  </div>
+</section>
+
+<!-- stage: the product on a veil panel, a pill menu, then a centred head -->
+<section class="tc-section tc-section--flush" id="product" style="padding-top: 0;">
+  <div class="tc-container">
+    <div class="tc-veil tc-panel">
+      <div class="tc-frag tc-reveal" style="width: 100%; max-width: 51rem;">
+        <div class="tc-frag__head">
+          <span class="tc-spark-tile"><span class="tc-spark"></span></span>
+          <div><small>Northdesk agents</small><b>Supplier analysis: an agent started a new evaluation for Hollweg Präzision</b></div>
+        </div>
+        <div class="tc-frag__body" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+          <div class="tc-stack tc-stack--sm" style="align-items: stretch;">
+            <div class="tc-item"><span class="tc-ent"></span><div><small>Supplier</small><b>Hollweg Präzision GmbH</b></div></div>
+            <div class="tc-item" style="margin-left: 2.5rem;"><span class="tc-ent tc-ent--sea"></span><div><small>Article</small><b>H40 truss frame</b></div></div>
+            <div class="tc-item" style="margin-left: 2.5rem;"><span class="tc-ent tc-ent--sea"></span><div><small>Article</small><b>60/20 beam</b></div></div>
+          </div>
+          <div class="tc-item" style="flex-direction: column; align-items: stretch; gap: 0;">
+            <div class="tc-cell" style="padding-bottom: 0.75rem; border-bottom: 1px solid var(--tc-line);"><span class="tc-ent tc-ent--orange"></span><div><small>Trigger: supplier onboarding</small><b>Supplier analysis agent</b></div></div>
+            <div class="tc-kv"><span>Industry benchmark</span><span>Aluminium and semi-finished products</span></div>
+            <div class="tc-kv"><span>Main cost drivers</span><span>Aluminium price, energy, wages in Slovakia</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tc-tabs" data-tc-tabs style="margin-top: 3.5rem;">
+        <button class="tc-tab is-active"><span class="tc-spark"></span>Agents</button>
+        <button class="tc-tab">Suppliers</button>
+        <button class="tc-tab">Spend and cost</button>
+        <button class="tc-tab">Sourcing</button>
+        <button class="tc-tab">Compliance</button>
+      </div>
+      <div class="tc-head tc-head--center" style="margin: 3.5rem 0 0;">
+        <span class="tc-label">Powered by Northdesk agents</span>
+        <h2 class="tc-display" style="letter-spacing: -0.05rem;">Frontier AI for procurement</h2>
+        <p class="tc-measure">Knows your parts, categories, suppliers and costs, joins them with your own data and with market signals, and hands the result to agents that decide better and save money you can count.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- proof on black: label, claim, logo wall, counters -->
+<section class="tc-section tc-section--black" id="customers" style="margin-top: 6.25rem; padding-bottom: 8rem;">
+  <div class="tc-container">
+    <div class="tc-head tc-head--tight">
+      <span class="tc-label">Used by 120+ manufacturers</span>
+      <h2 class="tc-display" style="max-width: 46rem;">Buyers who run real plants work with Northdesk. For good reason.</h2>
+    </div>
+    <!-- replace each cell with <img src="customer-white.svg" alt="Customer">. Only customers who agreed. -->
+    <div class="tc-logos" style="margin-top: 6rem;">
+      <span>Hollweg</span><span>Auerberg Guss</span><span>Lindqvist</span><span>Customer</span><span>Customer</span><span>Customer</span>
+      <span>Customer</span><span>Customer</span><span>Customer</span><span>Customer</span><span>Customer</span><span>Customer</span>
+    </div>
+    <div class="tc-stats" style="margin-top: 10rem;" data-tc-stagger>
+      <div class="tc-stat tc-reveal"><span><i class="tc-dot tc-dot--sea"></i>Customers</span><b data-tc-count="120" data-tc-suffix="+">120+</b></div>
+      <div class="tc-stat tc-reveal"><span><i class="tc-dot tc-dot--blue"></i>Spend under management</span><b>€38B+</b></div>
+      <div class="tc-stat tc-reveal"><span><i class="tc-dot tc-dot--green"></i>Registered suppliers</span><b>1.4M+</b></div>
+      <div class="tc-stat tc-reveal"><span><i class="tc-dot tc-dot--yellow"></i>Production sites</span><b data-tc-count="2300">2,300</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- statement, then two tall cards side by side -->
+<section class="tc-section">
+  <div class="tc-container">
+    <div class="tc-head">
+      <span class="tc-powered"><span class="tc-spark"></span><span>Powered by Northdesk agents</span></span>
+      <h2 class="tc-display" style="max-width: 62rem;">Strong data. Strong buyers. Strong supply chains. Strong companies.</h2>
+    </div>
+    <div class="tc-grid">
+      <article class="tc-card tc-card--tall tc-col-6">
+        <span class="tc-chip"><span class="tc-spark"></span>Mission</span>
+        <div class="tc-card__body">
+          <h3 class="tc-title-34" style="max-width: 30rem;">The profit of a manufacturer is decided in procurement.</h3>
+          <p>Thousands of materials, suppliers, prices and markets meet in one department. For the first time, software can read all of it at once and act on it: it runs the routine work, lowers material costs and gives buyers time for the decisions that matter.</p>
+        </div>
+      </article>
+      <!-- a real photograph belongs here: <div class="tc-photo tc-photo--fade"><img src="plant.jpg" alt=""> ... -->
+      <div class="tc-photo tc-photo--empty tc-col-6" style="min-height: 44.5rem; align-items: center; justify-content: center;">
+        <a class="tc-btn tc-btn--glass" href="#">Watch the mission <span class="tc-play"></span></a>
+      </div>
+
+      <!-- the agents on their orbit -->
+      <article class="tc-card tc-card--xl tc-col-12" id="agents">
+        <div>
+          <h3 class="tc-mega">Reduce material costs</h3>
+          <p class="tc-dim" style="margin-top: 0.75rem;">Agents find savings across parts, suppliers and markets.</p>
+          <div class="tc-proof" style="margin-top: 2.1875rem;">
+            <b>8%</b><span>of procurement volume saved</span>
+            <svg class="tc-proof__chart tc-chart" viewBox="0 0 60 50" preserveAspectRatio="none"><path class="line" d="M2 6 L22 6 L40 40 L58 40"/></svg>
+          </div>
+        </div>
+        <div class="tc-orbit">
+          <svg viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="orb" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff6414"/><stop offset="1" stop-color="#2170ec"/></linearGradient></defs>
+            <ellipse cx="400" cy="200" rx="392" ry="150" transform="rotate(-12 400 200)" fill="none" stroke="url(#orb)" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          </svg>
+          <span class="tc-chip tc-chip--box" style="left: 62%; top: 1%;"><i class="tc-dot tc-dot--orange"></i>Price defence agent</span>
+          <span class="tc-chip tc-chip--box" style="left: 88%; top: 44%;"><i class="tc-dot tc-dot--blue"></i>RFQ agent</span>
+          <span class="tc-chip tc-chip--box" style="left: 12%; top: 56%;"><i class="tc-dot tc-dot--yellow"></i>Should-cost agent</span>
+          <span class="tc-chip tc-chip--box" style="left: 36%; top: 98%;"><i class="tc-dot tc-dot--green"></i>Negotiation agent</span>
+          <span class="tc-chip tc-chip--glow" style="left: 50%; top: 50%;"><span class="tc-spark"></span>Powered by Northdesk agents</span>
+        </div>
+        <div style="align-self: flex-end; text-align: right;">
+          <div class="tc-proof" style="margin-bottom: 2.1875rem;">
+            <b>75%</b><span>time saved</span>
+            <svg class="tc-proof__chart tc-chart" viewBox="0 0 60 50" preserveAspectRatio="none"><path class="line" d="M4 44V20M12 44V14M20 44V24M28 44V10M36 44V18M44 44V12M52 44V22"/></svg>
+          </div>
+          <h3 class="tc-mega">Work strategically</h3>
+          <p class="tc-dim" style="margin-top: 0.75rem;">Agents take over the operational work. Buyers decide.</p>
+        </div>
+      </article>
+
+      <!-- a case: picture on one side, the story on the other -->
+      <div class="tc-photo tc-photo--empty tc-col-6" style="min-height: 44.5rem; align-items: center; justify-content: center;">
+        <a class="tc-btn tc-btn--glass" href="#">View success story <span class="tc-play"></span></a>
+      </div>
+      <article class="tc-card tc-card--tall tc-col-6">
+        <span class="tc-chip">Supplier of the year 2026, drive technology</span>
+        <div class="tc-card__body">
+          <h3 class="tc-title-34">How Auerberg Guss saves 3.2% with AI agents</h3>
+          <p>Across 14 sites and a supplier base that grew by acquisition, Auerberg Guss uses agents to find savings faster and to carry them through. The result after one year: 3.2% against a target of 2.5%.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- impact: one number and one voice on a black card, over a picture or an ember panel -->
+<section class="tc-section" style="padding: 0;">
+  <div class="tc-ember tc-ember--streak" style="border-radius: 0; min-height: 56rem; display: flex; align-items: center;">
+    <div class="tc-container" style="display: flex; justify-content: flex-end;">
+      <div class="tc-impact">
+        <div class="tc-figure"><span>Spend managed with Northdesk</span><b>€640M</b></div>
+        <div class="tc-stack">
+          <p>“For drawing parts we never had a price basis we could trust. Today we know what a part should cost before we pick up the phone.”</p>
+          <div class="tc-row tc-row--between" style="width: 100%;">
+            <div class="tc-person tc-person--mono"><span class="tc-person__img tc-person__img--round"></span><div><b>Jana Petrovic</b><span>Head of purchasing, Auerberg Guss</span></div></div>
+            <div class="tc-bullets"><i class="on"></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- agents on black: what each one says, with the finding in orange -->
+<section class="tc-section tc-section--black" style="padding-bottom: 3.125rem; overflow: clip;">
+  <div class="tc-container">
+    <div class="tc-head tc-head--center">
+      <span class="tc-chip tc-chip--glow"><span class="tc-spark"></span>Powered by Northdesk agents</span>
+      <h2 class="tc-display" style="max-width: 50rem;">Agents that do the work</h2>
+      <p class="tc-faded" style="max-width: 50rem;">Each agent knows one job in procurement, reads your data and the market, and comes back with a finding and the next step.</p>
+      <a class="tc-btn tc-btn--orange" href="#contact" style="margin-top: 0.5rem;">Learn more</a>
+    </div>
+    <div class="tc-stack" style="align-items: center; gap: 6rem; margin-top: 8rem;">
+      <div class="tc-agent tc-reveal">
+        <div class="tc-agent__head"><span class="tc-spark-tile"><span class="tc-spark"></span></span>Document agent</div>
+        <p>Expiry dates, document types and suppliers were read from 412 documents. <b>9 certificates expire within the next 90 days.</b></p>
+        <a class="tc-btn tc-btn--orange tc-btn--sm" href="#">Request renewals</a>
+      </div>
+      <div class="tc-agent tc-reveal">
+        <div class="tc-agent__head"><span class="tc-spark-tile"><span class="tc-spark"></span></span>Price defence agent</div>
+        <p>Hollweg Präzision has asked for a <b>price increase of 2.1%.</b> Aluminium fell 3.4% in the same period. Prepare a reply with index data and benchmarks?</p>
+        <a class="tc-btn tc-btn--orange tc-btn--sm" href="#">Draft the reply</a>
+      </div>
+    </div>
+    <div class="tc-badges" style="margin-top: 10rem;">
+      <span class="tc-chip tc-chip--fade">Hosted in the EU</span>
+      <span class="tc-chip tc-chip--fade">ISO 27001</span>
+      <span class="tc-chip tc-chip--fade">Built for industry</span>
+      <span class="tc-chip tc-chip--fade">At home in procurement</span>
+    </div>
+  </div>
+</section>
+
+<!-- industries: a rail of upright tiles, each a name over a thin technical drawing -->
+<section class="tc-section" id="industries" style="padding-bottom: 5rem; overflow: clip;">
+  <div class="tc-container">
+    <div class="tc-head tc-head--row">
+      <div class="tc-stack" style="gap: 1rem;">
+        <span class="tc-label">Made for manufacturing</span>
+        <h2 class="tc-display" style="max-width: 36rem;">For the industries that build things.</h2>
+      </div>
+      <div class="tc-arrows"><button class="tc-arrow" data-tc-rail-prev="#rail" aria-label="Back"><svg viewBox="0 0 16 16"><path d="M14 8H2M7 3L2 8l5 5"/></svg></button><button class="tc-arrow" data-tc-rail-next="#rail" aria-label="Next"><svg viewBox="0 0 16 16"><path d="M2 8h12M9 3l5 5-5 5"/></svg></button></div>
+    </div>
+    <div class="tc-rail" id="rail">
+      <a class="tc-tile" href="#"><span class="tc-tile__title">Machinery</span>
+        <span class="tc-tile__art"><svg viewBox="0 0 320 300"><g class="tc-lineart"><circle cx="210" cy="170" r="92"/><circle cx="210" cy="170" r="58"/><circle cx="210" cy="170" r="16"/><path d="M210 78v-22M210 262v22M118 170H96M302 170h22M145 105l-16-16M275 235l16 16M145 235l-16 16M275 105l16-16"/><path d="M40 300V214h74"/></g></svg></span></a>
+      <a class="tc-tile" href="#"><span class="tc-tile__title">Electronics</span>
+        <span class="tc-tile__art"><svg viewBox="0 0 320 300"><g class="tc-lineart"><rect x="70" y="70" width="210" height="190" rx="4"/><rect x="134" y="120" width="82" height="82" rx="3"/><path d="M134 140h-34M134 160h-34M134 180h-34M216 140h34M216 160h34M216 180h34M154 120V92M175 120V92M196 120V92M154 202v30M175 202v30M196 202v30"/><circle cx="92" cy="92" r="5"/><circle cx="258" cy="238" r="5"/></g></svg></span></a>
+      <a class="tc-tile" href="#"><span class="tc-tile__title">Automotive</span>
+        <span class="tc-tile__art"><svg viewBox="0 0 320 300"><g class="tc-lineart"><circle cx="200" cy="190" r="100"/><circle cx="200" cy="190" r="70"/><circle cx="200" cy="190" r="20"/><path d="M200 170v-50M217 200l44 25M183 200l-44 25M200 90V60M20 300c20-60 50-90 90-100"/></g></svg></span></a>
+      <a class="tc-tile" href="#"><span class="tc-tile__title">Medical technology</span>
+        <span class="tc-tile__art"><svg viewBox="0 0 320 300"><g class="tc-lineart"><path d="M120 300V150l40-60h40l40 60v150"/><path d="M160 90V60h40v30M120 190h120M120 240h120"/><rect x="248" y="170" width="44" height="130" rx="4"/><path d="M258 170v-22h24v22"/></g></svg></span></a>
+      <a class="tc-tile" href="#"><span class="tc-tile__title">Chemicals and pharma</span>
+        <span class="tc-tile__art"><svg viewBox="0 0 320 300"><g class="tc-lineart"><path d="M150 60h60M165 60v70l-70 130a20 20 0 0 0 18 30h134a20 20 0 0 0 18-30l-70-130V60"/><path d="M118 220h124"/><circle cx="170" cy="250" r="6"/><circle cx="204" cy="238" r="4"/></g></svg></span></a>
+      <a class="tc-tile" href="#"><span class="tc-tile__title">Packaging</span>
+        <span class="tc-tile__art"><svg viewBox="0 0 320 300"><g class="tc-lineart"><path d="M70 130l100-50 100 50v120l-100 50-100-50z"/><path d="M70 130l100 50 100-50M170 180v120M120 105l100 50"/></g></svg></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- voices: one long quote on black beside the customer's logo, then a number on ember -->
+<section class="tc-section tc-section--white">
+  <div class="tc-container">
+    <h2 class="tc-display" style="margin-bottom: 3.125rem;">How market leaders change procurement with Northdesk</h2>
+    <div class="tc-grid">
+      <article class="tc-card tc-card--short tc-card--black tc-col-8">
+        <p class="tc-quote">“We found potential that had stayed hidden in the complexity of our own data. And the team now spends its week on suppliers, not on spreadsheets.”</p>
+        <div class="tc-person"><span class="tc-person__img"></span><div><b>Jana Petrovic</b><span>Head of purchasing, Auerberg Guss</span></div></div>
+      </article>
+      <div class="tc-card tc-card--short tc-card--grey tc-card--center tc-col-4"><span class="tc-clogo-text">Auerberg Guss</span></div>
+      <div class="tc-card tc-card--xs tc-card--black tc-card--center tc-col-4"><span class="tc-clogo-text">Lindqvist</span></div>
+      <article class="tc-ember tc-ember--full tc-col-8" style="min-height: 23.75rem; padding: 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 2rem;">
+        <b class="tc-numeral">3</b>
+        <div style="max-width: 27rem;">
+          <p style="margin-bottom: 1.5rem;">“Northdesk reads our material costs part by part, across suppliers and sites. That depth is why we reached 3.1% savings.”</p>
+          <p>Mats Lindqvist</p><p class="tc-faded">SVP corporate purchasing</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- closing band: three giant words and one button. Put a wide photograph in as <img> when you have one. -->
+<section class="tc-band" id="contact">
+  <div class="tc-container">
+    <h2 class="tc-giant tc-giant--xl">Building</h2>
+    <div class="tc-band__row">
+      <h2 class="tc-giant">Stronger</h2>
+      <a class="tc-btn tc-btn--white" href="#" style="padding: 1.375rem 3.125rem; margin-bottom: 1.25rem;">Book a demo</a>
+    </div>
+    <h2 class="tc-giant">Procurement</h2>
+  </div>
+</section>
+</main>
+
+<footer class="tc-footer">
+  <div class="tc-container">
+    <div class="tc-footer__grid">
+      <div class="tc-footer__col">
+        <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+        <div class="tc-footer__certs">
+          <div class="tc-footer__cert"><b>ISO 27001 certified</b><span>Information security to ISO/IEC 27001</span></div>
+          <div class="tc-footer__cert"><b>GDPR compliant</b><span>Hosted in the EU</span></div>
+        </div>
+      </div>
+      <div class="tc-footer__col"><span>Product</span><a href="#">Suppliers</a><a href="#">Spend and cost</a><a href="#">Sourcing</a><a href="#">Compliance</a></div>
+      <div class="tc-footer__col"><span>Customers</span><a href="#">Success stories</a><a href="#">Industries</a><a href="#">References</a></div>
+      <div class="tc-footer__col"><span>Resources</span><a href="#">Blog</a><a href="#">Events</a><a href="#">Glossary</a></div>
+      <div class="tc-footer__col"><span>Company</span><a href="#">About us</a><a href="#">Careers</a><a href="#">Contact</a></div>
+    </div>
+    <div class="tc-footer__base">
+      <p>© 2026 Northdesk GmbH.</p>
+      <div class="tc-row" style="gap: 1.75rem;"><a href="#">Imprint</a><a href="#">Privacy</a><a href="#">Cookie settings</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../tacto.js"></script>
+</body>
+</html>
