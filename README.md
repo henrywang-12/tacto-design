@@ -57,11 +57,12 @@ SKILL.md                    the rules that carry the likeness, the workflow, the
 assets/tacto.css            every token and component (drop-in stylesheet)
 assets/tacto.js             reveal on scroll, count-up numbers, tabs, rail arrows
 assets/fonts/               Aspekta and Geist Mono (SIL Open Font License)
-assets/templates/           landing · dashboard · case-study · pov · deck · article · cover · cover-landscape
+assets/templates/           landing · dashboard · dashboard-detail · case-study · pov · deck · article · cover · cover-landscape
+assets/icons/ · assets/maps/  Lucide icons and map outlines for the product screen
 references/foundations.md   the artboard, colour, type scale, spacing, radius, elevation
 references/components.md    anatomy and measurements of each component
 references/imagery.md       ember, veil and noir panels, fragments, photography, line drawings, charts
-references/dashboard.md     product UI: fragments and the full screen derived from them
+references/dashboard.md     the product screen, measured from Tacto's product film
 references/motion.md        what moves, how far, how long
 references/voice.md         how the copy is written, English and German
 references/formats.md       recipe per deliverable; PPTX, DOCX, email and image translations
@@ -122,7 +123,8 @@ The values were read from the live site in November 2026: computed styles, the s
 - **Typefaces.** Tacto uses Aspekta and Geist Mono. Both are open source (SIL Open Font License) and are included with their licences, so the type matches exactly.
 - **Measured:** web pages, success stories, articles, the product fragments shown on the site.
 - **Reconstructed:** the ember, veil and noir panels. On the site they are images; here they are CSS gradients with generated grain that match them closely, not pixel for pixel.
-- **Derived:** the full dashboard (the real product is behind a login), slide decks, A4 pages, emails and office documents. These apply the same tokens to a new canvas.
+- **Measured from the product film:** the product screen (sidebar, icons, KPI and index cards, tables, charts). Hex values are matched to the nearest palette step, because video blurs colour.
+- **Derived:** slide decks, A4 pages, emails and office documents. These apply the same tokens to a new canvas.
 - **Not included:** Tacto's photographs, illustrations, logo and copy. The brand leans on industrial photography; the templates mark where a photograph belongs.
 - **Social posts:** not accessible, so the post rules follow the article voice.
 - A website changes. If theirs does, this will drift; pull requests with new measurements are welcome.

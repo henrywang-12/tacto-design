@@ -25,7 +25,7 @@ python3 scripts/logo.py "Auerberg Guss" auerberg-guss.example # also the custome
 It looks in the saved logos, then in the private brand's logo source if one is defined, then on the customer's site, and it is strict: it only returns a file the site itself marks as its logo. Read its last lines:
 
 - **A path and a source:** open or screenshot the file and check it is the right company and the full logo before using it.
-- **"SITE ICON ONLY":** it found the small mark, not the logo. Fine for the chip in a dashboard sidebar; for anything larger get the real logo.
+- **"SITE ICON ONLY":** it found the small mark, not the logo. Fine for the workspace slot in a dashboard sidebar; for anything larger get the real logo.
 - **"no logo found":** open the company's website in the browser and take the logo from the page header or the press page, save it next to your file or in `brand.local/customers/`, or ask the user for the file.
 
 Until a real file is in hand, set the customer's name as text in the logo slot (`.tc-clogo-text`) and say so. Never draw, trace or approximate a logo, and never use a different company's mark as a stand-in.
@@ -49,7 +49,7 @@ Tacto shows customers in one colour, as a quiet row of equals, not in their bran
 |---|---|---|
 | **Customer POV, value report (A4)** | Top left, as the first half of the lockup | Top-left lockup: `us × them`. Top right, mono: "Point of view · prepared for <Customer> · <month year>". Name repeated in the fact strip. |
 | **Deck for a customer** | Title slide top left in the lockup (white on ember or black); small wordmark in every footer; alone on the closing slide | Title slide, in the lockup. Not repeated on every slide. |
-| **Dashboard for a customer** | Sidebar, top left (it is our product) | The workspace chip under it (`.tc-app__customer`): their logo at 18px or their name in text, plus a mono fact ("14 sites") |
+| **Dashboard for a customer** | Sidebar foot, 19px high (it is our product) | The workspace slot at the top of the sidebar (`.tc-app__ws-logo`, 32px): their mark or two initials, then their name in semibold |
 | **Success story** | Nav and footer | White on the hero media, bottom left; their name in the title and in the fact strip |
 | **Voices grid, logo wall on a page** | - | One cell per customer: white on black, or colour on the grey card |
 | **Post image** | Small white logo, top left | Named in the title text only; no customer logo on a cover unless they approved it |

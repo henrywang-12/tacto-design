@@ -115,7 +115,32 @@ PY
   fi
 fi
 
-"$chrome" "${common[@]}" --force-device-scale-factor=1 --window-size="${w},${h}" \
+# Headless Chrome lays the page out in a viewport that is shorter than the window it was asked
+# for (the missing part is the window frame), so anything sized with 100vh, like the app's
+# sidebar, would end above the bottom of the picture. Measure that gap, ask for a window that
+# is taller by it, and cut the picture back to the size that was asked for.
+gap=0
+inner="$("$chrome" "${common[@]}" --window-size="${w},600" --dump-dom \
+  "data:text/html,<script>document.title='VH:'+innerHeight</script>" 2>/dev/null | sed -n 's/.*<title>VH:\([0-9][0-9]*\).*/\1/p' | head -1)"
+if [ -n "$inner" ] && [ "$inner" -lt 600 ] && [ "$inner" -gt 400 ]; then gap=$((600 - inner)); fi
+crop=""
+if [ "$gap" -gt 0 ]; then
+  if python3 -c "import PIL" >/dev/null 2>&1; then crop="pil"; elif command -v sips >/dev/null 2>&1; then crop="sips"; else gap=0; fi
+fi
+
+"$chrome" "${common[@]}" --force-device-scale-factor=1 --window-size="${w},$((h + gap))" \
   --screenshot="$out_abs" "$url" >/dev/null 2>&1
 if [ ! -s "$out_abs" ]; then echo "shoot.sh: nothing was rendered: Chrome produced no picture for $url" >&2; exit 1; fi
+if [ "$crop" = "pil" ]; then
+  python3 -c "
+import sys
+from PIL import Image
+path, w, h = sys.argv[1], int(sys.argv[2]), int(sys.argv[3])
+im = Image.open(path)
+if im.size[1] > h:
+    im.crop((0, 0, min(w, im.size[0]), h)).save(path)
+" "$out_abs" "$w" "$h" || true
+elif [ "$crop" = "sips" ]; then
+  sips -c "$h" "$w" --cropOffset 0 0 "$out_abs" >/dev/null 2>&1 || true
+fi
 echo "$out_abs"

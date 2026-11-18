@@ -1,95 +1,165 @@
 # Dashboards and product UI
 
-Two levels of certainty here, and you should know which you are using:
+Tacto's product does not look like Tacto's website. The website is Aspekta light, black and orange. The product is Inter in medium and semibold, neutral greys, white cards with a hairline, figures in blue and a sidebar of line icons. Build an app screen with the product system, and never mix the two on one screen.
 
-- **Measured:** the product fragments Tacto shows on its site (tables, agent messages, tags, status dots, rating bars, small charts, a "control tower" with approvals). These are images on the site; their look is reproduced in `tc-frag` and friends.
-- **Derived:** the full screen in `assets/templates/dashboard.html`. The real product sits behind a login and was not seen. The template applies the fragments and the site's tokens to a complete app screen. Do not claim it is a copy of Tacto's product.
+- **Measured:** the product system in `.tc-app`. It was read from Tacto's product film (tacto.ai/en/product, Nov 2026), frame by frame at source resolution: the sidebar and its icons, the home dashboard, a supplier page, the findings table, an article page, the analytics page. Text widths were matched against the font files, which is how Inter and the sizes were confirmed.
+- **Estimated within that:** exact hex values (video compression blurs colour; they were matched to the nearest steps of a neutral grey scale and to the usual blue, emerald, red, amber and fuchsia steps), hairline colour, corner radii to about 2px, and what the cards cut off by the film's frame contain.
+- **Not seen:** hover and focus states, dialogs, forms, empty states, dark mode. Do not invent a dark mode.
 
-Contents: What the fragments show · Screen layout · Components · Status language · Numbers · Charts · Agent panel · Fragments on a page or slide · Mistakes
+Templates: `assets/templates/dashboard.html` (home dashboard) and `assets/templates/dashboard-detail.html` (a record page with tabs, KPI cards, a chart and a table). Start from one of them.
 
-## What the fragments show
+Contents: Type and colour · Frame · Sidebar · Icons · KPI card · Market index card · Shortcuts · Map · Controls · Table · Chart · Whose logo goes where · Fragments on a page or slide · Mistakes
 
-- White panels on light grey, hairlines, almost no shadow. Sans text at 13 to 14px, light; column heads in grey sans, not capitals.
-- A supplier row: a 20px tinted square with one small shape (blue square, sea diamond, orange triangle, green circle), the name with its legal form, part numbers as mono tags ("TAC002", "SCREW-W22", "+3"), eight upright rating bars in green, a status as dot plus mono capitals.
-- Small cards with a plain label and one large light number ("At-risk suppliers 7", "Compliant suppliers 123") over a thin line.
-- An orange step line for price development on a hairline grid.
-- An agent message in the head of a panel: the spark in a hairline square, a tiny mono overline, a one-line title of what the agent just did.
-- One black button with white text for the decision ("Review & approve").
-- The greeting line of the control tower addresses the buyer by name and says what is waiting.
+## Type and colour
 
-## Screen layout — `.tc-app`
+| | |
+|---|---|
+| Typeface | Inter. 400 for running text, 500 for labels, nav items, card titles and values in chips, 600 for the active nav item, headings, figures, table heads, finding types. Nothing lighter than 400, nothing heavier than 600. |
+| Sizes | 11px chips and badges · 12px group labels and second lines · 13px tables and controls · 14px everything else · 16px card titles · 18px section headings · 22px index values · 30px KPI figures |
+| Text | `--tca-ink` #0A0A0A · secondary `--tca-muted` #737373 · placeholder `--tca-faint` #A3A3A3 |
+| Surfaces | frame and sidebar `--tca-frame` #F7F7F7 · panel and cards white · chips and table head `--tca-fill` #F5F5F5 · active nav item `--tca-line-strong` #E5E5E5 |
+| Lines | card and panel hairline `--tca-line` #EBEBEB · control outline #E5E5E5 |
+| Black | `--tca-primary` #171717: the one filled button on a screen |
+
+Colour carries meaning. Use the tone classes (`is-blue`, `is-green`, `is-red`, `is-amber`, `is-pink`, `is-fuchsia`, `is-cyan`, `is-lime`, `is-violet`, `is-orange`, `is-muted`) on the text or the icon:
+
+| Tone | Means |
+|---|---|
+| blue #2563EB | a figure (every KPI value and its change), the first chart series, a record's icon |
+| red #B91C1C | a price that rose, a risk |
+| green #047857 | a price that fell, money saved (the savings pill) |
+| pink, lime, green, amber, violet, cyan, blue | the type of a finding: each type keeps one colour everywhere it appears |
+| fuchsia #C026D3 | the second chart series, the findings tile |
+| orange #FF6414 | Tacto's spark, and anything the AI produced (a target price, the agent button) |
+| grey | last period, units, ids |
+
+A change is not coloured by its sign on a KPI card: the figure and its change are both blue. Red and green are for prices and money only.
+
+## Frame — `.tc-app`
 
 | Part | Class | Notes |
 |---|---|---|
-| Frame | `tc-app` | Two columns: 240px sidebar, fluid main. Page grey `#F5F5F5`. Root pinned to 16px. |
-| Sidebar | `tc-app__side` | White, hairline on the right, sticky. Logo top left, then the customer workspace chip. |
-| Workspace chip | `tc-app__customer` | The customer's logo or name, plus a mono fact ("14 sites"). Hairline box, 4px radius. |
-| Nav groups | `tc-app__group`, `tc-app__item` | Mono group label in grey capitals, items in 14px light sans with a thin line icon and a mono count on the right. Active item: grey fill, black text. The Agents item carries the spark. |
-| User | `tc-app__side-foot`, `tc-app__user` | Name and role at the bottom, above a hairline |
-| Top | `tc-app__top`, `tc-app__meta`, `tc-app__title` | A mono context line ("Control tower · week 47"), then a two-tone greeting at 26px: what needs the buyer, dimmed |
-| Actions | `tc-app__actions`, `tc-app__search` | Search field (hairline, 4px), then ONE black button |
-| Tabs | `tc-app__tabs`, `tc-app__tab` | Mono chips with a grey count; the active one is solid black |
-| Grid | `tc-app__grid` | 12 columns, 16px gap. Panels span 3, 4, 5, 7, 8 or 12. |
-| Panel | `tc-app__panel` | White, 8px radius, card hairline, 20px padding. `--bare` for tables (the head gets its own hairline). `--agent` is black. |
+| Frame | `tc-app` | Grey. Two columns: 244px sidebar, fluid main. Root pinned to 16px; sizes in px. |
+| Panel | `tc-app__main` | White, 12px corners, hairline, inset 8px from the top, right and bottom of the frame |
+| Top bar | `tc-app__top` | 48px, hairline below. A title (`tc-app__title`, 14px medium) or a breadcrumb (`tc-app__crumbs`: parent in grey, chevron, the record's icon, its id in grey, its name). Page actions on the right (`tc-app__actions`). |
+| Content | `tc-app__content` > `tc-app__page` | 40px above, 24px at the sides, at most 1184px wide, 40px between sections. `tc-app__content--flush` for a full-bleed table. |
+| Section | `tc-app__section`, `tc-app__h`, `tc-app__lead` | Heading 18px semibold, one grey line under it |
+| Card | `tc-app__card`, `tc-app__card-title` | White, hairline, 12px corners, 16px padding. `--bare` when a table fills it. No shadow. |
 
-A screen has, top to bottom: the greeting, tabs, a row of four KPI panels, then the agent panel beside one chart, then the main table, then secondary panels.
+Look at an app screen at 1440x960 (`scripts/shoot.sh out.html out.png 1440 960`). Below that height the nav scrolls, as it does in the product.
 
-## Components
+## Sidebar — `.tc-app__side`
 
-- **KPI** (`tc-app__kpi`): plain label (14px), the number at 42px weight 200, then one mono line with a dot that explains it ("● 3.1% of spend"). An optional 48px-high orange step line in the corner (`tc-app__minichart`). No arrows, no green or red deltas.
-- **Table**: column heads 13px grey sans, sentence case. Rows 13px with 12px vertical padding and hairlines. First column: entity mark, name, and a small grey second line. Numbers right aligned with tabular figures. Row hover: `#FAFAFA`. One quiet row action on the right ("Open").
-- **Tags** (`tc-code`): part numbers, contract names, indices. Two at most, then "+3".
-- **Rating** (`tc-rating`): eight bars. Green, or yellow (`--warn`) and orange-hot (`--bad`) for low scores.
-- **Facts row** (`tc-app__facts`): under a chart, three or four values with mono labels and left hairlines.
-- **Legend** (`tc-app__legend`): mono, a short line sample before each name. Two entries at most.
-- **Buttons**: black for the screen's one primary action; `tc-btn--quiet` (white, hairline) for filter, export and row actions.
+Top to bottom, as in the product:
 
-## Status language
+1. **Workspace switcher** (`tc-app__ws`): a 32px slot for the workspace's own mark, its name in semibold (cut with an ellipsis after about 13 letters), `chevron-down`, and `panel-left` at the far right.
+2. **Nav** (`tc-app__nav`): rows of 28px with 4px between (`tc-app__item`), a 16px icon in grey, 14px medium text. The open page is a grey pill with semibold text (`is-active`). The search row is grey and regular (`tc-app__item--quiet`). Counts are small grey badges (`tc-app__count`). A row that opens gets a `chevron-down` (open) or `chevron-right` (closed) at the right.
+3. **Second level** (`tc-app__sub`): no icons, hung on a hairline under the parent's icon.
+4. **Group labels** (`tc-app__label`): 12px grey with a small chevron: "Supply chain data", "Tools".
+5. **Foot** (`tc-app__side-foot`): the maker's logo, a dot, the `bug` icon, and the help button at the right.
 
-Status is a 5px dot and two or three words in mono capitals (`tc-status`). The dot carries the meaning; the text stays black.
+Tacto's own nav, in order, with its icons:
 
-| Dot | Meaning | Words |
-|---|---|---|
-| green | fine, done | Signed · Low risk · Compliant · Realised |
-| yellow | needs attention | Expires soon · In negotiation · Needs review |
-| orange | the agent found something, or it waits for you | Awaiting approval · Price increase · Savings found |
-| orange-hot | wrong or late | Expired · High risk · Overdue |
-| blue | in progress, informational | RFQ sent · In analysis |
-| black | neutral | Draft · Archived |
+| Item | Icon | | Item | Icon |
+|---|---|---|---|---|
+| Search | `search` | | Order confirmations | `list-checks` |
+| Dashboard | `layout-grid` | | Analytics | `chart-no-axes-column` |
+| Tasks | `square-check-big` | | Savings → Dashboard, Findings, Opportunities | `piggy-bank` |
+| Notifications | `bell` | | RFQs | `handshake` |
+| Suppliers | `building-2` | | Drawing Analysis | `drafting-compass` |
+| Contacts | `user-round` | | BOM → Project Pricing, Scenario Analysis, Material Compliance | `list-tree` |
+| Articles → Drawing Parts | `scan-barcode` | | Requests | `arrow-left-right` |
+| Categories | `tag` | | Evaluations | `clipboard-check` |
+| Supply Sources | `network` | | Agents | `bot` |
+| Transactions → Orders, Goods Receipts, Invoices, Quantity contracts | `receipt-text` | | Help | `circle-help` |
+| Documents | `file-lock-2` | | | |
 
-No tinted pills, no coloured row backgrounds, no red.
+For another product, keep the structure and choose the icons that say what each item is.
 
-## Numbers
+## Icons
 
-Currency first and compact (€4.82M, €376k), percent directly after the figure, tabular figures in columns. A number in a KPI is black; the only number that may be orange is the one the agent points at.
+Lucide (lucide.dev, ISC licence), the set the product uses. 146 of them ship in `assets/icons/`.
 
-## Charts
+```html
+<i data-tc-icon="bell"></i>
+```
 
-One orange line at 1.5px, usually a step line; one dashed grey reference line (should-cost, index, target). Hairline grid, mono labels in grey, the last value labelled at the line's end. Bars are thin and horizontal (`tc-bars`), black, with ours or the highlighted category in orange.
+- The icon takes the text colour and is 16px. Set `width` and `height` for another size (14px in tabs and chips, 22px in a tile).
+- `python3 scripts/icons.py` lists the names, `--find chart` searches them.
+- Need one that is missing? Save the Lucide SVG as `assets/icons/<name>.svg` and run `python3 scripts/icons.py --build`.
+- Never draw an icon by hand, never mix in another icon family, never use emoji. A name that does not exist draws nothing, and the check reports it.
 
-## Agent panel — `tc-app__panel--agent`
+## KPI card — `tc-app__kpi`
 
-The black panel is the centre of the screen: it is why the buyer opened it.
+Title (14px medium), a period chip (`tc-app__period`, 11px on grey), the figure in blue at 30px semibold with its change in 14px beside it, then last period in grey with its own chip. Numbers are written out in full with separators (€8,432,015, not €8.4M). On a record page the period chip sits to the right of the title (`tc-app__kpi-head`). A value that is words ("30 days net") uses `tc-app__kpi-value--text`. Cards sit in `tc-app__kpis`, at least 220px wide.
 
-- Head: spark tile, "Requires your approval", a mono count.
-- Two or three findings (`tc-app__todo`): a mono index, the agent's name in mono capitals, then one or two sentences in 50% white with the fact in orange: what was asked or found, the comparison that makes it matter, what it is worth.
-- One button at the bottom: white on black ("Review all three").
-- One agent panel per screen.
+## Market index card — `tc-app__index`
+
+Name with an `info` icon, the value at 22px semibold with its unit in grey and an arrow, then either one sentence ("30-day average +11.60% vs. previous 30 days") or three period chips (1D, 7D, 30D) with their changes. A small trend line sits top right (`tc-app__spark`, drawn in the value's tone). Red when the price rose, green when it fell: for a buyer a rising price is the bad one.
+
+## Shortcuts — `tc-app__shortcut`
+
+A 48px tinted tile with a 22px icon (`tc-app__tile`, blue by default, `--fuchsia`, `--green`, `--amber`), a 16px medium title and one 12px grey line. Three or four in a row.
+
+## Map — `tc-app__map`
+
+A grey map with blue supplier dots and a white card floating top left (`tc-app__float`): a title with a count, the newest finding in its type colour (`tc-app__finding`), "Potential savings" with the amount in a green pill (`tc-app__pill`), a thin progress line.
+
+```bash
+python3 scripts/map.py --region europe --labels --dot 9.99,53.55,Hamburg --dot 13.40,52.52 > map.svg
+```
+
+Then `<div class="tc-app__map"><img src="map.svg" alt="..."></div>`. Regions: europe, dach, uk, nordics, north-america, asia, world, or `--center lon,lat --span degrees`. The outlines are Natural Earth data (public domain).
+
+## Controls
+
+- **Buttons** (`tc-app__btn`): black with white text, 32px, 8px corners. One per screen. `--outline` (white, grey outline) for everything else, `--ghost` for "Add filter", `--sm` (28px) in bars, `--icon` for an icon alone.
+- **Tabs** (`tc-app__tab`): outlined pills with a 14px icon; the open one is filled grey with semibold text.
+- **Segmented control** (`tc-app__seg`): joined segments with icons; the chosen one filled grey.
+- **Filter pills** (`tc-app__filter`): "**Category** is one of **all**", joined by a grey "and" (`tc-app__and`).
+- **Search** (`tc-app__search`): outlined field with the `search` icon, at the right end of the filter row.
+- **Checkbox** (`tc-app__check`, `is-on`).
+
+## Table
+
+Head row on `#F5F5F5` in semibold; rows of 36px at 13px with hairlines; numbers right aligned (`class="num"`); a head may carry a small coloured icon.
+
+- **Finding type** (`tc-app__type` plus a tone): a `lightbulb` and the type in semibold, both in the type's colour.
+- **Chips** (`tc-app__chip`): white pills with a hairline: a coloured 14px icon, the id in grey (`<small>`), the name in medium. `link` in green for an opportunity, `scan-barcode` in green for an article, `tag` in pink for a category.
+- **Bar beside a number** (`tc-app__meter`, `--rose`): `style="--v: 62%"`.
+- **Foot** (`tc-app__tablefoot`): a count on the left, a total on the right.
+
+Keep a table inside the panel at 1440px: fewer columns, or `tc-app__tablewrap--wrap`.
+
+## Chart — `tc-app__chart`
+
+Grey bars for volume or time (`.bar`), a blue line first (`.line`), a fuchsia line second (`.line--fuchsia`), 2.5px dots on every point (`.pt`), hairline grid, 11px grey labels in Inter. A dot legend above (`tc-app__legend`). Two axes are fine when bars and lines measure different things: say which is which in a comment or the card's lead. At most three series.
+
+## Whose logo goes where
+
+| Place | What goes there |
+|---|---|
+| Workspace slot, top left | The customer whose data this is: their mark (`<img src="customer.svg" alt="">` in `tc-app__ws-logo`) or two initials (`<b>AG</b>`), then their name |
+| Sidebar foot | The maker of the product: a wordmark or `<span data-tc-logo></span>`, which `scripts/inline.py` turns into the real logo, 19px high |
 
 ## Fragments on a page or slide
 
-To show product inside a landing page, a deck or a post, do not shrink the dashboard. Take one fragment:
+To show product inside a landing page, a deck or a post, do not shrink a whole screen. The website shows product as redrawn fragments in its own type:
 
-- `tc-frag` on `tc-ember` or `tc-veil`, three to six rows, running off the panel's edge (add `data-tc-crop` to the panel).
-- or one `tc-agent` card on black.
+- `tc-frag` on `tc-ember` or `tc-veil`, three to six rows, running off the panel's edge (add `data-tc-crop` to the panel),
+- or one `tc-agent` card on black,
 - or one `tc-proof` card with a thumbnail chart inside a wide white card.
+
+A real screenshot of an app screen (`scripts/shoot.sh`) may also be placed on a panel as an image.
 
 ## Mistakes
 
-- Bold or medium weights "for hierarchy". Hierarchy comes from size and from grey.
-- Coloured badges for status, or a traffic-light column.
-- Uppercase column heads in the sans. Capitals are mono.
-- Several primary buttons, or a blue link colour.
-- KPI cards with icons, sparklines in several colours, or percentage arrows.
-- A dark-mode version. The app is light; only the agent panel is black.
-- Presenting the derived screen as "Tacto's real product".
+- Aspekta, mono capitals, ember gradients or orange buttons inside the app. Those belong to the website.
+- Inter, blue figures or tinted pills on a page, deck or document. Those belong to the app.
+- Weight 700 or more, or light text. Inter is 400, 500 or 600 here.
+- A change coloured red or green on a KPI card. Figures are blue.
+- Abbreviated money (€8.4M) where the product writes the number out.
+- Hand-drawn or emoji icons, or icons from another family.
+- Shadows on cards. Only the card floating on the map has one.
+- Several black buttons on one screen.
+- A dark mode.

@@ -15,6 +15,15 @@ Industrial, light and confident. One sans typeface, Aspekta, always in **light w
 
 If a result feels soft, rounded, colourful, bold or chatty, it is off-brand. Make it lighter, squarer, emptier and more certain.
 
+## Two systems: the website and the product
+
+Tacto's product does not look like its website, and this skill carries both.
+
+- **Website system** (pages, decks, documents, posts): Aspekta light, mono capitals, black and orange, ember panels. Everything above and below describes it.
+- **Product system** (any dashboard or app screen, under `.tc-app`): Inter in 400, 500 and 600, neutral greys, a grey sidebar with Lucide line icons, a white inset panel, white cards with a hairline, figures in blue, finding types in their own colours. Measured from Tacto's product film. Read `references/dashboard.md` before building one, start from `assets/templates/dashboard.html` or `dashboard-detail.html`, write icons as `<i data-tc-icon="name"></i>` (names: `python3 scripts/icons.py`) and draw a supplier map with `python3 scripts/map.py`.
+
+Never mix them on one screen. The check enforces it: Inter or the product colours outside `.tc-app` fail, and so do Aspekta-era rules broken inside it (weight 700, unknown icons).
+
 ## Workflow
 
 0. **Know who is speaking.** If `brand.local/brand.md` exists in this skill folder, read it now: it names the company everything is made for by default and holds its logo. If the work is for or about a customer, read `references/cobranding.md` and fetch their logo with `python3 scripts/logo.py "<Customer>" [their-domain]` (without a domain it only looks in the saved logos). If the user names a different sender, that company is the sender: write its name in the wordmark and use its logo file if they give you one. Only wordmarks that carry the private brand's own name or a template sample name are turned into the private brand's logo.
@@ -31,15 +40,15 @@ If a result feels soft, rounded, colourful, bold or chatty, it is off-brand. Mak
 | You are making | Start from | Read |
 |---|---|---|
 | Landing page, website, any marketing section | `assets/templates/landing.html` | `components.md`, `imagery.md`, `motion.md` |
-| Dashboard, admin, internal tool, app screen | `assets/templates/dashboard.html` | `dashboard.md` |
+| Dashboard, admin, internal tool, app screen | `assets/templates/dashboard.html` (home), `dashboard-detail.html` (record page: tabs, KPIs, chart, table) | `dashboard.md` |
 | Product fragment inside a page, deck or post | stage and agent blocks in `landing.html` | `dashboard.md` (fragments), `imagery.md` |
 | Success story, case study | `assets/templates/case-study.html` | `formats.md`, `voice.md` |
 | Customer POV, one-pager, brief, value report (A4) | `assets/templates/pov.html` | `formats.md`, `voice.md` |
 | Presentation, pitch or sales deck | `assets/templates/deck.html` | `formats.md` |
 | Blog article, long-form post | `assets/templates/article.html` | `voice.md`, `formats.md` |
 | LinkedIn or social post, post image, cover | `assets/templates/cover.html` (square), `cover-landscape.html` | `voice.md`, `formats.md`, `imagery.md` |
-| Chart, diagram, table of numbers | chart in `dashboard.html`, orbit in `landing.html` | `imagery.md`, `dashboard.md` |
-| Anything for or about a customer (POV, value report, their dashboard, deck) | lockup in `pov.html` and `deck.html`, workspace chip in `dashboard.html` | `cobranding.md` |
+| Chart, diagram, table of numbers | chart and table in `dashboard-detail.html` (inside an app), orbit in `landing.html` | `imagery.md`, `dashboard.md` |
+| Anything for or about a customer (POV, value report, their dashboard, deck) | lockup in `pov.html` and `deck.html`, workspace slot in `dashboard.html` | `cobranding.md` |
 | PowerPoint, Word, PDF, email, Figma, images | - | `formats.md` (translation tables) |
 
 All references live in `references/`. `foundations.md` is the full token table; open it whenever you need an exact value.
@@ -116,11 +125,13 @@ Look at the rendered result and answer these honestly:
 assets/tacto.css            tokens and every component (the source of truth for values)
 assets/tacto.js             reveal on scroll, count-up numbers, tabs, rail arrows
 assets/fonts/               Aspekta 250/300/400 and Geist Mono, with their OFL licences
-assets/templates/           landing, dashboard, case-study, pov, deck, article, cover, cover-landscape
+assets/templates/           landing, dashboard, dashboard-detail, case-study, pov, deck, article, cover, cover-landscape
+assets/icons/               146 Lucide icons for the product screen (scripts/icons.py lists them)
+assets/maps/                country outlines for the supplier map (scripts/map.py)
 references/foundations.md   the artboard, colour, type, spacing, radius, elevation, breakpoints
 references/components.md    anatomy and measurements of each component
 references/imagery.md       ember, veil, noir, fragments, photography, line drawings, charts, covers
-references/dashboard.md     product UI: the fragments the site shows and the full screen derived from them
+references/dashboard.md     the product screen, measured from Tacto's product film: Inter, greys, icons, cards, table, chart
 references/motion.md        what moves, how far, how long
 references/voice.md         how the copy is written, with patterns per format, English and German
 references/formats.md       recipe per deliverable, and PPTX / DOCX / email / image translations

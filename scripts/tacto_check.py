@@ -11,16 +11,20 @@ see, so content built by scripts is covered too. Exit code 1 when anything is
 wrong. It checks:
 
   fit      A4 pages longer than a page, slides whose content is cut or runs
-           into the logo row or footer, text clipped inside any box, sideways
-           scrolling, table columns that fall outside the page
+           into the logo row or footer, text clipped inside any box, text lying
+           on top of other text, sideways scrolling, table columns that fall
+           outside the page. Web pages are checked at 1440px and at a real
+           phone width (375px)
   print    for documents and decks: exports a PDF and compares its page count
            with the number of sheets or slides (print lays text out again)
-  look     fonts, weights, text and background colours, gradients and text
-           shadows as rendered, against the palette in assets/tacto.css
+  look     fonts, weights, text and background colours, gradients and shadows
+           as rendered, against the palette in assets/tacto.css. The product
+           screen (.tc-app) has its own rules: Inter, weights up to 600, its
+           own colours; outside it those are errors
   copy     emoji, exclamation marks, hype words (English and German), template
            sample names, placeholder text - in the rendered text
-  brand    a logo that was never filled in, images that did not load, tacto.css
-           still linked instead of bundled
+  brand    a logo that was never filled in, images that did not load, an icon
+           name that does not exist, tacto.css still linked instead of bundled
   source   everything scripts/tacto_lint.py finds in the markup and CSS
 
 It cannot judge whether the result is good. Look at the screenshot and at the
@@ -48,13 +52,14 @@ CHROMES = ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
 PROBE = r"""
 <script>
 window.addEventListener('load', function () { setTimeout(function () {
-  var PAL = __PALETTE__, ALPHA_OK = __ALPHA__, out = [], seen = {};
+  var PAL = __PALETTE__, APP = __APP__, ALPHA_OK = __ALPHA__, out = [], seen = {}, used = {};
   function add(level, kind, msg) { var k = level + kind + msg; if (seen[k]) { seen[k].n++; return; } seen[k] = { level: level, kind: kind, msg: msg, n: 1 }; out.push(seen[k]); }
   function name(el) { var c = (el.getAttribute && el.getAttribute('class') || '').split(' ')[0]; var t = (el.innerText || el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 42); return '<' + el.tagName.toLowerCase() + (c ? '.' + c : '') + '>' + (t ? ' "' + t + '"' : ''); }
   var cv = document.createElement('canvas'); cv.width = cv.height = 1; var cx = cv.getContext('2d', { willReadFrequently: true }), cache = {};
   function rgba(c) { if (cache[c]) return cache[c]; var mm = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s\/]+([\d.]+)(%?))?\s*\)$/.exec(c); if (mm) { var hx = [mm[1], mm[2], mm[3]].map(function (v) { return ('0' + Math.min(255, parseInt(v, 10)).toString(16)).slice(-2); }).join(''); return cache[c] = { hex: hx, a: mm[4] === undefined ? 1 : (mm[5] ? parseFloat(mm[4]) / 100 : parseFloat(mm[4])) }; } cx.clearRect(0, 0, 1, 1); cx.fillStyle = '#000'; cx.fillStyle = c; cx.fillRect(0, 0, 1, 1); var d = cx.getImageData(0, 0, 1, 1).data; var hex = [d[0], d[1], d[2]].map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join(''); return cache[c] = { hex: hex, a: d[3] / 255 }; }
   function near(a, b) { for (var i = 0, s = 0; i < 6; i += 2) s += Math.abs(parseInt(a.substr(i, 2), 16) - parseInt(b.substr(i, 2), 16)); return s <= 3; }
-  function inPal(c) { if (c.a === 0) return true; if (c.a < 0.999) { for (var j = 0; j < ALPHA_OK.length; j++) if (near(c.hex, ALPHA_OK[j])) return true; } for (var i = 0; i < PAL.length; i++) if (near(c.hex, PAL[i])) return true; return false; }
+  function inPal(c, app) { if (c.a === 0) return true; if (c.a < 0.999) { for (var j = 0; j < ALPHA_OK.length; j++) if (near(c.hex, ALPHA_OK[j])) return true; } for (var i = 0; i < PAL.length; i++) if (near(c.hex, PAL[i])) return true; if (app) for (var k = 0; k < APP.length; k++) if (near(c.hex, APP[k])) return true; return false; }
+  function where(app) { return app ? ' (not a colour of the product screen either)' : ''; }
   function skipped(el) { return !!(el.closest && el.closest('[data-tc-skip], .tc-logo, [class*="tc-shoot"], #tc-check-none')); }
   var vw = document.documentElement.clientWidth;
   /* the text a reader sees, as it was written (innerText would apply CSS uppercase) */
@@ -132,33 +137,67 @@ window.addEventListener('load', function () { setTimeout(function () {
       add('warn', 'fit', (el.scrollWidth - el.clientWidth) + 'px of ' + name(el).split('"')[0] + 'is off-screen at ' + vw + 'px: a screenshot or PDF will not show it (fewer columns, or class tc-app__tablewrap--wrap)');
   });
   if (document.documentElement.scrollWidth > vw + 2 && !document.querySelector('.tc-slide, .tc-sheet, .tc-cover')) add('error', 'fit', 'the page scrolls sideways at ' + vw + 'px wide');
+  /* ---- fit: text lying on top of other text */
+  (function () {
+    var items = [], tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), n, rg = document.createRange();
+    while ((n = tw.nextNode()) && items.length < 3000) {
+      var p = n.parentElement;
+      if (!p || !n.nodeValue.trim() || /^(SCRIPT|STYLE|NOSCRIPT|TEMPLATE|TITLE)$/.test(p.tagName) || skipped(p) || p.closest('svg, .tc-marquee, .tc-rail, .tc-numeral, .tc-outline-word, [aria-hidden="true"]')) continue;
+      var pcs = getComputedStyle(p); if (pcs.visibility === 'hidden' || parseFloat(pcs.opacity) < 0.05) continue;
+      rg.selectNodeContents(n); var rs = rg.getClientRects();
+      /* a line's box is taller than its letters, and big numerals are set tight: compare the middle of each line */
+      for (var i = 0; i < rs.length; i++) if (rs[i].width >= 4 && rs[i].height >= 6) { var q = rs[i], cut = q.height * 0.24; items.push({ r: { left: q.left, right: q.right, top: q.top + cut, bottom: q.bottom - cut, width: q.width, height: q.height - 2 * cut }, el: p, inline: pcs.display === 'inline' }); }
+    }
+    items.sort(function (a, b) { return a.r.top - b.r.top; });
+    var hits = 0;
+    for (var i = 0; i < items.length && hits < 5; i++) for (var j = i + 1; j < items.length; j++) {
+      var a = items[i], b = items[j]; if (b.r.top >= a.r.bottom - 2) break;
+      if (a.el === b.el || a.el.contains(b.el) || b.el.contains(a.el)) continue;
+      if (a.inline && b.inline && a.el.parentElement === b.el.parentElement) continue;
+      var ox = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left), oy = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
+      if (ox < 6 || oy < 0.5 * Math.min(a.r.height, b.r.height)) continue;
+      if (ox * oy < 0.3 * Math.min(a.r.width * a.r.height, b.r.width * b.r.height)) continue;
+      add('error', 'fit', 'text lies on top of other text at ' + vw + 'px wide: ' + name(a.el) + ' and ' + name(b.el)); hits++; break;
+    }
+  })();
 
   /* ---- look: what is actually rendered */
   [].forEach.call(all, function (el) {
     if (skipped(el)) return;
     var cs = getComputedStyle(el); if (cs.display === 'none' || cs.visibility === 'hidden') return;
     var r = el.getBoundingClientRect(); if (!r.width || !r.height) return;
-    var inSvg = !!el.closest('svg');
+    var inSvg = !!el.closest('svg'), app = !!el.closest('.tc-app');
     var ownText = false; for (var n = el.firstChild; n; n = n.nextSibling) if (n.nodeType === 3 && n.nodeValue.trim()) { ownText = true; break; }
     if (ownText && !inSvg) {
       var fam = cs.fontFamily.split(',')[0].replace(/["']/g, '').trim().toLowerCase();
-      var mono = /^(geist mono|geistmono|ui-monospace|monospace|sfmono|menlo)/.test(fam);
-      if (!mono && !/^aspekta/.test(fam)) add('error', 'look', 'font "' + fam + '" is not part of the system: ' + name(el));
+      var mono = /^(geist mono|geistmono|ui-monospace|monospace|sfmono|menlo)/.test(fam), inter = /^inter/.test(fam);
+      used[mono ? 'geist mono' : inter ? 'inter' : 'aspekta'] = 1;
+      if (inter && !app) add('error', 'look', 'Inter outside the product screen: pages, decks and documents are set in Aspekta; Inter belongs to .tc-app only: ' + name(el));
+      else if (!mono && !inter && !/^aspekta/.test(fam)) add('error', 'look', 'font "' + fam + '" is not part of the system: ' + name(el));
       var w = parseInt(cs.fontWeight, 10), size = parseFloat(cs.fontSize), canvas = !!el.closest('.tc-cover, .tc-slide');
-      if (w >= 600) add('error', 'look', 'bold text (weight ' + w + '): everything is light (300), nothing is heavier than 400: ' + name(el));
+      if (app && inter) {
+        if (w >= 700) add('error', 'look', 'weight ' + w + ' in the product screen: it uses 400, 500 and 600, nothing heavier: ' + name(el));
+        else if (w < 400) add('warn', 'look', 'light text (weight ' + w + ') in the product screen: Inter is set in 400, 500 or 600 there: ' + name(el));
+      }
+      else if (w >= 600) add('error', 'look', 'bold text (weight ' + w + '): everything is light (300), nothing is heavier than 400: ' + name(el));
       else if (w >= 500) add(size >= 20 ? 'error' : 'warn', 'look', 'weight ' + w + ' (text is 300, numerals 200, buttons 400): ' + name(el));
       else if (w >= 400 && size >= 28 && !mono) add('warn', 'look', 'a ' + Math.round(size) + 'px headline at weight 400: headlines are light (300): ' + name(el));
-      if (cs.textTransform === 'uppercase' && size > 18.5 && !canvas) add('warn', 'look', 'uppercase at ' + Math.round(size) + 'px (only mono labels of 10 to 14px): ' + name(el));
+      if (cs.textTransform === 'uppercase' && size > 14.5 && !canvas) add('warn', 'look', 'uppercase at ' + Math.round(size) + 'px (only mono labels of 10 to 14px): ' + name(el));
       if (cs.textTransform === 'uppercase' && !mono) add('warn', 'look', 'uppercase text in the sans face: capitals are always Geist Mono: ' + name(el));
       if (cs.textShadow && cs.textShadow !== 'none') add('error', 'look', 'text-shadow on ' + name(el));
       if (cs.fontStyle === 'italic') add('warn', 'look', 'italic text: ' + name(el));
-      var c = rgba(cs.color); if (!inPal(c)) add('error', 'look', 'text colour #' + c.hex + ' is not in the palette: ' + name(el));
+      var c = rgba(cs.color); if (!inPal(c, app)) add('error', 'look', 'text colour #' + c.hex + ' is not in the palette' + where(app) + ': ' + name(el));
     }
     if (!inSvg) {
-      var b = rgba(cs.backgroundColor); if (!inPal(b)) add('error', 'look', 'background #' + b.hex + ' is not in the palette: ' + name(el));
+      var b = rgba(cs.backgroundColor); if (!inPal(b, app)) add('error', 'look', 'background #' + b.hex + ' is not in the palette' + where(app) + ': ' + name(el));
+      var bs = cs.boxShadow;
+      if (bs && bs !== 'none') bs.split(/,(?![^(]*\))/).forEach(function (part) {
+        var nums = (part.replace(/(rgba?|color|oklch|oklab|hsla?)\([^)]*\)/g, '').match(/-?[\d.]+px/g) || []).map(parseFloat);
+        if (nums.length >= 3 && nums[2] >= 32 && !(nums.length >= 4 && nums[3] < 0)) add('warn', 'look', 'large soft shadow (blur ' + Math.round(nums[2]) + 'px): the system is flat: ' + name(el));
+      });
       var bi = cs.backgroundImage;
       if (bi && bi.indexOf('gradient') >= 0) {
-        var bad = (bi.match(/(rgba?|oklch|oklab|color|hsla?)\([^()]*\)/g) || []).filter(function (x) { return !inPal(rgba(x)); });
+        var bad = (bi.match(/(rgba?|oklch|oklab|color|hsla?)\([^()]*\)/g) || []).filter(function (x) { return !inPal(rgba(x), app); });
         if (bad.length) add('error', 'look', 'gradient with off-palette colours on ' + name(el));
         else if (!el.closest('.tc-ember, .tc-veil, .tc-noir, .tc-band, .tc-cover, .tc-slide--ember, .tc-powered, .tc-photo')) add('warn', 'look', 'gradient outside a panel (ember, veil, noir, band, cover): ' + name(el));
         if (/text/.test(cs.webkitBackgroundClip || cs.backgroundClip || '') && !el.closest('.tc-powered')) add('error', 'look', 'gradient text on ' + name(el) + ' (it exists only in the tc-powered label)');
@@ -166,7 +205,7 @@ window.addEventListener('load', function () { setTimeout(function () {
     } else if (/^(path|rect|circle|ellipse|line|polyline|polygon|text)$/i.test(el.tagName)) {
       ['fill', 'stroke'].forEach(function (p) { var v = cs[p]; if (v && v !== 'none' && v.indexOf('url(') < 0) { var c2 = rgba(v);
         if (p === 'fill' && c2.hex === '000000' && !/^text$/i.test(el.tagName)) return; /* the SVG default on stroke-only shapes */
-        if (!inPal(c2)) add('warn', 'look', 'drawing colour #' + c2.hex + ' is not in the palette (wrap a third-party graphic in data-tc-skip)'); } });
+        if (!inPal(c2, app)) add('warn', 'look', 'drawing colour #' + c2.hex + ' is not in the palette (wrap a third-party graphic in data-tc-skip)'); } });
     }
   });
 
@@ -175,12 +214,18 @@ window.addEventListener('load', function () { setTimeout(function () {
   [].forEach.call(document.querySelectorAll('img'), function (im) { if (!skipped(im) && im.complete && im.naturalWidth === 0) add('error', 'brand', 'image did not load: ' + (im.getAttribute('src') || '').slice(0, 60)); });
   if (document.querySelector('link[rel="stylesheet"][href*="tacto.css"]')) add('warn', 'brand', 'tacto.css is linked, not bundled: run scripts/inline.py before sending the file');
   var wmNames = []; [].forEach.call(document.querySelectorAll('.tc-wordmark'), function (w) { if (w.querySelector('.tc-wordmark__mark')) wmNames.push((w.textContent || '').replace(/\s+/g, ' ').trim()); });
-  var fontOk = false; try { document.fonts.forEach(function (f) { if (/Aspekta/.test(f.family) && f.status === 'loaded') fontOk = true; }); } catch (e) {}
-  if (!fontOk) add('warn', 'look', 'Aspekta did not load: the text is set in a fallback font (run scripts/inline.py, which embeds the fonts)');
+  [].forEach.call(document.querySelectorAll('[data-tc-icon]'), function (el) {
+    var v = getComputedStyle(el).getPropertyValue('--tc-i') || '';
+    if (!v.trim() || /svg['"]\/%3E/.test(v)) add('error', 'brand', 'no icon called "' + el.getAttribute('data-tc-icon') + '": list the names with python3 scripts/icons.py (the set is Lucide)');
+  });
+  var loaded = {}; try { document.fonts.forEach(function (f) { if (f.status === 'loaded') loaded[f.family.replace(/["']/g, '').toLowerCase()] = 1; }); } catch (e) {}
+  ['aspekta', 'inter'].forEach(function (f) { if (used[f] && !loaded[f]) add('warn', 'look', f.charAt(0).toUpperCase() + f.slice(1) + ' did not load: the text is set in a fallback font (run scripts/inline.py, which embeds the fonts)'); });
 
   var res = { vw: vw, lang: document.documentElement.lang || '', sheets: document.querySelectorAll('.tc-sheet').length, slides: document.querySelectorAll('.tc-slide').length, covers: document.querySelectorAll('.tc-cover').length,
               wordmarks: wmNames, text: visibleText().slice(0, 200000), findings: out };
-  document.documentElement.setAttribute('data-tc-check', btoa(unescape(encodeURIComponent(JSON.stringify(res)))));
+  var packed = btoa(unescape(encodeURIComponent(JSON.stringify(res))));
+  document.documentElement.setAttribute('data-tc-check', packed);
+  if (window.parent !== window) window.parent.postMessage({ tcCheck: packed }, '*');   /* the phone check runs the page in a 375px frame */
 }, 4500); });
 </script>
 """
@@ -203,18 +248,32 @@ def palette():
     return sorted(tacto_lint.load_palette().values())
 
 
-def run_probe(chrome, src: Path, query: str, width: int, height: int = 900):
+FRAME = """<!doctype html><meta charset="utf-8"><body style="margin:0">
+<iframe src="__SRC__" style="display:block;border:0;width:__W__px;height:812px"></iframe>
+<script>window.addEventListener('message', function (e) { if (e.data && e.data.tcCheck) document.documentElement.setAttribute('data-tc-check', e.data.tcCheck); });</script>
+"""
+
+
+def run_probe(chrome, src: Path, query: str, width: int, height: int = 900, frame: bool = False):
+    """frame=True runs the page inside a frame of that width: headless Chrome itself cannot go below 500px."""
     html = src.read_text(encoding="utf-8", errors="replace")
-    probe = PROBE.replace("__PALETTE__", json.dumps(palette())).replace("__ALPHA__", json.dumps(sorted(tacto_lint.ALPHA_OK)))
+    probe = (PROBE.replace("__PALETTE__", json.dumps(palette())).replace("__APP__", json.dumps(sorted(tacto_lint.load_app_palette().values())))
+             .replace("__ALPHA__", json.dumps(sorted(tacto_lint.ALPHA_OK))))
     html = html.replace("</body>", probe + "</body>") if "</body>" in html else html + probe
     tmp = src.parent / f".tc-check-{os.getpid()}.html"
+    outer = src.parent / f".tc-check-{os.getpid()}-frame.html"
     try:
         tmp.write_text(html, encoding="utf-8")
+        target = f"file://{tmp}{query}"
+        if frame:
+            outer.write_text(FRAME.replace("__SRC__", tmp.name + query).replace("__W__", str(width)), encoding="utf-8")
+            target, width = f"file://{outer}", max(width, 500)
         done = subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-prefers-reduced-motion",
-                               f"--window-size={width},{height}", "--virtual-time-budget=9000", "--dump-dom", f"file://{tmp}{query}"],
+                               "--allow-file-access-from-files", f"--window-size={width},{height}", "--virtual-time-budget=9000", "--dump-dom", target],
                               capture_output=True, text=True, timeout=120)
     finally:
         tmp.unlink(missing_ok=True)
+        outer.unlink(missing_ok=True)
     m = re.search(r'data-tc-check="([A-Za-z0-9+/=]+)"', done.stdout)
     if not m:
         return None
@@ -277,11 +336,13 @@ def main() -> int:
         take(first, "1440px")
         res = first
         if not canvases_only:
-            narrow = run_probe(chrome, src, query, 500)
-            if narrow:
+            narrow = run_probe(chrome, src, query, 375, frame=True)
+            if narrow is None:
+                findings.append(("warn", "375px", "fit", "the phone-width check could not run; look at the page at 375px yourself"))
+            else:
                 for f in narrow["findings"]:
                     if f["kind"] == "fit" and f["level"] == "error":
-                        findings.append((f["level"], "500px", "fit", f["msg"]))
+                        findings.append((f["level"], "375px", "fit", f["msg"]))
 
     if canvases:
         pages = pdf_pages(chrome, src, query)
@@ -325,7 +386,7 @@ def main() -> int:
     warns = sum(1 for f in uniq if f[0] == "warn")
     verdict = "PASS" if errors == 0 and not (strict and warns) else "FAIL"
     kind = (f"{first['slides']} slide(s)" if first["slides"] else f"{first['sheets']} page(s)" if first["sheets"]
-            else f"{covers} cover(s)" if covers else "web page, checked at 1440px and 500px")
+            else f"{covers} cover(s)" if covers else "web page, checked at 1440px and 375px")
     print(f"{verdict}: {errors} error(s), {warns} warning(s) - {src.name} ({kind})")
     if verdict == "PASS":
         print("Now look at it: scripts/shoot.sh for the screenshot" + (" and the PDF page pictures." if canvases else "."))

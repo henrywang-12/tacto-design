@@ -32,13 +32,28 @@ PALETTE = {
 }
 
 
+APP_BLOCK = re.compile(r"/\* app-palette:start \*/(.*?)/\* app-palette:end \*/", re.S)
+
+
+def load_app_palette():
+    """The colours of the product screen (.tc-app): valid inside it, nowhere else."""
+    css = SKILL_ROOT / "assets" / "tacto.css"
+    pal = {}
+    if css.is_file():
+        m = APP_BLOCK.search(css.read_text(encoding="utf-8"))
+        for t in re.finditer(r"--(tca-[\w-]+)\s*:\s*#([0-9a-fA-F]{6})\b", m.group(1) if m else ""):
+            pal[t.group(1)] = t.group(2).lower()
+    return pal
+
+
 def load_palette():
     """Every colour assets/tacto.css uses, plus the product tokens listed above.
-    Add a colour to tacto.css and the lint and the render check accept it."""
+    Add a colour to tacto.css and the lint and the render check accept it.
+    The product screen's own colours are kept apart: see load_app_palette()."""
     pal = dict(PALETTE)
     css = SKILL_ROOT / "assets" / "tacto.css"
     if css.is_file():
-        text = css.read_text(encoding="utf-8")
+        text = APP_BLOCK.sub("", css.read_text(encoding="utf-8"))
         for m in re.finditer(r"--tc-([\w-]+)\s*:\s*#([0-9a-fA-F]{6})\b", text):
             pal[m.group(1)] = m.group(2).lower()
         known = set(pal.values())
@@ -51,12 +66,16 @@ def load_palette():
 
 
 PALETTE = load_palette()
-BY_HEX = {v: k for k, v in PALETTE.items()}
+APP_PALETTE = load_app_palette()
+# the source lint cannot tell where a rule ends up, so it accepts both sets; the render check
+# (tacto_check.py) then holds the product screen's colours to the product screen
+BY_HEX = {**{v: k for k, v in APP_PALETTE.items()}, **{v: k for k, v in PALETTE.items()}}
 # colours that are fine when translucent (overlays, shadows, glass)
 ALPHA_OK = {"000000", "ffffff", "ff6414", "2170ec", "2abfc1", "2ed24f", "ffcc14", "d1d1d1", "e5e5e5", "aeaeae", "5c1c00"}
 
 FONT_OK = ("aspekta", "geist mono", "geistmono", "inherit", "var(", "ui-monospace", "monospace", "sfmono", "menlo")
 RADIUS_OK = {0, 1, 2, 4, 7, 8, 10, 999, 1000, 9999}
+APP_RADIUS_OK = {3, 6, 12}        # the product screen also uses these
 NAMED_BAD = ("red|blue|green|purple|violet|indigo|orange|yellow|pink|teal|cyan|magenta|navy|gold|lime|"
              "aqua|fuchsia|maroon|olive|silver|crimson|coral|salmon|tomato|orchid|turquoise|gray|grey")
 # Calibrated on tacto.ai: the site does say "transform", "unlock", "leading", "frontier" and
@@ -148,7 +167,9 @@ def check_color(rep, off, hex6, alpha, raw, allow):
     rep.add("error", off, "colour", f"{raw} is not in the palette (nearest: {nearest(hex6)})")
 
 
-def lint_css(rep, base, css, allow, trusted=False):
+def lint_css(rep, base, css, allow, trusted=False, app=False):
+    """trusted: this is tacto.css itself, the source of truth for type, weight and radius.
+    app: the file holds a product screen (.tc-app), which has its own type and weights."""
     # masks legitimately use black/transparent; blank them out (offsets preserved)
     css = re.sub(r"(?:-webkit-)?mask(?:-image)?\s*:[^;}]*", lambda m: " " * len(m.group(0)), css, flags=re.I)
     # colours: hex
@@ -172,22 +193,29 @@ def lint_css(rep, base, css, allow, trusted=False):
     for m in re.finditer(rf"(?:^|[;{{\s\"])(?:color|background|background-color|border(?:-[a-z]+)*|fill|stroke|outline)\s*:\s*[^;}}]*?(?<![\w-])({NAMED_BAD})(?![\w-])", css, flags=re.I):
         rep.add("error", base + m.start(1), "colour", f"named colour '{m.group(1)}': use a palette token")
     # fonts
+    font_ok = FONT_OK + (("inter",) if app else ())
+    heavy = r"bold|bolder|[7-9]00" if app else r"bold|bolder|[5-9]00"
     for m in re.finditer(r"font-family\s*:\s*([^;}]+)", css, flags=re.I):
         first = m.group(1).split(",")[0].strip().strip("'\"").lower()
-        if not first.startswith(FONT_OK):
-            rep.add("error", base + m.start(), "font", f"font '{first}' is not part of the system (Aspekta, and Geist Mono for labels)")
-    for m in re.finditer(r"font-weight\s*:\s*(bold|bolder|[5-9]00)\b", css, flags=re.I):
+        if not trusted and not first.startswith(font_ok):
+            rep.add("error", base + m.start(), "font", f"font '{first}' is not part of the system (Aspekta, Geist Mono for labels, Inter inside the product screen)")
+    for m in re.finditer(rf"font-weight\s*:\s*({heavy})\b", css, flags=re.I):
+        if trusted:
+            break
         level = "warn" if m.group(1) == "500" else "error"
-        rep.add(level, base + m.start(), "weight", f"font-weight {m.group(1)}: everything is light (300); numerals 200; buttons and small UI labels 400. Nothing heavier")
+        rep.add(level, base + m.start(), "weight", f"font-weight {m.group(1)}: " + ("the product screen uses 400, 500 and 600, nothing heavier" if app else
+                "everything is light (300); numerals 200; buttons and small UI labels 400. Nothing heavier"))
     for m in re.finditer(r"(?:^|[;{\s\"])font\s*:\s*([^;}]+)", css, flags=re.I):
+        if trusted:
+            break
         value = m.group(1)
-        if re.search(r"\b(bold|bolder|[6-9]00)\b", value, flags=re.I):
+        if re.search(r"\b(bold|bolder|[7-9]00)\b" if app else r"\b(bold|bolder|[6-9]00)\b", value, flags=re.I):
             rep.add("error", base + m.start(1), "weight", f"bold in the font shorthand ({value.strip()[:40]}): headlines are 300, nothing is heavier than 400")
         fam = re.search(r"\d(?:px|rem|em|pt|%)(?:\s*/\s*[\d.]+\w*)?\s+(.+)$", value.strip())
         if fam:
             first = fam.group(1).split(",")[0].strip().strip("'\"").lower()
-            if not first.startswith(FONT_OK):
-                rep.add("error", base + m.start(1), "font", f"font '{first}' is not part of the system (Aspekta, and Geist Mono for labels)")
+            if not first.startswith(font_ok):
+                rep.add("error", base + m.start(1), "font", f"font '{first}' is not part of the system (Aspekta, Geist Mono for labels, Inter inside the product screen)")
     if not trusted:
         for m in re.finditer(r"\b(?:repeating-)?(?:linear|radial|conic)-gradient\(", css, flags=re.I):
             rep.add("warn", base + m.start(), "effect", "gradient: gradients live in the panels (classes tc-ember, tc-veil, tc-noir, tc-band, tc-cover, tc-slide--ember) and in the tc-powered label")
@@ -201,22 +229,29 @@ def lint_css(rep, base, css, allow, trusted=False):
             break
         rep.add("error", base + m.start(), "effect", "gradient text exists once, at label size: the tc-powered label. Headlines are solid black or white")
     for m in re.finditer(r"box-shadow\s*:\s*([^;}]+)", css, flags=re.I):
-        for part in m.group(1).split("),"):
-            nums = [float(x) for x in re.findall(r"(-?\d*\.?\d+)px", part)]
+        if trusted:
+            break
+        for part in re.split(r",(?![^(]*\))", m.group(1)):
+            # every length counts, also a bare 0: offset-x, offset-y, blur, spread
+            part = re.sub(r"(?:rgba?|hsla?|oklch|oklab|color|var)\([^)]*\)|#[0-9a-fA-F]{3,8}\b|\binset\b", " ", part)
+            nums = [float(v) * (16 if u == "rem" else 1) for v, u in re.findall(r"(-?\d*\.?\d+)(px|rem|em)?(?![\w.%])", part)]
             if len(nums) >= 3 and nums[2] >= 32 and not (len(nums) >= 4 and nums[3] < 0):
                 rep.add("warn", base + m.start(), "effect", f"large soft shadow (blur {nums[2]:g}px): the system is flat")
     for m in re.finditer(r"border-radius\s*:\s*([^;}]+)", css, flags=re.I):
+        if trusted:
+            break
         for v, unit in re.findall(r"(\d*\.?\d+)(px|rem)", m.group(1)):
             px = round(float(v) * (16 if unit == "rem" else 1), 2)
-            if px not in RADIUS_OK and px < 100:
-                rep.add("warn", base + m.start(), "radius", f"border-radius {v}{unit} is outside the scale (4 buttons and chips, 8 cards and panels, 10 UI fragments, 1000 pills)")
+            if px not in RADIUS_OK and px < 100 and not (app and px in APP_RADIUS_OK):
+                rep.add("warn", base + m.start(), "radius", f"border-radius {v}{unit} is outside the scale (4 buttons and chips, 8 cards and panels, 10 UI fragments, 1000 pills"
+                        + ("; the product screen adds 3, 6 and 12" if app else "") + ")")
     # uppercase only on small labels
     for m in re.finditer(r"[^{}]*\{([^{}]*)\}|^([^{}]+)$", css, flags=re.S):
         block = m.group(1) or m.group(2) or ""
         if re.search(r"text-transform\s*:\s*uppercase", block, flags=re.I):
             size = re.search(r"font-size\s*:\s*(\d*\.?\d+)(px|rem|em)", block)
             px = float(size.group(1)) * (1 if size.group(2) == "px" else 16) if size else 0
-            if px > 18:
+            if px > 18 and not trusted:
                 rep.add("warn", base + m.start(), "type", f"uppercase at {px:g}px: uppercase is only for mono labels of 10 to 14px (18px on a cover)")
     # motion
     for m in re.finditer(r"cubic-bezier\(\s*([\d.-]+)\s*,\s*([\d.-]+)\s*,\s*([\d.-]+)\s*,\s*([\d.-]+)\s*\)", css):
@@ -238,8 +273,12 @@ def visible_text(text: str) -> str:
     return text
 
 
-def lint_copy(rep, text, is_html, check_samples=True):
+def lint_copy(rep, text, is_html, check_samples=True, lang=""):
     body = visible_text(text) if is_html else text
+    if is_html and not lang:
+        m = re.search(r"<html\b[^>]*\blang\s*=\s*[\"']?([A-Za-z-]+)", text)
+        lang = m.group(1) if m else ""
+    german = lang.lower().startswith("de")       # German capitalises every noun: that is not Title Case
     for m in EMOJI.finditer(body):
         rep.add("error", m.start(), "copy", f"emoji {m.group(0)!r}: none, anywhere")
     for m in re.finditer(r"!", body):
@@ -262,7 +301,7 @@ def lint_copy(rep, text, is_html, check_samples=True):
         small = {"a", "an", "and", "as", "at", "but", "by", "for", "in", "of", "on", "or", "the", "to", "vs", "vs.", "with", "x"}
         for m in re.finditer(r"<h([1-3])\b[^>]*>(.*?)</h\1>", text, flags=re.S | re.I):
             words_ = [w for w in htmllib.unescape(re.sub(r"<[^>]+>", " ", m.group(2))).split() if w.lower() not in small and w[0].isalpha()]
-            if len(words_) >= 5 and sum(w[0].isupper() for w in words_) / len(words_) > 0.8:
+            if not german and len(words_) >= 5 and sum(w[0].isupper() for w in words_) / len(words_) > 0.8:
                 rep.add("warn", m.start(), "copy", f"Title Case headline “{' '.join(words_)[:48]}”: use sentence case")
         for m in re.finditer(r"fonts\.googleapis\.com/css2?\?([^\"')\s]+)", text):
             for fam in re.findall(r"family=([^:&]+)", m.group(1)):
@@ -281,9 +320,10 @@ def lint_file(path: Path, allow) -> Report:
     own = SKILL_ROOT not in path.resolve().parents
     if suffix in (".html", ".htm", ".css", ".svg"):
         styled = re.sub(r"<script\b.*?</script>", blank, text, flags=re.S | re.I)
+        app = bool(re.search(r"class\s*=\s*[\"'][^\"']*\btc-app\b", text))
         for off, css in css_contexts(styled, suffix):
             trusted = "tacto.css" in css[:400] and "the Tacto-style design language" in css[:400]
-            lint_css(rep, off, css, allow, trusted or path.resolve() == SKILL_ROOT / "assets" / "tacto.css")
+            lint_css(rep, off, css, allow, trusted or path.resolve() == SKILL_ROOT / "assets" / "tacto.css", app)
     if suffix in (".html", ".htm"):
         lint_scripts(rep, text, allow)
         text = re.sub(r"<script\b.*?</script>", blank, text, flags=re.S | re.I)

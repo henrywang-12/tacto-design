@@ -21,8 +21,9 @@ Then it checks its own work. It exits with code 1, and says why, when the
 result would be broken once sent: tacto.css still linked, a logo placeholder left
 unfilled, an image that could not be found. HTML comments are left untouched.
 
-Nothing is fetched at view time: Aspekta and Geist Mono (both open source) are
-embedded from assets/fonts/.
+Nothing is fetched at view time: Aspekta, Geist Mono and (for product screens)
+Inter are embedded from assets/fonts/, all open source. Only the icons a file
+uses stay in its stylesheet.
 """
 import base64
 import html as htmllib
@@ -87,7 +88,7 @@ def prep_svg(svg: str, cls: str, uid: str, recolour: bool) -> str:
 class Brander:
     WORDMARK = re.compile(
         r"""(<(a|span|div)\b[^>]*\bclass\s*=\s*(["'])[^"']*\btc-wordmark\b[^"']*\3[^>]*>)   # opening tag
-            (?:\s|&nbsp;)*<span\b[^>]*\btc-wordmark__mark\b[^>]*(?:/>|>\s*</span>)            # the neutral mark
+            (?:\s|&nbsp;)*<(?:span|i|b)\b[^>]*\btc-wordmark__mark\b[^>]*(?:/>|>\s*</(?:span|i|b)>)   # the neutral mark
             ((?:(?!</\2>).)*?)                                                               # the name
             (</\2>)""", re.S | re.X)
     PLACEHOLDER = re.compile(r"""<(span|div|a)\b[^>]*\bdata-tc-logo\b[^>]*?(?:/>|>\s*</\1>)""", re.S)
@@ -132,7 +133,7 @@ class Brander:
         """Wordmarks that should have become the logo but did not match the pattern."""
         body = COMMENT.sub("", text)
         left = 0
-        for m in re.finditer(r"tc-wordmark__mark\b[^>]*(?:/>|>\s*</span>)\s*((?:<[^>]+>|[^<])*?)</(?:a|span|div)>", body, flags=re.S):
+        for m in re.finditer(r"tc-wordmark__mark\b[^>]*(?:/>|>\s*</(?:span|i|b)>)\s*((?:<[^>]+>|[^<])*?)</(?:a|span|div)>", body, flags=re.S):
             if self.plain(m.group(1)).lower() in self.names:
                 left += 1
         return left
@@ -171,8 +172,18 @@ def embed_images(text: str, base: Path):
     return outside_comments(text, run), count, missing
 
 
-def embed_fonts(css: str, css_dir: Path) -> str:
-    """Aspekta and Geist Mono travel inside the file, so it reads the same offline."""
+def prune_icons(css: str, doc: str) -> str:
+    """Keep only the icons the document names (in markup or in a script), so a page does not carry all of them."""
+    def keep(m):
+        return m.group(0) if re.search(r"""["'=]""" + re.escape(m.group(1)) + r"""["'\s>]""", doc) else ""
+    return re.sub(r"""\[data-tc-icon="([\w-]+)"\] \{[^}]*\}\n""", keep, css)
+
+
+def embed_fonts(css: str, css_dir: Path, app: bool = True) -> str:
+    """Aspekta and Geist Mono travel inside the file, so it reads the same offline.
+    Inter is the product screen's typeface: it is embedded only when the page has one."""
+    if not app:
+        css = re.sub(r"""@font-face \{ font-family: "Inter";[^}]*\}\n?""", "", css)
     def font(m):
         f = css_dir / m.group(2)
         if not f.is_file():
@@ -210,7 +221,8 @@ def main() -> int:
                 problems.append(str(e))
                 return match.group(0)
             if kind == "css":
-                body = embed_fonts(body, found.resolve().parent)
+                body = prune_icons(body, text)
+                body = embed_fonts(body, found.resolve().parent, "tc-app" in text)
             counts[kind] += 1
             return f"{open_tag}\n{body}\n{close_tag}"
         return repl

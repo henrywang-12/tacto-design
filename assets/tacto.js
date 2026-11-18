@@ -27,7 +27,8 @@
       try { text = v.toLocaleString(locale, opts); } catch (e) { text = v.toLocaleString("en", opts); }
       return prefix + text + suffix;
     };
-    if (reduce) { el.textContent = fmt(target); return; }
+    // decks, documents and covers are printed and photographed: the final number, at once
+    if (reduce || el.closest(".tc-slide, .tc-sheet, .tc-cover")) { el.textContent = fmt(target); return; }
     var start = null, dur = 1200;
     function tick(t) {
       if (start === null) start = t;
@@ -40,6 +41,8 @@
     requestAnimationFrame(tick);
   }
 
+  document.querySelectorAll(".tc-slide [data-tc-count], .tc-sheet [data-tc-count], .tc-cover [data-tc-count]").forEach(countUp);
+  window.addEventListener("beforeprint", function () { reduce = true; document.querySelectorAll("[data-tc-count]").forEach(countUp); });
   if (!("IntersectionObserver" in window)) {
     document.querySelectorAll(".tc-reveal").forEach(function (el) { el.classList.add("is-in"); });
     document.querySelectorAll("[data-tc-count]").forEach(countUp);

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hollweg Präzision GmbH - Suppliers</title>
+<!-- The product screen, second template: a detail page (here a supplier), rebuilt from Tacto's own
+     product (their product film, Nov 2026). Use it for any record with numbers, a chart and a list.
+     Replace the workspace (Auerberg Guss), the supplier (Hollweg Präzision), the maker's wordmark
+     (Northdesk) and every number, finding and article. All figures here are invented.
+     Top to bottom, each part reusable on its own:
+     sidebar (same as dashboard.html, here with the longer nav) · top bar with breadcrumb, the id in
+     grey and the page's actions · tabs as outlined pills with icons (the open one filled grey) ·
+     KPI cards with the period chip on the right · chart card: grey bars on the right axis, blue and
+     fuchsia lines on the left, dot legend, date-range button · filter row (segmented control,
+     "is one of" pills, search) · table with finding types in their colour and id-plus-name chips.
+     Colour means something: blue is a figure, the finding types keep their colours, green is money
+     saved, red is a price that rose. See references/dashboard.md.
+     Icons: <i data-tc-icon="name"></i>, names from python3 scripts/icons.py.
+     Then: python3 scripts/inline.py this.html out.html && python3 scripts/tacto_check.py out.html -->
+<link rel="stylesheet" href="../tacto.css">
+<style>
+  /* layout only: three KPI cards per row on this page */
+  .dd-kpis { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+</style>
+</head>
+<body>
+<div class="tc-app">
+
+  <aside class="tc-app__side">
+    <div class="tc-app__ws">
+      <span class="tc-app__ws-logo"><b>AG</b></span>
+      <span class="tc-app__ws-name">Auerberg Guss</span>
+      <i data-tc-icon="chevron-down"></i>
+      <i data-tc-icon="panel-left"></i>
+    </div>
+    <nav class="tc-app__nav">
+      <a class="tc-app__item tc-app__item--quiet" href="#"><i data-tc-icon="search"></i>Search</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="layout-grid"></i>Dashboard</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="square-check-big"></i>Tasks</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="bell"></i>Notifications<span class="tc-app__count">73</span></a>
+
+      <div class="tc-app__label">Supply chain data<i data-tc-icon="chevron-down"></i></div>
+      <a class="tc-app__item is-active" href="#"><i data-tc-icon="building-2"></i>Suppliers</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="user-round"></i>Contacts</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="scan-barcode"></i>Articles</a>
+      <div class="tc-app__sub">
+        <a class="tc-app__item" href="#">Drawing Parts</a>
+      </div>
+      <a class="tc-app__item" href="#"><i data-tc-icon="tag"></i>Categories</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="network"></i>Supply Sources</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="receipt-text"></i>Transactions<i data-tc-icon="chevron-right"></i></a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="file-lock-2"></i>Documents</a>
+
+      <div class="tc-app__label">Tools<i data-tc-icon="chevron-down"></i></div>
+      <a class="tc-app__item" href="#"><i data-tc-icon="list-checks"></i>Order confirmations</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="chart-no-axes-column"></i>Analytics</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="piggy-bank"></i>Savings<i data-tc-icon="chevron-right"></i></a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="handshake"></i>RFQs</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="drafting-compass"></i>Drawing Analysis</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="list-tree"></i>BOM<i data-tc-icon="chevron-right"></i></a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="arrow-left-right"></i>Requests</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="clipboard-check"></i>Evaluations</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="bot"></i>Agents</a>
+    </nav>
+    <div class="tc-app__side-foot">
+      <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+      <span>·</span>
+      <i data-tc-icon="bug"></i>
+      <a class="tc-app__help" href="#" aria-label="Help"><i data-tc-icon="circle-help"></i></a>
+    </div>
+  </aside>
+
+  <main class="tc-app__main">
+    <!-- breadcrumb: where you are, the record's id in grey, its name in medium -->
+    <header class="tc-app__top">
+      <nav class="tc-app__crumbs">
+        <a href="#">Suppliers</a><i data-tc-icon="chevron-right"></i>
+        <i data-tc-icon="building-2" class="is-blue"></i><small>4410287</small>Hollweg Präzision GmbH
+      </nav>
+      <div class="tc-app__actions">
+        <a class="tc-app__btn tc-app__btn--outline tc-app__btn--sm" href="#">EUR <i data-tc-icon="chevron-down"></i></a>
+        <a class="tc-app__btn tc-app__btn--sm" href="#"><i data-tc-icon="send"></i>Start RFQ</a>
+      </div>
+    </header>
+
+    <div class="tc-app__content">
+      <div class="tc-app__page">
+
+        <nav class="tc-app__tabs">
+          <a class="tc-app__tab" href="#"><i data-tc-icon="layout-grid"></i>Overview</a>
+          <a class="tc-app__tab" href="#"><i data-tc-icon="calendar"></i>Meetings</a>
+          <a class="tc-app__tab" href="#"><i data-tc-icon="mail"></i>Emails</a>
+          <a class="tc-app__tab" href="#"><i data-tc-icon="file-lock-2"></i>Documents</a>
+          <a class="tc-app__tab" href="#"><i data-tc-icon="users"></i>Contacts</a>
+          <a class="tc-app__tab is-active" href="#"><i data-tc-icon="scale"></i>Negotiation</a>
+          <a class="tc-app__tab" href="#"><i data-tc-icon="scan-barcode"></i>Articles</a>
+          <a class="tc-app__tab" href="#"><i data-tc-icon="receipt-text"></i>Transactions</a>
+        </nav>
+
+        <!-- KPI cards, the period chip on the right of the title -->
+        <section class="tc-app__kpis dd-kpis">
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Share of spend</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">1.4% <small>A-Supplier</small></p>
+            <p class="tc-app__kpi-prev">1.1% <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Order volume</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">€1,284,560 <small>18.6%</small></p>
+            <p class="tc-app__kpi-prev">€1,083,120 <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Price development</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">6.2%</p>
+            <p class="tc-app__kpi-prev">9.4% <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Active articles</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">84 <small>-12.5%</small></p>
+            <p class="tc-app__kpi-prev">96 <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">On-time delivery</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">82.4% <small>3.1%</small></p>
+            <p class="tc-app__kpi-prev">79.9% <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Payment terms</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value tc-app__kpi-value--text">30 days net</p>
+            <p class="tc-app__kpi-prev">100% of volume</p>
+          </article>
+        </section>
+
+        <section class="tc-app__section">
+          <div>
+            <h2 class="tc-app__h">Supplier evaluations</h2>
+            <p class="tc-app__lead">The most recent evaluations of this supplier, by area.</p>
+          </div>
+          <article class="tc-app__card">
+            <div class="tc-app__head">
+              <div>
+                <h3 class="tc-app__card-title">Delivery performance <a href="#" aria-label="Open"><i data-tc-icon="external-link"></i></a></h3>
+                <p class="tc-app__lead">Lead time, on-time delivery and quantity reliability over time.</p>
+              </div>
+              <a class="tc-app__btn tc-app__btn--outline tc-app__btn--sm" href="#"><i data-tc-icon="calendar"></i>Jan 2025 - Dec 2026</a>
+            </div>
+            <p class="tc-app__legend"><span><i class="bar"></i>Lead time</span><span><i></i>On-time performance</span><span><i class="fuchsia"></i>Quantity reliability</span></p>
+            <!-- bars read on the right axis (days), lines on the left (percent) -->
+            <svg class="tc-app__chart" viewBox="0 0 1100 250" role="img" aria-label="Lead time as bars, on-time performance and quantity reliability as lines, January 2025 to December 2026"><line class="grid" x1="44" x2="1040" y1="12.0" y2="12.0"/><text x="36" y="16.0" text-anchor="end">100%</text><text x="1048" y="16.0">80 days</text><line class="grid" x1="44" x2="1040" y1="65.0" y2="65.0"/><text x="36" y="69.0" text-anchor="end">85%</text><text x="1048" y="69.0">60 days</text><line class="grid" x1="44" x2="1040" y1="118.0" y2="118.0"/><text x="36" y="122.0" text-anchor="end">70%</text><text x="1048" y="122.0">40 days</text><line class="grid" x1="44" x2="1040" y1="171.0" y2="171.0"/><text x="36" y="175.0" text-anchor="end">55%</text><text x="1048" y="175.0">20 days</text><rect class="bar" x="52.3" y="123.3" width="24.9" height="100.7" rx="2"/><rect class="bar" x="93.8" y="115.3" width="24.9" height="108.7" rx="2"/><rect class="bar" x="135.3" y="128.6" width="24.9" height="95.4" rx="2"/><rect class="bar" x="176.8" y="107.4" width="24.9" height="116.6" rx="2"/><rect class="bar" x="218.3" y="86.2" width="24.9" height="137.8" rx="2"/><rect class="bar" x="259.8" y="99.4" width="24.9" height="124.6" rx="2"/><rect class="bar" x="301.3" y="118.0" width="24.9" height="106.0" rx="2"/><rect class="bar" x="342.8" y="110.1" width="24.9" height="113.9" rx="2"/><rect class="bar" x="384.3" y="70.3" width="24.9" height="153.7" rx="2"/><rect class="bar" x="425.8" y="62.3" width="24.9" height="161.7" rx="2"/><rect class="bar" x="467.3" y="94.2" width="24.9" height="129.8" rx="2"/><rect class="bar" x="508.8" y="104.8" width="24.9" height="119.2" rx="2"/><rect class="bar" x="550.3" y="112.7" width="24.9" height="111.3" rx="2"/><rect class="bar" x="591.8" y="120.6" width="24.9" height="103.4" rx="2"/><rect class="bar" x="633.3" y="102.1" width="24.9" height="121.9" rx="2"/><rect class="bar" x="674.8" y="78.2" width="24.9" height="145.8" rx="2"/><rect class="bar" x="716.3" y="57.0" width="24.9" height="166.9" rx="2"/><rect class="bar" x="757.8" y="88.8" width="24.9" height="135.2" rx="2"/><rect class="bar" x="799.3" y="107.4" width="24.9" height="116.6" rx="2"/><rect class="bar" x="840.8" y="115.3" width="24.9" height="108.7" rx="2"/><rect class="bar" x="882.3" y="125.9" width="24.9" height="98.1" rx="2"/><rect class="bar" x="923.8" y="96.8" width="24.9" height="127.2" rx="2"/><rect class="bar" x="965.3" y="80.9" width="24.9" height="143.1" rx="2"/><rect class="bar" x="1006.8" y="110.1" width="24.9" height="113.9" rx="2"/><path class="line" d="M64.8,54.4 L106.2,110.9 L147.8,79.1 L189.2,47.3 L230.8,96.8 L272.2,68.5 L313.8,43.8 L355.2,86.2 L396.8,125.1 L438.2,103.9 L479.8,61.5 L521.2,40.3 L562.8,72.1 L604.2,93.3 L645.8,50.9 L687.2,114.5 L728.8,132.1 L770.2,82.7 L811.8,57.9 L853.2,36.7 L894.8,65.0 L936.2,89.7 L977.8,75.6 L1019.2,47.3"/><circle class="pt" cx="64.8" cy="54.4" r="2.5"/><circle class="pt" cx="106.2" cy="110.9" r="2.5"/><circle class="pt" cx="147.8" cy="79.1" r="2.5"/><circle class="pt" cx="189.2" cy="47.3" r="2.5"/><circle class="pt" cx="230.8" cy="96.8" r="2.5"/><circle class="pt" cx="272.2" cy="68.5" r="2.5"/><circle class="pt" cx="313.8" cy="43.8" r="2.5"/><circle class="pt" cx="355.2" cy="86.2" r="2.5"/><circle class="pt" cx="396.8" cy="125.1" r="2.5"/><circle class="pt" cx="438.2" cy="103.9" r="2.5"/><circle class="pt" cx="479.8" cy="61.5" r="2.5"/><circle class="pt" cx="521.2" cy="40.3" r="2.5"/><circle class="pt" cx="562.8" cy="72.1" r="2.5"/><circle class="pt" cx="604.2" cy="93.3" r="2.5"/><circle class="pt" cx="645.8" cy="50.9" r="2.5"/><circle class="pt" cx="687.2" cy="114.5" r="2.5"/><circle class="pt" cx="728.8" cy="132.1" r="2.5"/><circle class="pt" cx="770.2" cy="82.7" r="2.5"/><circle class="pt" cx="811.8" cy="57.9" r="2.5"/><circle class="pt" cx="853.2" cy="36.7" r="2.5"/><circle class="pt" cx="894.8" cy="65.0" r="2.5"/><circle class="pt" cx="936.2" cy="89.7" r="2.5"/><circle class="pt" cx="977.8" cy="75.6" r="2.5"/><circle class="pt" cx="1019.2" cy="47.3" r="2.5"/><path class="line line--fuchsia" d="M64.8,146.3 L106.2,160.4 L147.8,132.1 L189.2,114.5 L230.8,139.2 L272.2,153.3 L313.8,121.5 L355.2,103.9 L396.8,118.0 L438.2,142.7 L479.8,156.9 L521.2,128.6 L562.8,110.9 L604.2,96.8 L645.8,125.1 L687.2,135.7 L728.8,149.8 L770.2,107.4 L811.8,89.7 L853.2,100.3 L894.8,118.0 L936.2,132.1 L977.8,114.5 L1019.2,93.3"/><circle class="pt pt--fuchsia" cx="64.8" cy="146.3" r="2.5"/><circle class="pt pt--fuchsia" cx="106.2" cy="160.4" r="2.5"/><circle class="pt pt--fuchsia" cx="147.8" cy="132.1" r="2.5"/><circle class="pt pt--fuchsia" cx="189.2" cy="114.5" r="2.5"/><circle class="pt pt--fuchsia" cx="230.8" cy="139.2" r="2.5"/><circle class="pt pt--fuchsia" cx="272.2" cy="153.3" r="2.5"/><circle class="pt pt--fuchsia" cx="313.8" cy="121.5" r="2.5"/><circle class="pt pt--fuchsia" cx="355.2" cy="103.9" r="2.5"/><circle class="pt pt--fuchsia" cx="396.8" cy="118.0" r="2.5"/><circle class="pt pt--fuchsia" cx="438.2" cy="142.7" r="2.5"/><circle class="pt pt--fuchsia" cx="479.8" cy="156.9" r="2.5"/><circle class="pt pt--fuchsia" cx="521.2" cy="128.6" r="2.5"/><circle class="pt pt--fuchsia" cx="562.8" cy="110.9" r="2.5"/><circle class="pt pt--fuchsia" cx="604.2" cy="96.8" r="2.5"/><circle class="pt pt--fuchsia" cx="645.8" cy="125.1" r="2.5"/><circle class="pt pt--fuchsia" cx="687.2" cy="135.7" r="2.5"/><circle class="pt pt--fuchsia" cx="728.8" cy="149.8" r="2.5"/><circle class="pt pt--fuchsia" cx="770.2" cy="107.4" r="2.5"/><circle class="pt pt--fuchsia" cx="811.8" cy="89.7" r="2.5"/><circle class="pt pt--fuchsia" cx="853.2" cy="100.3" r="2.5"/><circle class="pt pt--fuchsia" cx="894.8" cy="118.0" r="2.5"/><circle class="pt pt--fuchsia" cx="936.2" cy="132.1" r="2.5"/><circle class="pt pt--fuchsia" cx="977.8" cy="114.5" r="2.5"/><circle class="pt pt--fuchsia" cx="1019.2" cy="93.3" r="2.5"/><text x="64.8" y="244" text-anchor="middle">Jan 25</text><text x="189.2" y="244" text-anchor="middle">Apr 25</text><text x="313.8" y="244" text-anchor="middle">Jul 25</text><text x="438.2" y="244" text-anchor="middle">Oct 25</text><text x="562.8" y="244" text-anchor="middle">Jan 26</text><text x="687.2" y="244" text-anchor="middle">Apr 26</text><text x="811.8" y="244" text-anchor="middle">Jul 26</text><text x="936.2" y="244" text-anchor="middle">Oct 26</text></svg>
+          </article>
+        </section>
+
+        <!-- the list: a filter row, then the table. Finding types keep their colour everywhere. -->
+        <section class="tc-app__section">
+          <h2 class="tc-app__h">Findings</h2>
+          <article class="tc-app__card tc-app__card--bare">
+            <div class="tc-app__filters">
+              <span class="tc-app__seg"><a href="#"><i data-tc-icon="user-round"></i>My findings</a><a class="is-active" href="#"><i data-tc-icon="boxes"></i>All</a></span>
+              <span class="tc-app__seg"><a class="is-active" href="#"><i data-tc-icon="lightbulb"></i>Open</a><a href="#"><i data-tc-icon="circle-check"></i>Accepted</a><a href="#"><i data-tc-icon="circle-x"></i>Dismissed</a></span>
+              <span class="tc-app__and">and</span>
+              <span class="tc-app__filter"><b>Category</b> is one of <b>all</b></span>
+              <a class="tc-app__btn tc-app__btn--ghost tc-app__btn--sm" href="#"><i data-tc-icon="plus"></i>Add filter</a>
+              <span class="tc-app__search"><i data-tc-icon="search"></i>Search for findings</span>
+            </div>
+            <div class="tc-app__tablewrap">
+              <table>
+                <thead><tr><th class="tight"><span class="tc-app__check"></span></th><th>ID</th><th>Type</th><th class="num">Created at</th><th class="num"><i data-tc-icon="arrow-down"></i>Potential</th><th>Opportunities</th><th><i data-tc-icon="scan-barcode" class="is-green"></i>Articles</th><th><i data-tc-icon="tag" class="is-pink"></i>Categories</th></tr></thead>
+                <tbody>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>118</td><td><span class="tc-app__type is-pink"><i data-tc-icon="lightbulb"></i>Cheaper sourcing alternative</span></td><td class="num">11.12.2025</td><td class="num">€26,575</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-43</small><span>Second source</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>30458371</small><span>Bearing housing</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>6502</small><span>Castings</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>97</td><td><span class="tc-app__type is-pink"><i data-tc-icon="lightbulb"></i>Cheaper sourcing alternative</span></td><td class="num">10.01.2026</td><td class="num">€21,515</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-40</small><span>Second source</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>84572394</small><span>Flat profile 40 x 5</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>8572</small><span>Profiles</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>655</td><td><span class="tc-app__type is-lime"><i data-tc-icon="lightbulb"></i>Index deviation: aluminium</span></td><td class="num">27.05.2026</td><td class="num">€15,081</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-87</small><span>Index clause</span></span></td><td></td><td></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>198</td><td><span class="tc-app__type is-green"><i data-tc-icon="lightbulb"></i>Inefficient volume split</span></td><td class="num">03.02.2026</td><td class="num">€12,285</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-63</small><span>Bundling</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>30458371</small><span>Bearing housing</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>6502</small><span>Castings</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>608</td><td><span class="tc-app__type is-green"><i data-tc-icon="lightbulb"></i>Early-payment discount</span></td><td class="num">22.05.2026</td><td class="num">€7,575</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-73</small><span>Payment terms</span></span></td><td></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>6625</small><span>Packaging</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>677</td><td><span class="tc-app__type is-amber"><i data-tc-icon="lightbulb"></i>Supplier consolidation</span></td><td class="num">17.06.2026</td><td class="num">€6,837</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-85</small><span>Bundling</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>77120045</small><span>Cover plate 4 mm</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>1951</small><span>Sheet metal</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>673</td><td><span class="tc-app__type is-violet"><i data-tc-icon="lightbulb"></i>Cheaper alternative supplier</span></td><td class="num">16.06.2026</td><td class="num">€5,075</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-88</small><span>Second source</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>11935069</small><span>Flange, turned</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>6502</small><span>Castings</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>403</td><td><span class="tc-app__type is-cyan"><i data-tc-icon="lightbulb"></i>Significant price increase</span></td><td class="num">10.01.2026</td><td class="num">€4,828</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-18</small><span>Renegotiation</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>84572394</small><span>Flat profile 40 x 5</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>8572</small><span>Profiles</span></span></td></tr>
+              <tr><td class="tight"><span class="tc-app__check"></span></td><td>675</td><td><span class="tc-app__type is-blue"><i data-tc-icon="lightbulb"></i>Volume growth at the old price</span></td><td class="num">16.06.2026</td><td class="num">€3,992</td><td><span class="tc-app__chip"><i data-tc-icon="link" class="is-green"></i><small>OP-89</small><span>Renegotiation</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>20354067</small><span>Extrusion 90 x 30</span></span></td><td><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><small>3413</small><span>Anodised parts</span></span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tc-app__tablefoot"><span>Findings: <b>9</b></span><span>Potential: <b>€103,763</b></span></div>
+          </article>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>
