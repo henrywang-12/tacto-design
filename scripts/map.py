@@ -30,7 +30,7 @@ DATA = ROOT / "assets" / "maps" / "countries-50m.json"
 REGIONS = {"europe": (8, 53, 62), "dach": (10.5, 50, 20), "uk": (-3, 54.5, 22), "nordics": (16, 62.5, 44),
            "north-america": (-98, 44, 96), "asia": (105, 30, 110), "world": (10, 25, 340)}
 # the same values as the --tca tokens in assets/tacto.css (a standalone picture cannot read them)
-LAND, BORDER, DOT, LABEL = "#fdfdfd", "#d4d4d4", "#2563eb", "#a3a3a3"
+LAND, BORDER, DOT, LABEL = "#fdfdfd", "#d4d4d4", "#1d4ed8", "#a3a3a3"
 
 
 def merc(lat):

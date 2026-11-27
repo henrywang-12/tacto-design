@@ -25,7 +25,7 @@ Colour carries meaning. Use the tone classes (`is-blue`, `is-green`, `is-red`, `
 
 | Tone | Means |
 |---|---|
-| blue #2563EB | a figure (every KPI value and its change), the first chart series, a record's icon |
+| blue #1D4ED8 | a figure (every KPI value and its change), the first chart series, a record's icon |
 | red #B91C1C | a price that rose, a risk |
 | green #047857 | a price that fell, money saved (the savings pill) |
 | pink, lime, green, amber, violet, cyan, blue | the type of a finding: each type keeps one colour everywhere it appears |
@@ -91,7 +91,7 @@ Lucide (lucide.dev, ISC licence), the set the product uses. 146 of them ship in 
 
 ## KPI card — `tc-app__kpi`
 
-Title (14px medium), a period chip (`tc-app__period`, 11px on grey), the figure in blue at 30px semibold with its change in 14px beside it, then last period in grey with its own chip. Numbers are written out in full with separators (€91,754,300, not €91.8M). On a record page the period chip sits to the right of the title (`tc-app__kpi-head`). A value that is words ("30 days net") uses `tc-app__kpi-value--text`. Cards sit in `tc-app__kpis`, at least 220px wide.
+Title (14px medium), a period chip (`tc-app__period`, 11px on grey), the figure in blue at 30px semibold with its change in 14px beside it, then last period in grey with its own chip. Numbers are written out in full with separators (€91,754,300, not €91.8M). On a record page the period chip sits to the right of the title (`tc-app__kpi-head`). A value that is words ("30 days net") uses `tc-app__kpi-value--text`. Cards sit in `tc-app__kpis`, at least 220px wide. A row of only two or three cards takes `tc-app__kpis tc-app__kpis--fit`, so the cards share the width instead of leaving a gap.
 
 ## Market index card — `tc-app__index`
 
@@ -103,7 +103,7 @@ A 48px tinted tile with a 22px icon (`tc-app__tile`, blue by default, `--fuchsia
 
 ## Map — `tc-app__map`
 
-A grey map with blue supplier dots and a white card floating top left (`tc-app__float`): a title with a count, the newest finding in its type colour (`tc-app__finding`), "Potential savings" with the amount in a green pill (`tc-app__pill`), a thin progress line.
+A grey map with blue supplier dots and a white card floating top left (`tc-app__float`): a title with a count ("New findings 1": what is new, not the total a list page shows), the newest finding in its type colour (`tc-app__finding`), "Potential savings" with the amount in a green pill (`tc-app__pill`), a thin progress line.
 
 ```bash
 python3 scripts/map.py --region europe --labels --dot 9.99,53.55,Hamburg --dot 13.40,52.52 > map.svg

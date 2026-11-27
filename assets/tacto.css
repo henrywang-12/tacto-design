@@ -511,7 +511,7 @@ a.tc-card:hover { opacity: 0.6; }
   --tca-frame: #f7f7f7;        /* sidebar and the frame around the panel */
   --tca-hover: #fafafa;        /* table row hover */
   --tca-white: #ffffff;
-  --tca-blue: #2563eb;         /* figures, first chart series, links */
+  --tca-blue: #1d4ed8;         /* figures, first chart series, links */
   --tca-blue-bar: #3b82f6;     /* bar indicators */
   --tca-blue-100: #dbeafe;
   --tca-blue-50: #eff6ff;
@@ -604,6 +604,7 @@ a.tc-card:hover { opacity: 0.6; }
 
 /* KPI card: title, period chip, the figure in blue with its change, last period in grey */
 .tc-app__kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.tc-app__kpis--fit { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }   /* one row of two or three cards: they share the width */
 .tc-app__kpi { min-width: 0; background: var(--tca-white); border: 1px solid var(--tca-line); border-radius: 12px; padding: 16px 16px 10px; display: flex; flex-direction: column; align-items: flex-start; }
 .tc-app__kpi-head { align-self: stretch; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 8px; }   /* the chip drops under the title when the card is narrow */
 .tc-app__kpi-head > .tc-app__kpi-title { flex: 0 1 auto; max-width: 100%; }

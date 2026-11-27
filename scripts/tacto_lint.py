@@ -291,7 +291,7 @@ def lint_copy(rep, text, is_html, check_samples=True, lang=""):
         for m in re.finditer(r"(?<![\w-])" + re.escape(word) + r"(?![\w-])", low):
             rep.add("warn", m.start(), "copy", f"hype word '{word}': say what it does, with a number")
     if check_samples:
-        for m in re.finditer(r"northdesk(?:\.example)?|hollweg(?: präzision)?|auerberg(?: guss)?|lindqvist|jana petrovic|brenner zerspanung|feldmark stanztechnik|kessler drehteile|sentec antriebe|your company", low):
+        for m in re.finditer(r"northdesk(?:\.example)?|hollweg(?: präzision)?|auerberg(?: guss)?|lindqvist|jana petrovic|carla wiesner|brenner zerspanung|feldmark stanztechnik|kessler drehteile|sentec antriebe|your company", low):
             rep.add("error", m.start(), "copy", f"template sample name '{body[m.start():m.end()]}' left in: use the real company, customer and people")
     for m in re.finditer(r"iso(?:/iec)?\s?(?:27001|9001|14001)|\bsoc\s?2\b|\btisax\b|gdpr[- ]compliant|dsgvo[- ]konform|\bcertified\b|\bzertifiziert\b|of the year\b|des jahres\b", low):
         rep.add("warn", m.start(), "copy", f"certificate, compliance or award claim “{body[m.start():m.end()]}”: keep it only if the sender really holds it; never invent one")

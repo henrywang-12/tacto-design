@@ -16,9 +16,11 @@
    progress over which it comes apart) · data-turn="1.6" (radians it turns across the scene) ·
    data-spin="false" · data-status="false" (no status colours) · data-look="metal" | "drawing" ·
    data-view="-35,22" (where it is seen from at first: turn and tilt in degrees; 0,0 is the front) ·
+   data-zoom="1.3" (closer than the default; below 1 is further away) · data-rest="0.6" (how far apart a
+   scroll-driven object rests when nothing moves: reduced motion, a screenshot) ·
    data-grid (floor grid) · data-theme="dark" · data-highlight="Housing|Gear" (parts shown in orange;
    with data-explode="scroll" add data-highlight-from="0.75": only from that point of the scene on) ·
-   data-dust (fine specks that spread as it comes apart; for one story object on black, nowhere else)
+   data-dust (a cloud of small squares and cubes that spreads as it comes apart; for one story object on black, nowhere else)
    Script: el.tcPart.explode(0..1 | true | false) · .spin(bool) · .filter('new' | null) ·
    .pick(i | null) · event "tc:pick" with detail { index, name, status }. No other dependencies. */
 (function () {
@@ -27,7 +29,7 @@
   var SNAP = !!window.TC_SNAP;          /* set by scripts/shoot.sh for a picture: no easing, the end state at once */
   var INTRO = !REDUCE && !SNAP;         /* parts of an assembly arrive one after another */
   var COL = { part: 0xcfd3d8, raw: 0xe4e6ea, edge: 0x3f3f46, same: 0xdfe2e6, exists: 0xbfeeda, near: 0xfbe2a0, 'new': 0xc6dcfd, format: 0xffffff, diff: 0xff6414, metal: 0x4f545c, steel: 0xd3d7dc };
-  var EDGE = { same: 0x8a8f98, exists: 0x059669, near: 0xd97706, 'new': 0x2563eb, format: 0xa3a8b0 };   /* a status shows as a pale fill and a coloured outline */
+  var EDGE = { same: 0x8a8f98, exists: 0x059669, near: 0xd97706, 'new': 0x1d4ed8, format: 0xa3a8b0 };   /* a status shows as a pale fill and a coloured outline */
   var SPIN = 0.0028, PI = Math.PI;
 
   /* ---------- solids. Millimetres. x to the right, y up, z towards the viewer.
@@ -199,6 +201,7 @@
     this.sun = new T.DirectionalLight(0xffffff, metal ? 0.7 : 0.72); scene.add(this.sun);
     this.fill = new T.DirectionalLight(dark ? 0xff6414 : 0xffffff, dark ? 0.3 : 0.2); scene.add(this.fill);   /* on black, a little ember from behind */
     this.yaw = -0.62; this.pitch = this.multi ? 0.36 : 0.42; this.vy = 0; this.vp = 0;
+    this.zoom = Math.min(3, Math.max(0.3, +host.getAttribute('data-zoom') || 1));      /* data-zoom="1.3": closer; "0.8": further away */
     var view = (host.getAttribute('data-view') || '').split(',').map(Number);      /* data-view="yaw,pitch" in degrees: 0,0 is the front view */
     if (view.length === 2 && !isNaN(view[0]) && !isNaN(view[1])) { this.yaw = view[0] * PI / 180; this.pitch = Math.min(1.45, view[1] * PI / 180); }
     this.spinOn = host.getAttribute('data-spin') !== 'false' && !REDUCE;
@@ -262,8 +265,8 @@
     });
     this.units = units; this.meshes = meshes;
     this.c2 = apart.getCenter(new T.Vector3()); this.rad2 = apart.getSize(new T.Vector3()).length() / 2;
-    this.dist = this.rad / Math.sin(15 * PI / 180) * (this.multi ? 1.0 : 0.94);
-    this.dist2 = this.rad2 / Math.sin(15 * PI / 180) * 0.74;
+    this.dist = this.rad / Math.sin(15 * PI / 180) * (this.multi ? 1.0 : 1.3) / this.zoom;
+    this.dist2 = this.rad2 / Math.sin(15 * PI / 180) * 0.74 / this.zoom;
     this.sun.position.set(c.x + this.rad * 0.5, c.y + this.rad * 1.6, c.z + this.rad * 1.1);
     this.fill.position.set(c.x - this.rad * 1.3, c.y + this.rad * 0.4, c.z - this.rad * 0.9);
     if (!dark) {                                   /* a soft shadow on the floor, no hard edge */
@@ -274,16 +277,22 @@
       var shade = new T.Mesh(new T.PlaneGeometry(size.x * wide + size.z * 0.6, size.z * wide + size.x * 0.4), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
       shade.rotation.x = -PI / 2; shade.position.set(c.x, this.floor - size.y * (this.multi ? 0.002 : 0.16), c.z); this.scene.add(shade);
     }
-    if (this.host.hasAttribute('data-dust')) {      /* small square specks, mostly white, a few orange and blue: the "bits" */
-      var n = 240, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3), seed = 7, c3 = new T.Color(), i;
+    if (this.host.hasAttribute('data-dust')) {      /* the "bits": a dense cloud of small squares and a few real cubes, thickest near the object */
+      var seed = 7, c3 = new T.Color(), i, self2 = this;
       var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
-      for (i = 0; i < n; i++) {
-        var a = rnd() * 2 * PI, b = Math.acos(2 * rnd() - 1), rr = this.rad2 * (0.12 + Math.pow(rnd(), 1.8) * 1.15);
-        pos[i * 3] = rr * Math.sin(b) * Math.cos(a); pos[i * 3 + 1] = rr * Math.cos(b) * 0.62; pos[i * 3 + 2] = rr * Math.sin(b) * Math.sin(a);
-        var pick = rnd(); c3.setHex(pick < 0.46 ? 0xff6414 : pick < 0.58 ? 0x2170ec : 0xffffff); if (this.metal) c3.convertSRGBToLinear(); cols[i * 3] = c3.r; cols[i * 3 + 1] = c3.g; cols[i * 3 + 2] = c3.b;
-      }
+      var spot = function (reach, fall, from) { var a = rnd() * 2 * PI, b = Math.acos(2 * rnd() - 1), rr = self2.rad2 * (from + Math.pow(rnd(), fall) * reach); return [rr * Math.sin(b) * Math.cos(a), rr * Math.cos(b) * 0.62, rr * Math.sin(b) * Math.sin(a)]; };
+      var tint = function (grey) { var pick = rnd(); c3.setHex(pick < 0.4 ? 0xff6414 : pick < 0.53 ? 0x2170ec : pick < 0.53 + grey ? 0x8d939c : 0xffffff); if (self2.metal) c3.convertSRGBToLinear(); return c3; };
+      var n = 900, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3), at;
+      for (i = 0; i < n; i++) { at = spot(1.15, 2.1, 0.1); pos[i * 3] = at[0]; pos[i * 3 + 1] = at[1]; pos[i * 3 + 2] = at[2]; tint(0.12); cols[i * 3] = c3.r; cols[i * 3 + 1] = c3.g; cols[i * 3 + 2] = c3.b; }
       var dg = new T.BufferGeometry(); dg.setAttribute('position', new T.BufferAttribute(pos, 3)); dg.setAttribute('color', new T.BufferAttribute(cols, 3));
-      this.dust = new T.Points(dg, new T.PointsMaterial({ size: this.rad2 * 0.024, vertexColors: true, transparent: true, opacity: 0, depthWrite: false }));
+      var specks = new T.Points(dg, new T.PointsMaterial({ size: this.rad2 * 0.017, vertexColors: true, transparent: true, opacity: 0, depthWrite: false }));
+      var m = 170, cubes = new T.InstancedMesh(new T.BoxGeometry(1, 1, 1), new T.MeshStandardMaterial({ roughness: 0.42, metalness: 0.35, transparent: true, opacity: 0 }), m), o3 = new T.Object3D();
+      for (i = 0; i < m; i++) {
+        at = spot(0.85, 2.2, 0.3); o3.position.set(at[0], at[1], at[2]); o3.rotation.set(rnd() * PI, rnd() * PI, rnd() * PI); o3.scale.setScalar(this.rad2 * (0.01 + Math.pow(rnd(), 2) * 0.025)); o3.updateMatrix();
+        cubes.setMatrixAt(i, o3.matrix); cubes.setColorAt(i, tint(0.34));
+      }
+      if (this.env) cubes.material.envMap = this.env;
+      this.dust = new T.Group(); this.dust.add(specks); this.dust.add(cubes); this.dustMats = [specks.material, cubes.material];
       this.scene.add(this.dust);
     }
     if (this.host.hasAttribute('data-grid')) { var grid = new T.GridHelper(Math.ceil(this.rad * 4 / 100) * 100, 26, dark ? 0x3a3a3a : 0xdcdcdc, dark ? 0x262626 : 0xeaeaea); grid.position.set(c.x, this.floor - 1, c.z); this.scene.add(grid); }
@@ -370,7 +379,7 @@
     var lx = this.c.x + (this.c2.x - this.c.x) * e, ly = this.c.y + (this.c2.y - this.c.y) * e, lz = this.c.z + (this.c2.z - this.c.z) * e;
     this.cam.position.set(lx + d * Math.sin(yaw) * cp, ly + d * Math.sin(this.pitch), lz + d * Math.cos(yaw) * cp);
     this.cam.lookAt(lx, ly, lz);
-    if (this.dust) { this.dust.position.set(lx, ly, lz); this.dust.scale.setScalar(0.25 + 0.85 * e); this.dust.rotation.y = now * 0.00004; this.dust.material.opacity = Math.min(1, e * 1.4) * 0.92; }
+    if (this.dust) { this.dust.position.set(lx, ly, lz); this.dust.scale.setScalar(0.25 + 0.85 * e); this.dust.rotation.y = now * 0.00004; this.dustMats[0].opacity = Math.min(1, e * 1.4) * 0.92; this.dustMats[1].opacity = Math.min(1, e * 1.8); }
     this.r.render(this.scene, this.cam);
     var settled = REDUCE || (!this.spinOn && Math.abs(this.vy) < 1e-5 && Math.abs(this.tex - this.ex) < 1e-4 && now - this.t0 > 3000 && !this.dragging);
     if (!settled || this.hot !== null) this.start(); else { var again = function () { self.start(); }; this.el.addEventListener('pointerdown', again, { once: true }); this.el.addEventListener('pointermove', again, { once: true }); }

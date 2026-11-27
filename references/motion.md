@@ -74,7 +74,7 @@ And then:
     <div class="tc-scene__steps">
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">01 / 04</span>
-        <h2 class="tc-title-68">It ships as one unit.</h2>
+        <h2 class="tc-title-68">You sell it as one unit.</h2>
         <p class="tc-title-23 tc-muted">Two lines that say what the reader is looking at.</p>
       </div>
       <!-- three more steps -->
@@ -91,7 +91,7 @@ And then:
 - The script sets `--p` (0 to 1) on the scene and `.is-active` on the current step. Anything else you want to tie to the scene can read `--p` in CSS (`transform: scale(calc(1 + var(--p) * 0.2))`) or listen to the scene's `tc:progress` event.
 - `tc-scene__bar` is the thin orange line that shows how far the scene has come.
 - While a scene holds the screen the nav fades out, so the stage is clear. It comes back when the scene ends.
-- On the object: `data-dust` lets small square bits (orange, white, a little blue) spread around it as it comes apart, which is the Atoms & Bits feeling of something dissolving into bits. `data-highlight="Housing|Gear|Cover"` with `data-highlight-from="0.76"` turns the named parts orange from that point on: when the last chapter says "the three that cost too much", the picture must show which three.
+- On the object: `data-dust` lets a dense cloud of small squares and cubes (orange, white, grey, a little blue) spread around it as it comes apart, which is the Atoms & Bits feeling of something dissolving into bits. `data-highlight="Housing|Gear|Cover"` with `data-highlight-from="0.76"` turns the named parts orange from that point on: when the last chapter says "the three that cost too much", the picture must show which three.
 - Type is at the scale of a story, not of a product page: chapter headlines in `tc-title-68`, the two lines under them in `tc-title-23` and lighter, the one giant word wider than the screen, the one number half the screen high. Use these sizes on a story page only.
 - After a black scene, one flat orange section (`tc-section--orange`, black type) is the strongest change of key the page has. Use it once, for the one number or sentence the story was leading to.
 - `tc-scene--black` for a scene on black. On the grey page leave it off and drop `data-theme="dark"`.

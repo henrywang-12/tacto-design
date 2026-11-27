@@ -28,6 +28,8 @@ It looks in the saved logos, then in the private brand's logo source if one is d
 - **"SITE ICON ONLY":** it found the small mark, not the logo. Fine for the workspace slot in a dashboard sidebar; for anything larger get the real logo.
 - **"no logo found":** open the company's website in the browser and take the logo from the page header or the press page, save it next to your file or in `brand.local/customers/`, or ask the user for the file.
 
+An invented or anonymous customer has no logo to find: skip `logo.py`, set the name as text in the logo slot (`.tc-clogo-text`) and its initials in a dashboard's workspace tile (`tc-app__ws-logo`).
+
 Until a real file is in hand, set the customer's name as text in the logo slot (`.tc-clogo-text`) and say so. Never draw, trace or approximate a logo, and never use a different company's mark as a stand-in.
 
 Reference the file by name (`<img class="tc-clogo" src="auerberg-guss.svg" alt="Auerberg Guss">`); `inline.py` finds it in `./logos/` or `brand.local/customers/` and embeds it in the output.
