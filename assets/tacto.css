@@ -1243,8 +1243,12 @@ a.tc-card:hover { opacity: 0.6; }
 .tc-scene--black .tc-muted, .tc-scene--black .tc-dim { color: #ffffffb3; }
 .tc-nav { transition: opacity var(--tc-fast); }
 .tc-in-scene .tc-nav { opacity: 0; pointer-events: none; }
-/* one full orange section, straight after a black scene: black type on flat orange */
-.tc-section--orange { background: var(--tc-orange); color: var(--tc-black); }
+/* one full orange section, straight after a black scene: black type on orange with a little grain */
+.tc-section--orange { background: var(--tc-orange); color: var(--tc-black); isolation: isolate; }
+.tc-section--orange::before { content: ""; position: absolute; inset: 0; background-image: var(--tc-grain-dark); background-size: 200px 200px; opacity: 0.28; pointer-events: none; z-index: -1; }
+/* type at the scale of a story page: a word wider than the screen, a number half the screen high */
+.tc-giant--bleed { font-size: 19vw; line-height: 0.86; letter-spacing: -0.02em; white-space: nowrap; }
+.tc-figure--huge > b { font-size: min(44vh, 30vw); line-height: 0.86; letter-spacing: -0.03em; }
 .tc-section--orange .tc-muted, .tc-section--orange .tc-dim { color: #000000b3; }
 .tc-moving [data-tc-scene] { height: calc(var(--tc-screens, 3) * 100vh); }
 .tc-moving .tc-scene__stage { position: sticky; top: 0; height: 100vh; padding-top: 6rem; padding-bottom: 4rem; overflow: clip; }

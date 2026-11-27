@@ -131,7 +131,7 @@ window.addEventListener('load', function () { setTimeout(function () {
       else if ((hidY && dy > 3) || (hidX && dx > 3)) add('error', 'fit', 'content is cut inside ' + name(el) + ' (' + Math.max(dy, dx) + 'px hidden)');
     }
     var own = false; for (var tn = el.firstChild; tn; tn = tn.nextSibling) if (tn.nodeType === 3 && tn.nodeValue.trim()) { own = true; break; }
-    if (own && cs.overflowX === 'visible' && cs.display.indexOf('inline') !== 0 && el.clientWidth > 0 && el.scrollWidth - el.clientWidth > 2 && !el.closest('.tc-rail, .tc-marquee'))
+    if (own && cs.overflowX === 'visible' && cs.display.indexOf('inline') !== 0 && el.clientWidth > 0 && el.scrollWidth - el.clientWidth > 2 && !el.closest('.tc-rail, .tc-marquee, .tc-giant--bleed'))
       add('error', 'fit', 'text is ' + (el.scrollWidth - el.clientWidth) + 'px wider than its box and runs into what is next to it: ' + name(el) + ' (shorten it, or use fewer columns)');
     if (/auto|scroll/.test(cs.overflowX) && el.scrollWidth - el.clientWidth > 4 && !/tc-rail|tc-app__tabs/.test(cl))
       add('warn', 'fit', (el.scrollWidth - el.clientWidth) + 'px of ' + name(el).split('"')[0] + 'is off-screen at ' + vw + 'px: a screenshot or PDF will not show it (fewer columns, or class tc-app__tablewrap--wrap)');

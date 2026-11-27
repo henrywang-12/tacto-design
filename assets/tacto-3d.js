@@ -26,7 +26,8 @@
   var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var SNAP = !!window.TC_SNAP;          /* set by scripts/shoot.sh for a picture: no easing, the end state at once */
   var INTRO = !REDUCE && !SNAP;         /* parts of an assembly arrive one after another */
-  var COL = { part: 0xcfd3d8, raw: 0xe4e6ea, edge: 0x3f3f46, same: 0xd0d3d9, exists: 0x4fc79a, near: 0xf2b755, 'new': 0x6f9ff0, format: 0xffffff, diff: 0xff6414, metal: 0x4b4f57, steel: 0xa9afb8 };
+  var COL = { part: 0xcfd3d8, raw: 0xe4e6ea, edge: 0x3f3f46, same: 0xdfe2e6, exists: 0xbfeeda, near: 0xfbe2a0, 'new': 0xc6dcfd, format: 0xffffff, diff: 0xff6414, metal: 0x4f545c, steel: 0xd3d7dc };
+  var EDGE = { same: 0x8a8f98, exists: 0x059669, near: 0xd97706, 'new': 0x2563eb, format: 0xa3a8b0 };   /* a status shows as a pale fill and a coloured outline */
   var SPIN = 0.0028, PI = Math.PI;
 
   /* ---------- solids. Millimetres. x to the right, y up, z towards the viewer.
@@ -184,18 +185,18 @@
     this.status = this.multi && host.getAttribute('data-status') !== 'false' && this.list.some(function (p) { return !!p.g; });
     var metal = this.metal = (host.getAttribute('data-look') || (this.status ? 'drawing' : 'metal')) === 'metal';
     if (metal) {            /* a studio to reflect: bright above, dim below, two soft lamps. Without it metal is just dark. */
-      this.r.outputEncoding = T.sRGBEncoding; this.r.toneMapping = T.ACESFilmicToneMapping; this.r.toneMappingExposure = dark ? 1.05 : 1.25;
+      this.r.outputEncoding = T.sRGBEncoding; this.r.toneMapping = T.ACESFilmicToneMapping; this.r.toneMappingExposure = dark ? 1.25 : 1.03;
       var ev = document.createElement('canvas'); ev.width = 256; ev.height = 128;
       var e2 = ev.getContext('2d'), sky = e2.createLinearGradient(0, 0, 0, 128);
-      sky.addColorStop(0, '#ffffff'); sky.addColorStop(0.45, dark ? '#8d9199' : '#c9ccd2'); sky.addColorStop(0.55, dark ? '#2a2c31' : '#6f737b'); sky.addColorStop(1, dark ? '#0a0a0b' : '#3a3d43');
+      sky.addColorStop(0, dark ? '#e6e8eb' : '#f4f5f6'); sky.addColorStop(0.42, dark ? '#868b93' : '#b9bdc4'); sky.addColorStop(0.58, dark ? '#24262a' : '#62666e'); sky.addColorStop(1, dark ? '#050506' : '#2c2e33');
       e2.fillStyle = sky; e2.fillRect(0, 0, 256, 128);
-      e2.fillStyle = '#ffffff'; e2.filter = 'blur(6px)'; e2.fillRect(28, 18, 54, 26); e2.fillRect(150, 26, 40, 20);
+      e2.fillStyle = '#ffffff'; e2.filter = 'blur(4px)'; e2.fillRect(22, 14, 70, 22); e2.fillRect(146, 22, 52, 16); e2.fillRect(108, 46, 20, 8);
       if (dark) { e2.fillStyle = '#ff6414'; e2.globalAlpha = 0.55; e2.fillRect(196, 70, 44, 16); e2.globalAlpha = 1; }   /* a little ember low behind */
       var et = new T.CanvasTexture(ev); et.mapping = T.EquirectangularReflectionMapping; et.encoding = T.sRGBEncoding;
       var pm = new T.PMREMGenerator(this.r); scene.environment = pm.fromEquirectangular(et).texture; et.dispose(); pm.dispose();
     }
-    scene.add(new T.HemisphereLight(0xffffff, dark ? 0x4a4e57 : 0xb2b7c0, metal ? 0.35 : (dark ? 0.72 : 0.82)));
-    this.sun = new T.DirectionalLight(0xffffff, metal ? 0.9 : 0.72); scene.add(this.sun);
+    scene.add(new T.HemisphereLight(0xffffff, dark ? 0x4a4e57 : 0xb2b7c0, metal ? 0.28 : (dark ? 0.72 : 0.82)));
+    this.sun = new T.DirectionalLight(0xffffff, metal ? 0.7 : 0.72); scene.add(this.sun);
     this.fill = new T.DirectionalLight(dark ? 0xff6414 : 0xffffff, dark ? 0.3 : 0.2); scene.add(this.fill);   /* on black, a little ember from behind */
     this.yaw = -0.62; this.pitch = this.multi ? 0.36 : 0.42; this.vy = 0; this.vp = 0;
     var view = (host.getAttribute('data-view') || '').split(',').map(Number);      /* data-view="yaw,pitch" in degrees: 0,0 is the front view */
@@ -243,11 +244,12 @@
       geos.forEach(function (g) { g.computeBoundingBox(); bb.union(g.boundingBox); });
       var home = bb.getCenter(new T.Vector3()); all.union(bb);
       var metal = self.metal, col = metal ? (dark ? COL.steel : COL.metal) : (self.status && COL[p.g] !== undefined ? COL[p.g] : (self.multi ? COL.same : COL.part));
-      var mat = new T.MeshStandardMaterial({ color: self.multi && INTRO && !metal ? COL.raw : col, roughness: metal ? 0.3 : 0.6, metalness: metal ? 0.78 : 0.08, transparent: true, opacity: self.multi && INTRO ? 0 : 1 });
-      var line = metal ? null : new T.LineBasicMaterial({ color: p.g === 'format' && self.status ? 0x8a8f98 : COL.edge, transparent: true, opacity: 0.5 });
+      var mat = new T.MeshStandardMaterial({ color: self.multi && INTRO && !metal ? COL.raw : col, roughness: metal ? (dark ? 0.2 : 0.3) : 0.6, metalness: metal ? (dark ? 0.9 : 0.62) : 0.08, transparent: true, opacity: self.multi && INTRO ? 0 : 1 });
+      var edge = self.status && EDGE[p.g] !== undefined ? EDGE[p.g] : COL.edge;
+      var line = metal ? null : new T.LineBasicMaterial({ color: edge, transparent: true, opacity: 0.5 });
       geos.forEach(function (g) { g.translate(-home.x, -home.y, -home.z); var m = new T.Mesh(g, mat); m.userData.i = i; grp.add(m); meshes.push(m); if (line) grp.add(new T.LineSegments(new T.EdgesGeometry(g, 28), line)); });
       grp.position.copy(home); self.root.add(grp);
-      units.push({ grp: grp, mat: mat, line: line, home: home, col: col, box: bb.clone(), vis: self.multi && INTRO ? 0 : 1 });
+      units.push({ grp: grp, mat: mat, line: line, home: home, col: col, edge: edge, metalness: mat.metalness, roughness: mat.roughness, box: bb.clone(), vis: self.multi && INTRO ? 0 : 1 });
     });
     var c = this.c = all.getCenter(new T.Vector3()), size = all.getSize(new T.Vector3());
     this.h = size.y; this.rad = size.length() / 2; this.floor = all.min.y;
@@ -268,19 +270,20 @@
       var cv = document.createElement('canvas'); cv.width = cv.height = 128;
       var g2 = cv.getContext('2d'), fade = g2.createRadialGradient(64, 64, 6, 64, 64, 64);
       fade.addColorStop(0, this.metal ? 'rgba(0,0,0,.2)' : 'rgba(0,0,0,.24)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = fade; g2.fillRect(0, 0, 128, 128);
-      var shade = new T.Mesh(new T.PlaneGeometry(size.x * 1.9 + size.z, size.z * 1.9 + size.x * 0.6), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
+      var wide = this.metal ? 1.15 : 1.9;
+      var shade = new T.Mesh(new T.PlaneGeometry(size.x * wide + size.z * 0.6, size.z * wide + size.x * 0.4), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
       shade.rotation.x = -PI / 2; shade.position.set(c.x, this.floor - size.y * (this.multi ? 0.002 : 0.16), c.z); this.scene.add(shade);
     }
     if (this.host.hasAttribute('data-dust')) {      /* small square specks, mostly white, a few orange and blue: the "bits" */
-      var n = 520, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3), seed = 7, c3 = new T.Color(), i;
+      var n = 240, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3), seed = 7, c3 = new T.Color(), i;
       var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
       for (i = 0; i < n; i++) {
-        var a = rnd() * 2 * PI, b = Math.acos(2 * rnd() - 1), rr = this.rad2 * (0.35 + rnd() * 1.05);
+        var a = rnd() * 2 * PI, b = Math.acos(2 * rnd() - 1), rr = this.rad2 * (0.12 + Math.pow(rnd(), 1.8) * 1.15);
         pos[i * 3] = rr * Math.sin(b) * Math.cos(a); pos[i * 3 + 1] = rr * Math.cos(b) * 0.62; pos[i * 3 + 2] = rr * Math.sin(b) * Math.sin(a);
-        var pick = rnd(); c3.setHex(pick < 0.16 ? 0xff6414 : pick < 0.21 ? 0x2170ec : 0xffffff); cols[i * 3] = c3.r; cols[i * 3 + 1] = c3.g; cols[i * 3 + 2] = c3.b;
+        var pick = rnd(); c3.setHex(pick < 0.46 ? 0xff6414 : pick < 0.58 ? 0x2170ec : 0xffffff); if (this.metal) c3.convertSRGBToLinear(); cols[i * 3] = c3.r; cols[i * 3 + 1] = c3.g; cols[i * 3 + 2] = c3.b;
       }
       var dg = new T.BufferGeometry(); dg.setAttribute('position', new T.BufferAttribute(pos, 3)); dg.setAttribute('color', new T.BufferAttribute(cols, 3));
-      this.dust = new T.Points(dg, new T.PointsMaterial({ size: this.rad2 * 0.011, vertexColors: true, transparent: true, opacity: 0, depthWrite: false }));
+      this.dust = new T.Points(dg, new T.PointsMaterial({ size: this.rad2 * 0.024, vertexColors: true, transparent: true, opacity: 0, depthWrite: false }));
       this.scene.add(this.dust);
     }
     if (this.host.hasAttribute('data-grid')) { var grid = new T.GridHelper(Math.ceil(this.rad * 4 / 100) * 100, 26, dark ? 0x3a3a3a : 0xdcdcdc, dark ? 0x262626 : 0xeaeaea); grid.position.set(c.x, this.floor - 1, c.z); this.scene.add(grid); }
@@ -356,16 +359,18 @@
       u.grp.scale.setScalar(0.55 + 0.45 * u.vis);
       u.grp.position.set(u.home.x + u.out.x * self.ex, u.home.y + u.out.y * self.ex + (1 - u.vis) * self.h * 0.09, u.home.z + u.out.z * self.ex);
       var dim = self.only && p.g !== self.only, sel = !dim && (i === self.sel || i === self.hot);
-      tmp.setHex(self.hl && self.marks.indexOf(p.n) >= 0 ? COL.diff : (u.vis > 0.85 || self.metal ? u.col : COL.raw)); u.mat.color.lerp(tmp, k);
+      var lit = self.hl && self.marks.indexOf(p.n) >= 0;
+      tmp.setHex(lit ? COL.diff : (u.vis > 0.85 || self.metal ? u.col : COL.raw)); if (lit && self.metal) tmp.convertSRGBToLinear(); u.mat.color.lerp(tmp, k);
       u.mat.opacity += ((dim ? 0.045 : u.vis) - u.mat.opacity) * k; u.mat.depthWrite = u.mat.opacity > 0.5;
-      u.mat.emissive.setHex(sel ? (self.metal ? 0x3a2416 : 0x2a2a2a) : 0x000000);
-      if (u.line) { u.line.opacity = dim ? 0.05 : (sel ? 0.95 : 0.46) * u.vis; if (sel) u.line.color.setHex(0x0a0a0a); else u.line.color.setHex(p.g === 'format' && self.status ? 0x8a8f98 : COL.edge); }
+      u.mat.emissive.setHex(lit ? 0x8a2a00 : sel ? (self.metal ? 0x3a2416 : 0x2a2a2a) : 0x000000); u.mat.emissiveIntensity = lit ? 0.45 : 1;
+      u.mat.metalness = lit ? 0.15 : (self.metal ? u.metalness : 0.08); u.mat.roughness = lit ? 0.5 : u.roughness;
+      if (u.line) { u.line.opacity = dim ? 0.05 : (sel ? 0.95 : 0.46) * u.vis; u.line.color.setHex(sel ? 0x0a0a0a : u.edge); if (self.status && !dim && !sel && p.g !== 'same' && p.g !== 'format') u.line.opacity = 0.85 * u.vis; }
     });
     var e = this.ex, d = (this.dist + (this.dist2 - this.dist) * e) * (this.fit || 1), yaw = this.yaw + this.turn, cp = Math.cos(this.pitch);
     var lx = this.c.x + (this.c2.x - this.c.x) * e, ly = this.c.y + (this.c2.y - this.c.y) * e, lz = this.c.z + (this.c2.z - this.c.z) * e;
     this.cam.position.set(lx + d * Math.sin(yaw) * cp, ly + d * Math.sin(this.pitch), lz + d * Math.cos(yaw) * cp);
     this.cam.lookAt(lx, ly, lz);
-    if (this.dust) { this.dust.position.set(lx, ly, lz); this.dust.scale.setScalar(0.3 + 0.8 * e); this.dust.rotation.y = now * 0.00004; this.dust.material.opacity = Math.min(1, e * 1.3) * 0.8; }
+    if (this.dust) { this.dust.position.set(lx, ly, lz); this.dust.scale.setScalar(0.25 + 0.85 * e); this.dust.rotation.y = now * 0.00004; this.dust.material.opacity = Math.min(1, e * 1.4) * 0.92; }
     this.r.render(this.scene, this.cam);
     var settled = REDUCE || (!this.spinOn && Math.abs(this.vy) < 1e-5 && Math.abs(this.tex - this.ex) < 1e-4 && now - this.t0 > 3000 && !this.dragging);
     if (!settled || this.hot !== null) this.start(); else { var again = function () { self.start(); }; this.el.addEventListener('pointerdown', again, { once: true }); this.el.addEventListener('pointermove', again, { once: true }); }
