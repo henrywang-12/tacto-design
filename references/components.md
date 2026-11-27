@@ -20,7 +20,7 @@ Rectangles, 4px radius, mono capitals 14px weight 400, padding 14px 18px. Black 
 | `tc-btn--header`, `tc-btn--quiet` | The two small nav buttons (padding 10px 12px) |
 | `tc-btn--orange` | The one action on a black section or inside an agent card. Hover: white. |
 | `tc-btn--white` | On a photograph, an ember panel or the closing band. Hover: orange. |
-| `tc-btn--glass` | On a photograph: black at 20%, 30px blur, 0.5px white hairline, with a play triangle. "Watch the mission". |
+| `tc-btn--glass` | On a photograph: black at 20%, 30px blur, 0.5px white hairline, with a play triangle. "Watch the two-minute film". |
 | `tc-btn--sm` | Inside agent cards and dense UI (12px, padding 8px 10px) |
 
 One primary action per view. Never a pill, never a gradient, never an icon-only button except the round arrows (`tc-arrow`, 40px, 1px outline) of a rail or slider.

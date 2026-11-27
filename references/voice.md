@@ -48,7 +48,7 @@ Not this voice: jokes, puns, questions as headlines, "imagine if", first-person 
 ## Numbers
 
 - Currency first, compact: €1BN, €38B+, €2M, €700k, €310,000. Percent directly after the figure: 80%, 3.1%. A plus sign for "more than": 120+, 1.4M+.
-- One number per card, very large, with a short label above or a two-line mono caption beside it ("of procurement volume saved").
+- One number per card, very large, with a short label above or a two-line mono caption beside it ("lower cost on drawing parts").
 - Always say what it counts and, in stories, over what time: "savings in 8 months".
 - Targets make numbers stronger: "3.2% against a target of 2.5%".
 - Estimates are marked as estimates in the foot of a document. Never present an invented figure as a customer result.
@@ -65,11 +65,11 @@ Not this voice: jokes, puns, questions as headlines, "imagine if", first-person 
 | Line under a mega title | what the agents do, one sentence, dimmed | Agents compare every price you pay with what the part should cost. |
 | Feature line | name, then verb-first sentence with the mechanism | Order confirmations: agents read each one, match it to the order and only come to you when something deviates. |
 | Agent message | what was read, then the finding (orange), then a question or the next step | 412 documents were read. **9 certificates expire within 90 days.** Request renewals? |
-| Button | verb + object, 2 to 3 words, mono capitals | Book a demo · Watch the mission · Draft the reply · View success story |
+| Button | verb + object, 2 to 3 words, mono capitals | Book a demo · Watch the film · Draft the reply · Read the story |
 | Counter label | noun phrase | Spend under management · Registered suppliers |
 | Quote | first person, one concrete before and after, one number if there is one | "For the first time we know what a part should cost before the supplier tells us." |
-| Closing band | three words, one per line | Building / Stronger / Procurement |
-| Trust badges | 2 to 4 words each, mono | Hosted in the EU · ISO 27001 · Built for industry |
+| Closing band | three words, one per line | Know / every / price. |
+| Trust badges | 2 to 4 words each, mono | Hosted in the EU · Works with your ERP · Live in eleven weeks |
 
 ## Patterns by format
 
@@ -94,11 +94,11 @@ Not this voice: jokes, puns, questions as headlines, "imagine if", first-person 
 Read from the German home page. The voice is the same; these are the differences:
 
 - "Einkauf" in running text (20 times against 3 for "Procurement"). The brand terms stay English: Industrial AI, Frontier AI, Supplier Intelligence, Sourcing, Cost Breakdowns. "KI-Agenten", not "AI Agents".
-- Feature headlines are infinitive phrases with the object first: "Lieferanten effizient steuern", "Einsparpotenziale sofort realisieren". The hero keeps the short-sentence rhythm: claim, then three fragments.
+- Feature headlines are infinitive phrases with the object first, for example "Preise sicher verhandeln" or "Zeichnungsteile richtig bepreisen". The hero keeps the short-sentence rhythm: claim, then three fragments.
 - Concrete nouns: Artikel, Warengruppen, Lieferanten, Zeichnungsteile, Rahmenverträge, Preiserhöhung, Einsparpotenzial, Vergabeentscheidung.
 - Numbers: "700.000 €" and "3,1 %" in running text and quotes; compact in big figures: "€1Mrd", "€2Mio", "€500k", "10 Mio+", "80%".
 - Formal address ("Sie"), used rarely: most sentences have no address at all. Spaced en dashes. No exclamation marks.
-- Labels: "Im Einsatz bei 120 Herstellern", "Technologieführer", "Gespräch vereinbaren".
+- Labels: "120 Hersteller kaufen mit Northdesk ein", "Für Hersteller gemacht", "Termin buchen".
 - In mono capitals an "ß" becomes "SS" ("GROSSKÜCHENTECHNIK"). That is correct German. If a customer's name contains an ß, make sure the name also appears once in normal case (a title, a lockup, the running text).
 
 Set `<html lang="de">` so numbers count up in the German format and long words hyphenate.
@@ -107,8 +107,8 @@ Set `<html lang="de">` so numbers count up in the German format and long words h
 
 | Generic | In this voice |
 |---|---|
-| We're thrilled to announce our powerful new AI platform that seamlessly empowers procurement teams! | Industrial AI for procurement. Built for thousands of parts. |
-| Our solution can help you potentially reduce costs. | Reduce material costs. Agents compare every price you pay with what the part should cost. |
+| We're thrilled to announce our powerful new AI platform that seamlessly empowers procurement teams! | Every part you buy has a fair price. Agents work it out. |
+| Our solution can help you potentially reduce costs. | Pay what a part should cost. Agents compare every price you pay with it. |
 | Leverage cutting-edge automation to supercharge your workflows. | Agents take over the operational work. Buyers decide. |
 | Customers love us. | "For the first time we know what a part should cost before the supplier tells us." Jana Petrovic, head of purchasing |
 | Significant savings were achieved. | €310,000 saved in 9 months. €95,000 of it through better negotiations. |

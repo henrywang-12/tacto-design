@@ -14,7 +14,7 @@ The order of the home page, top to bottom. Reorder or drop sections, but keep ea
 4. **Proof on black**: label and claim on the left, the logo wall (6 columns), then four counters with dots.
 5. **Statement**: the "Powered by" gradient label, a headline of four short parallel sentences, then a mission card beside a photograph with a glass play button.
 6. **The wide card**: two mega titles in opposite corners, each with a dimmed line and a proof card, and the agent orbit between them.
-7. **A story**: photograph with "View success story", beside a card with an award chip, a title and three lines.
+7. **A story**: photograph with "Read the story", beside a card with an award chip, a title and three lines.
 8. **Impact**: a full-height photograph or ember streak with the black impact card on the right.
 9. **Agents on black**: glowing chip, centred head, orange button, the outline word behind, agent cards one below the other, trust badges.
 10. **Industries**: label, headline, round arrows, a rail of tiles with line drawings.

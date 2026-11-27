@@ -99,7 +99,7 @@ Both ship in `assets/fonts/`.
 | Outline word | `tc-outline-word` | 267 / 1 | 300 | 0 | No fill, 1px stroke at 20 to 30% white, on black |
 | Digit as picture | `tc-numeral` | 300 | 300 | -0.03em | One digit on the orange card |
 | Figure | `tc-figure b` | 116 / 1 | 200 | 0 | The number in the impact card |
-| Mega title | `tc-mega` | 70 / 1 | 300 | -1.6px | Inside one wide card ("Reduce material costs") |
+| Mega title | `tc-mega` | 70 / 1 | 300 | -1.6px | Inside one wide card ("Pay what a part should cost") |
 | Page title, large | `tc-title-90`, `tc-title-68` | 90 / 1, 68 / 1.1 | 300 | -1.6px | Product page hero, module names |
 | Display: hero and every section headline | `tc-display` | 45 / 1.2 | 300 | -1.12px (hero -0.8px, on black -1.6px) | Two to three lines. Often two-tone. |
 | Large quote | `tc-quote`, `tc-title-36` | 36 / 1.2 | 300 | -1.12px | |

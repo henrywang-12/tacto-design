@@ -155,8 +155,7 @@ window.addEventListener('load', function () { setTimeout(function () {
       if (a.el === b.el || a.el.contains(b.el) || b.el.contains(a.el)) continue;
       if (a.inline && b.inline && a.el.parentElement === b.el.parentElement) continue;
       var ox = Math.min(a.r.right, b.r.right) - Math.max(a.r.left, b.r.left), oy = Math.min(a.r.bottom, b.r.bottom) - Math.max(a.r.top, b.r.top);
-      if (ox < 6 || oy < 0.5 * Math.min(a.r.height, b.r.height)) continue;
-      if (ox * oy < 0.3 * Math.min(a.r.width * a.r.height, b.r.width * b.r.height)) continue;
+      if (ox < 10 || oy < 0.5 * Math.min(a.r.height, b.r.height)) continue;      /* 10px of one line inside another is a collision, however large the other is */
       add('error', 'fit', 'text lies on top of other text at ' + vw + 'px wide: ' + name(a.el) + ' and ' + name(b.el)); hits++; break;
     }
   })();

@@ -1248,8 +1248,8 @@ a.tc-card:hover { opacity: 0.6; }
 .tc-section--orange::before { content: ""; position: absolute; inset: 0; background-image: var(--tc-grain-dark); background-size: 200px 200px; opacity: 0.28; pointer-events: none; z-index: -1; }
 /* type at the scale of a story page: a word wider than the screen, a number half the screen high */
 .tc-giant--bleed { font-size: 19vw; line-height: 0.86; letter-spacing: -0.02em; white-space: nowrap; }
-.tc-figure--huge > b { font-size: min(44vh, 30vw); line-height: 0.86; letter-spacing: -0.03em; }
-.tc-section--orange .tc-muted, .tc-section--orange .tc-dim { color: #000000b3; }
+.tc-figure--huge > b { font-size: min(40vh, 21vw); line-height: 0.86; letter-spacing: -0.03em; }
+.tc-section--orange .tc-muted, .tc-section--orange .tc-dim { color: #000000d9; }
 .tc-moving [data-tc-scene] { height: calc(var(--tc-screens, 3) * 100vh); }
 .tc-moving .tc-scene__stage { position: sticky; top: 0; height: 100vh; padding-top: 6rem; padding-bottom: 4rem; overflow: clip; }
 .tc-moving .tc-scene__bar { display: block; }

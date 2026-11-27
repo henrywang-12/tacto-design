@@ -51,7 +51,7 @@ The site never shows a full screenshot. It shows a fragment: one table with five
 The site's photographs are of industry: a hand holding a cast part against a caliper, a production cell behind a mesh fence, a worker with a badge on the shop floor, a laptop on a workbench, the founders on a grey sofa. Cool or neutral light, shallow depth, greys and steel blues with the occasional orange or teal object. No stock handshakes, no people pointing at screens, no rendered robots.
 
 - Full bleed in its box with `object-fit: cover`, 8px radius, no border.
-- Text on a photograph sits bottom left on a dark fade (`tc-photo--fade`), or in a glass button in the middle ("Watch the mission").
+- Text on a photograph sits bottom left on a dark fade (`tc-photo--fade`), or in a glass button in the middle ("Watch the two-minute film").
 - A customer's logo on their photograph: white, bottom left, about 100px wide.
 - You cannot generate or download such a photograph here. Use `tc-photo tc-photo--empty` with a mono caption that says which picture belongs there ("Photo: casting cell at the Verden plant"), or use an ember panel instead, and tell the user what to supply.
 

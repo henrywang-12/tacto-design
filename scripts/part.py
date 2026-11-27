@@ -24,7 +24,7 @@ def main() -> int:
         print(__doc__)
         return 2
     spec, out = args[0], Path(args[1]).resolve()
-    if Path(spec).is_file():
+    if not spec.lstrip().startswith(("[", "{")) and len(spec) < 1024 and Path(spec).is_file():
         spec = Path(spec).read_text(encoding="utf-8").strip()
     if not out.parent.is_dir():
         print(f"part.py: the output folder does not exist: {out.parent}", file=sys.stderr)
