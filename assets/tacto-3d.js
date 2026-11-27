@@ -5,13 +5,17 @@
    <button data-tc-explode="#m">Exploded view</button>           pulls the assembly apart and back
    <div class="tc-part" data-tc-part="unit" data-explode="scroll"></div>   comes apart as the page scrolls
 
-   Every part has the same look: soft grey solids, dark edge lines, light from above, a soft shadow
-   on the floor. Do not change materials or lights per page: the sameness is the point.
+   Two looks, both fixed here, never restyled per page:
+   metal    dark gunmetal with a soft studio reflection and no outlines, as in the Geometry card of
+            Tacto's product. The default for a part and for an assembly without status colours.
+   drawing  light grey solids with dark edge lines. Used when an assembly shows status colours
+            (the colours need the pale ground), or with data-look="drawing".
 
    Attributes: data-tc-part = a name from TcParts.names(), or JSON (see references/3d.md) ·
    data-explode = "scroll" | a number 0..1 · data-explode-range="0.15,0.7" (part of the scene's
    progress over which it comes apart) · data-turn="1.6" (radians it turns across the scene) ·
-   data-spin="false" · data-status="false" (all grey) · data-grid (floor grid) · data-theme="dark"
+   data-spin="false" · data-status="false" (no status colours) · data-look="metal" | "drawing" ·
+   data-grid (floor grid) · data-theme="dark"
    Script: el.tcPart.explode(0..1 | true | false) · .spin(bool) · .filter('new' | null) ·
    .pick(i | null) · event "tc:pick" with detail { index, name, status }. No other dependencies. */
 (function () {
@@ -19,7 +23,7 @@
   var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   var SNAP = !!window.TC_SNAP;          /* set by scripts/shoot.sh for a picture: no easing, the end state at once */
   var INTRO = !REDUCE && !SNAP;         /* parts of an assembly arrive one after another */
-  var COL = { part: 0xcfd3d8, raw: 0xe4e6ea, edge: 0x3f3f46, same: 0xc9cdd3, exists: 0x10b981, near: 0xf59e0b, 'new': 0x3b82f6, format: 0xffffff, diff: 0xff6414 };
+  var COL = { part: 0xcfd3d8, raw: 0xe4e6ea, edge: 0x3f3f46, same: 0xd0d3d9, exists: 0x4fc79a, near: 0xf2b755, 'new': 0x6f9ff0, format: 0xffffff, diff: 0xff6414, metal: 0x4b4f57, steel: 0xa9afb8 };
   var SPIN = 0.0028, PI = Math.PI;
 
   /* ---------- solids. Millimetres. x to the right, y up, z towards the viewer.
@@ -27,7 +31,8 @@
      ['c', r, length, x, y, z, axis]            cylinder along 'z' (default), 'x' or 'y'
      ['t', R, r, length, x, y, z, axis, holes]  tube or drilled disc; holes [[x, y, r], ...] in its face
      ['l', a, b, thickness, depth, x, y, z]     angle profile, legs a and b
-     ['p', [[x, y], ...], depth, x, y, z, holes]  any outline, extruded along z, with round holes */
+     ['p', [[x, y], ...], depth, x, y, z, holes, axis]  any outline, extruded along z (or 'x', 'y'), with round holes
+     Rotations are in radians. Holes are given in the outline's own coordinates. */
   function turn(geo, axis) { if (axis === 'x') geo.rotateY(PI / 2); else if (axis === 'y') geo.rotateX(-PI / 2); return geo; }
   function solid(d) {
     var T = window.THREE, geo, sh, i;
@@ -50,7 +55,7 @@
       sh = new T.Shape(); sh.moveTo(d[1][0][0], d[1][0][1]);
       for (i = 1; i < d[1].length; i++) sh.lineTo(d[1][i][0], d[1][i][1]);
       sh.closePath(); (d[6] || []).forEach(function (h) { hole(sh, h[0], h[1], h[2]); });
-      geo = new T.ExtrudeGeometry(sh, { depth: d[2], bevelEnabled: false, curveSegments: 28 }); geo.translate(d[3] || 0, d[4] || 0, (d[5] || 0) - d[2] / 2);
+      geo = new T.ExtrudeGeometry(sh, { depth: d[2], bevelEnabled: false, curveSegments: 28 }); geo.translate(0, 0, -d[2] / 2); turn(geo, d[7]); geo.translate(d[3] || 0, d[4] || 0, d[5] || 0);
     }
     return geo;
   }
@@ -171,12 +176,24 @@
     this.r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     var scene = this.scene = new T.Scene(), el = this.el = this.r.domElement;
     this.cam = new T.PerspectiveCamera(30, 2, 1, 200000);
-    scene.add(new T.HemisphereLight(0xffffff, dark ? 0x4a4e57 : 0xb2b7c0, dark ? 0.72 : 0.82));
-    this.sun = new T.DirectionalLight(0xffffff, 0.72); scene.add(this.sun);
-    this.fill = new T.DirectionalLight(dark ? 0xff6414 : 0xffffff, dark ? 0.3 : 0.2); scene.add(this.fill);   /* on black, a little ember from behind */
     this.root = new T.Group(); scene.add(this.root);
     this.multi = this.list.length > 1;
     this.status = this.multi && host.getAttribute('data-status') !== 'false' && this.list.some(function (p) { return !!p.g; });
+    var metal = this.metal = (host.getAttribute('data-look') || (this.status ? 'drawing' : 'metal')) === 'metal';
+    if (metal) {            /* a studio to reflect: bright above, dim below, two soft lamps. Without it metal is just dark. */
+      this.r.outputEncoding = T.sRGBEncoding; this.r.toneMapping = T.ACESFilmicToneMapping; this.r.toneMappingExposure = dark ? 1.05 : 1.25;
+      var ev = document.createElement('canvas'); ev.width = 256; ev.height = 128;
+      var e2 = ev.getContext('2d'), sky = e2.createLinearGradient(0, 0, 0, 128);
+      sky.addColorStop(0, '#ffffff'); sky.addColorStop(0.45, dark ? '#8d9199' : '#c9ccd2'); sky.addColorStop(0.55, dark ? '#2a2c31' : '#6f737b'); sky.addColorStop(1, dark ? '#0a0a0b' : '#3a3d43');
+      e2.fillStyle = sky; e2.fillRect(0, 0, 256, 128);
+      e2.fillStyle = '#ffffff'; e2.filter = 'blur(6px)'; e2.fillRect(28, 18, 54, 26); e2.fillRect(150, 26, 40, 20);
+      if (dark) { e2.fillStyle = '#ff6414'; e2.globalAlpha = 0.55; e2.fillRect(196, 70, 44, 16); e2.globalAlpha = 1; }   /* a little ember low behind */
+      var et = new T.CanvasTexture(ev); et.mapping = T.EquirectangularReflectionMapping; et.encoding = T.sRGBEncoding;
+      var pm = new T.PMREMGenerator(this.r); scene.environment = pm.fromEquirectangular(et).texture; et.dispose(); pm.dispose();
+    }
+    scene.add(new T.HemisphereLight(0xffffff, dark ? 0x4a4e57 : 0xb2b7c0, metal ? 0.35 : (dark ? 0.72 : 0.82)));
+    this.sun = new T.DirectionalLight(0xffffff, metal ? 0.9 : 0.72); scene.add(this.sun);
+    this.fill = new T.DirectionalLight(dark ? 0xff6414 : 0xffffff, dark ? 0.3 : 0.2); scene.add(this.fill);   /* on black, a little ember from behind */
     this.yaw = -0.62; this.pitch = this.multi ? 0.36 : 0.42; this.vy = 0; this.vp = 0;
     this.spinOn = host.getAttribute('data-spin') !== 'false' && !REDUCE;
     this.ex = 0; this.tex = 0; this.hot = null; this.sel = null; this.only = null; this.on = false; this.raf = 0; this.t0 = 0; this.scroll = 0; this.turn = 0;
@@ -219,10 +236,10 @@
       var geos = p.s.map(solid), bb = new T.Box3(), grp = new T.Group();
       geos.forEach(function (g) { g.computeBoundingBox(); bb.union(g.boundingBox); });
       var home = bb.getCenter(new T.Vector3()); all.union(bb);
-      var col = self.status && COL[p.g] !== undefined ? COL[p.g] : (self.multi ? COL.same : COL.part);
-      var mat = new T.MeshStandardMaterial({ color: self.multi && INTRO ? COL.raw : col, roughness: 0.6, metalness: 0.08, transparent: true, opacity: self.multi && INTRO ? 0 : 1 });
-      var line = new T.LineBasicMaterial({ color: p.g === 'format' && self.status ? 0x8a8f98 : COL.edge, transparent: true, opacity: 0.5 });
-      geos.forEach(function (g) { g.translate(-home.x, -home.y, -home.z); var m = new T.Mesh(g, mat); m.userData.i = i; grp.add(m); meshes.push(m); grp.add(new T.LineSegments(new T.EdgesGeometry(g, 28), line)); });
+      var metal = self.metal, col = metal ? (dark ? COL.steel : COL.metal) : (self.status && COL[p.g] !== undefined ? COL[p.g] : (self.multi ? COL.same : COL.part));
+      var mat = new T.MeshStandardMaterial({ color: self.multi && INTRO && !metal ? COL.raw : col, roughness: metal ? 0.3 : 0.6, metalness: metal ? 0.78 : 0.08, transparent: true, opacity: self.multi && INTRO ? 0 : 1 });
+      var line = metal ? null : new T.LineBasicMaterial({ color: p.g === 'format' && self.status ? 0x8a8f98 : COL.edge, transparent: true, opacity: 0.5 });
+      geos.forEach(function (g) { g.translate(-home.x, -home.y, -home.z); var m = new T.Mesh(g, mat); m.userData.i = i; grp.add(m); meshes.push(m); if (line) grp.add(new T.LineSegments(new T.EdgesGeometry(g, 28), line)); });
       grp.position.copy(home); self.root.add(grp);
       units.push({ grp: grp, mat: mat, line: line, home: home, col: col, box: bb.clone(), vis: self.multi && INTRO ? 0 : 1 });
     });
@@ -237,14 +254,14 @@
     });
     this.units = units; this.meshes = meshes;
     this.c2 = apart.getCenter(new T.Vector3()); this.rad2 = apart.getSize(new T.Vector3()).length() / 2;
-    this.dist = this.rad / Math.sin(15 * PI / 180) * (this.multi ? 1.0 : 1.04);
+    this.dist = this.rad / Math.sin(15 * PI / 180) * (this.multi ? 1.0 : 0.94);
     this.dist2 = this.rad2 / Math.sin(15 * PI / 180) * 0.74;
     this.sun.position.set(c.x + this.rad * 0.5, c.y + this.rad * 1.6, c.z + this.rad * 1.1);
     this.fill.position.set(c.x - this.rad * 1.3, c.y + this.rad * 0.4, c.z - this.rad * 0.9);
     if (!dark) {                                   /* a soft shadow on the floor, no hard edge */
       var cv = document.createElement('canvas'); cv.width = cv.height = 128;
       var g2 = cv.getContext('2d'), fade = g2.createRadialGradient(64, 64, 6, 64, 64, 64);
-      fade.addColorStop(0, 'rgba(0,0,0,.24)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = fade; g2.fillRect(0, 0, 128, 128);
+      fade.addColorStop(0, this.metal ? 'rgba(0,0,0,.2)' : 'rgba(0,0,0,.24)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = fade; g2.fillRect(0, 0, 128, 128);
       var shade = new T.Mesh(new T.PlaneGeometry(size.x * 1.9 + size.z, size.z * 1.9 + size.x * 0.6), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
       shade.rotation.x = -PI / 2; shade.position.set(c.x, this.floor - size.y * (this.multi ? 0.002 : 0.16), c.z); this.scene.add(shade);
     }
@@ -321,10 +338,10 @@
       u.grp.scale.setScalar(0.55 + 0.45 * u.vis);
       u.grp.position.set(u.home.x + u.out.x * self.ex, u.home.y + u.out.y * self.ex + (1 - u.vis) * self.h * 0.09, u.home.z + u.out.z * self.ex);
       var dim = self.only && p.g !== self.only, sel = !dim && (i === self.sel || i === self.hot);
-      tmp.setHex(u.vis > 0.85 ? u.col : COL.raw); u.mat.color.lerp(tmp, k);
+      tmp.setHex(u.vis > 0.85 || self.metal ? u.col : COL.raw); u.mat.color.lerp(tmp, k);
       u.mat.opacity += ((dim ? 0.045 : u.vis) - u.mat.opacity) * k; u.mat.depthWrite = u.mat.opacity > 0.5;
-      u.mat.emissive.setHex(sel ? 0x2a2a2a : 0x000000);
-      u.line.opacity = dim ? 0.05 : (sel ? 0.95 : 0.46) * u.vis; if (sel) u.line.color.setHex(0x0a0a0a); else u.line.color.setHex(p.g === 'format' && self.status ? 0x8a8f98 : COL.edge);
+      u.mat.emissive.setHex(sel ? (self.metal ? 0x3a2416 : 0x2a2a2a) : 0x000000);
+      if (u.line) { u.line.opacity = dim ? 0.05 : (sel ? 0.95 : 0.46) * u.vis; if (sel) u.line.color.setHex(0x0a0a0a); else u.line.color.setHex(p.g === 'format' && self.status ? 0x8a8f98 : COL.edge); }
     });
     var e = this.ex, d = (this.dist + (this.dist2 - this.dist) * e) * (this.fit || 1), yaw = this.yaw + this.turn, cp = Math.cos(this.pitch);
     var lx = this.c.x + (this.c2.x - this.c.x) * e, ly = this.c.y + (this.c2.y - this.c.y) * e, lz = this.c.z + (this.c2.z - this.c.z) * e;

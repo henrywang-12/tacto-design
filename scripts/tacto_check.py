@@ -221,7 +221,12 @@ window.addEventListener('load', function () { setTimeout(function () {
   var loaded = {}; try { document.fonts.forEach(function (f) { if (f.status === 'loaded') loaded[f.family.replace(/["']/g, '').toLowerCase()] = 1; }); } catch (e) {}
   ['aspekta', 'inter'].forEach(function (f) { if (used[f] && !loaded[f]) add('warn', 'look', f.charAt(0).toUpperCase() + f.slice(1) + ' did not load: the text is set in a fallback font (run scripts/inline.py, which embeds the fonts)'); });
 
-  var res = { vw: vw, lang: document.documentElement.lang || '', sheets: document.querySelectorAll('.tc-sheet').length, slides: document.querySelectorAll('.tc-slide').length, covers: document.querySelectorAll('.tc-cover').length,
+  /* slots a template leaves open: a photograph, a customer logo, a film thumbnail, a portrait */
+  var slots = { photo: document.querySelectorAll('.tc-photo--empty').length, logo: 0, film: 0, portrait: 0 };
+  [].forEach.call(document.querySelectorAll('[data-tc-slot], .tc-logos > *'), function (el) { if (el.hasAttribute('data-tc-slot') || (!el.querySelector('img, svg') && /^(customer|customer logo|logo)$/i.test((el.textContent || '').trim()))) slots.logo++; });
+  [].forEach.call(document.querySelectorAll('.tc-btn__thumb'), function (el) { if (!el.querySelector('img, video') && el.getClientRects().length) slots.film++; });
+  [].forEach.call(document.querySelectorAll('.tc-person__img'), function (el) { if (!el.querySelector('img') && !/url\(/.test(getComputedStyle(el).backgroundImage) && el.getClientRects().length) slots.portrait++; });
+  var res = { slots: slots, vw: vw, lang: document.documentElement.lang || '', sheets: document.querySelectorAll('.tc-sheet').length, slides: document.querySelectorAll('.tc-slide').length, covers: document.querySelectorAll('.tc-cover').length,
               wordmarks: wmNames, text: visibleText().slice(0, 200000), findings: out };
   var packed = btoa(unescape(encodeURIComponent(JSON.stringify(res))));
   document.documentElement.setAttribute('data-tc-check', packed);
@@ -367,6 +372,15 @@ def main() -> int:
             left = [w for w in res["wordmarks"] if w.lower() in ours]
             if left:
                 findings.append(("error", "rendered", "brand", f"{len(left)} text wordmark(s) left where the {brand} logo belongs: run scripts/inline.py (without --no-brand)"))
+        # a template leaves slots open; something that is handed over may not (the skill's own files are exempt, like sample names)
+        if own:
+            slots = res.get("slots") or {}
+            for key, text in (("photo", "empty photo slot(s) (tc-photo--empty): put a real photograph in, use a panel instead (tc-ember, tc-noir, scripts/panel.py), or remove the block"),
+                              ("logo", "logo tile(s) without a logo: fetch the real one (scripts/logo.py) or remove the tile; only customers who agreed"),
+                              ("film", "film button(s) without a thumbnail picture: add the still, or use a plain button"),
+                              ("portrait", "empty portrait square(s) next to a name: add the person's photo or remove the square")):
+                if slots.get(key):
+                    findings.append(("error", "rendered", "slots", f"{slots[key]} {text}"))
         # source
         srep = tacto_lint.lint_file(src, set())
         for level, line, kind, msg in srep.items:

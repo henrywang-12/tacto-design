@@ -26,7 +26,7 @@ Never mix them on one screen. The check enforces it: Inter or the product colour
 
 ## Motion and 3D: possible, not the default
 
-- **3D parts.** A part or an assembly in 3D always looks the same: soft grey solids, dark edge lines, turning slowly, draggable and throwable, with an exploded view for assemblies. Write `<div class="tc-part" data-tc-part="housing"></div>` and load `tacto-3d.js`; never write three.js, materials or lights yourself. Read `references/3d.md`.
+- **3D parts.** A part or an assembly in 3D always looks the same: dark metal under soft studio light as in Tacto's product (pale with drawn edges when an assembly shows status colours), turning slowly, draggable and throwable, with an exploded view for assemblies. Write `<div class="tc-part" data-tc-part="housing"></div>` and load `tacto-3d.js`; never write three.js, materials or lights yourself. Read `references/3d.md`.
 - **Scroll scenes.** A page that tells one story may pin one stage and let chapters change while an object comes apart, as Tacto's Atoms & Bits page does. One scene per page, never in a dashboard, document or deck, and the still version must read well on its own. Read the "Scroll scenes" part of `references/motion.md` before building one.
 - Everything else keeps the quiet motion: things rise once and fade in. If you are unsure whether a page needs a scene, it does not.
 
@@ -143,6 +143,7 @@ references/components.md    anatomy and measurements of each component
 references/imagery.md       ember, veil, noir, fragments, photography, line drawings, charts, covers
 references/dashboard.md     the product screen, measured from Tacto's product film: Inter, greys, icons, cards, table, chart
 references/3d.md            3D parts and assemblies: the look, the parts that ship, your own geometry, exploded view
+references/samples.md       the invented company, customers and figures the templates share, and how to keep your own facts consistent
 references/motion.md        what moves, how far, how long
 references/voice.md         how the copy is written, with patterns per format, English and German
 references/formats.md       recipe per deliverable, and PPTX / DOCX / email / image translations

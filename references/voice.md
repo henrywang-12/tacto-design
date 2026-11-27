@@ -15,11 +15,11 @@ An industrial company that happens to build AI. It speaks to heads of purchasing
 1. **Short declaratives, in a row.** A headline is two or three very short sentences, each with a full stop: a claim, then what follows from it. "You set the direction. Agents do the work." The first sentence is set in black, the rest dimmed.
 2. **The buyer is the hero, the AI is the hand.** The person decides, sets strategy, keeps control. The agents read, compare, prepare, flag and execute. Never "our AI replaces".
 3. **Claims are big and stated flat.** "The leading", "the best buyers", "for good reason". No hedging words (maybe, can help to, aims to). The proof stands directly next to the claim: a customer's logo, a quote, a number.
-4. **Every number has a currency or a percent, and a customer.** "€310,000 in 9 months", "3.2% savings", "75% time saved". A number without an owner is not used.
+4. **Every number has a currency or a percent, and a customer.** "€310,000 in 9 months", "3.4% lower material costs", "75% time saved". A number without an owner is not used.
 5. **Industry is named with pride.** Manufacturing, plants, parts, machines, supply chains, Europe, Germany. Procurement is where profit is made, not a back office.
-6. **Parallel structure.** Three or four items built the same way: "Strong data. Strong buyers. Strong supply chains." Feature lines start with a verb or name the outcome first, then say how: "Negotiate with facts: the agent compares 20,000 indices and prepares the cost breakdown."
+6. **Parallel structure.** Three or four items built the same way: "Read everything. Price every part. Negotiate with proof." Feature lines start with a verb or name the outcome first, then say how: "Negotiate with facts: the agent compares 20,000 indices and prepares the cost breakdown."
 7. **Before and after.** A story is told as "without us" and "with us", then the proven impact as a short list that starts with the numbers.
-8. **Labels are tiny and factual.** Above every headline sits a mono line in capitals that says what this is or who says so: "Used by 120+ manufacturers", "Made in Germany", "Success story", "Powered by ...".
+8. **Labels are tiny and factual.** Above every headline sits a mono line in capitals that says what this is or who says so: "120 manufacturers buy with Northdesk", "Made in Germany", "Success story", "Powered by ...".
 
 ## Words
 
@@ -67,7 +67,7 @@ Not this voice: jokes, puns, questions as headlines, "imagine if", first-person 
 | Agent message | what was read, then the finding (orange), then a question or the next step | 412 documents were read. **9 certificates expire within 90 days.** Request renewals? |
 | Button | verb + object, 2 to 3 words, mono capitals | Book a demo · Watch the mission · Draft the reply · View success story |
 | Counter label | noun phrase | Spend under management · Registered suppliers |
-| Quote | first person, one concrete before and after, one number if there is one | "For drawing parts we never had a price basis we could trust. Today we know what a part should cost." |
+| Quote | first person, one concrete before and after, one number if there is one | "For the first time we know what a part should cost before the supplier tells us." |
 | Closing band | three words, one per line | Building / Stronger / Procurement |
 | Trust badges | 2 to 4 words each, mono | Hosted in the EU · ISO 27001 · Built for industry |
 
@@ -75,7 +75,7 @@ Not this voice: jokes, puns, questions as headlines, "imagine if", first-person 
 
 **Landing page.** Chip, two-tone hero, two buttons. Then the product on a panel with a centred head. Then proof on black: customers and four counters. Then the mission as a statement and tall cards. Then one customer story, one impact number with a quote, the agents, industries, more voices, and three giant words to close.
 
-**Success story.** Label "Success story". Title: customer + achievement + how ("Auerberg Guss saves 3.2% with AI agents"). The headline figure with its time frame. Then four labelled parts: customer description (who they are, in facts: products, sites, employees, export share), without us (what they wanted and what stood in the way), with us (what now happens, which module, what the agents do), proven impact (three to five results, each starting with the number). One quote from a named person.
+**Success story.** Label "Success story". Title: customer + achievement + how ("Auerberg Guss finds €310,000 in drawing parts"). The headline figure with its time frame. Then four labelled parts: customer description (who they are, in facts: products, sites, employees, export share), without us (what they wanted and what stood in the way), with us (what now happens, which module, what the agents do), proven impact (three to five results, each starting with the number). One quote from a named person.
 
 **Customer POV / one-pager.** Title with the outcome and a time frame for this customer. Their facts in a strip. What we see, what it costs them today (with their own numbers where known, otherwise marked as estimates). Three dated steps. The offer in one sentence. No adjectives about us.
 
@@ -98,7 +98,7 @@ Read from the German home page. The voice is the same; these are the differences
 - Concrete nouns: Artikel, Warengruppen, Lieferanten, Zeichnungsteile, Rahmenverträge, Preiserhöhung, Einsparpotenzial, Vergabeentscheidung.
 - Numbers: "700.000 €" and "3,1 %" in running text and quotes; compact in big figures: "€1Mrd", "€2Mio", "€500k", "10 Mio+", "80%".
 - Formal address ("Sie"), used rarely: most sentences have no address at all. Spaced en dashes. No exclamation marks.
-- Labels: "Im Einsatz bei 400+ produzierenden Unternehmen", "Technologieführer", "Gespräch vereinbaren".
+- Labels: "Im Einsatz bei 120 Herstellern", "Technologieführer", "Gespräch vereinbaren".
 - In mono capitals an "ß" becomes "SS" ("GROSSKÜCHENTECHNIK"). That is correct German. If a customer's name contains an ß, make sure the name also appears once in normal case (a title, a lockup, the running text).
 
 Set `<html lang="de">` so numbers count up in the German format and long words hyphenate.
@@ -110,7 +110,7 @@ Set `<html lang="de">` so numbers count up in the German format and long words h
 | We're thrilled to announce our powerful new AI platform that seamlessly empowers procurement teams! | Industrial AI for procurement. Built for thousands of parts. |
 | Our solution can help you potentially reduce costs. | Reduce material costs. Agents find savings across parts, suppliers and markets. |
 | Leverage cutting-edge automation to supercharge your workflows. | Agents take over the operational work. Buyers decide. |
-| Customers love us. | "Today we know what a part should cost before we pick up the phone." Jana Petrovic, head of purchasing |
+| Customers love us. | "For the first time we know what a part should cost before the supplier tells us." Jana Petrovic, head of purchasing |
 | Significant savings were achieved. | €310,000 saved in 9 months. €95,000 of it through better negotiations. |
 | Get started today! | Book a demo |
 | AI-POWERED SUPPLIER MANAGEMENT (typed in capitals) | Supplier management (the stylesheet sets the label in mono capitals) |

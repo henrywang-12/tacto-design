@@ -1281,7 +1281,7 @@ a.tc-card:hover { opacity: 0.6; }
 .tc-app .tc-part__key--same { background: var(--tca-control); } .tc-app .tc-part__key--exists { background: var(--tca-green-mark); }
 .tc-app .tc-part__key--near { background: var(--tca-amber-mark); } .tc-app .tc-part__key--new { background: var(--tca-blue-bar); }
 .tc-app .tc-part__key--format { background: var(--tca-white); border-color: var(--tca-control); } .tc-app .tc-part__key--diff { background: var(--tc-orange); }
-.tc-app__viewer { position: relative; border: 1px solid var(--tca-line); border-radius: 12px; background: var(--tca-hover); overflow: hidden; }
+.tc-app__viewer { position: relative; border: 1px solid var(--tca-line); border-radius: 12px; background: var(--tca-white); overflow: hidden; }
 .tc-app__viewer > .tc-part { --tc-part-h: 320px; }
 .tc-app__viewer--tall > .tc-part { --tc-part-h: 440px; }
 .tc-app__viewer-title { position: absolute; z-index: 1; left: 16px; top: 12px; font-size: 16px; line-height: 24px; font-weight: 500; pointer-events: none; }
