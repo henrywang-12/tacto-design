@@ -4,6 +4,7 @@
     python3 scripts/inline.py in.html out.html
     python3 scripts/inline.py in.html out.html --no-brand
     python3 scripts/inline.py in.html out.html --allow-missing   (missing images only warn)
+    python3 scripts/inline.py in.html out.html --keep-comments   (leave build comments in)
 
 What it does:
 1. Inlines tacto.css, with its fonts, and the scripts a page links: tacto.js,
@@ -17,6 +18,9 @@ What it does:
 3. Embeds local images (<img src="customer.svg">, url(...) in styles) as data
    URIs, so customer logos travel inside the file. Bare filenames are also
    looked up in ./logos/ and in brand.local/customers/.
+
+4. Removes the build comments (template instructions, the stylesheet's commentary), so the
+   file that is handed over says nothing about how it was made.
 
 Then it checks its own work. It exits with code 1, and says why, when the
 result would be broken once sent: tacto.css still linked, a logo placeholder left
@@ -196,6 +200,29 @@ def embed_fonts(css: str, css_dir: Path, app: bool = True) -> str:
     return re.sub(r"""url\(\s*(["']?)(fonts/[^"')]+\.(?:woff2?|ttf|otf))\1\s*\)""", font, css)
 
 
+def strip_comments(text: str) -> str:
+    """The file that is handed over carries no build notes: template instructions, the stylesheet's
+    commentary and the scripts' headers stay behind. Kept: the lint markers around a logo, licence
+    notices, and one short marker per block so the lint still recognises the system's own code."""
+    def style(m):
+        body = re.sub(r"/\*.*?\*/", "", m.group(2), flags=re.S)
+        body = re.sub(r"\n\s*\n+", "\n", body)
+        return m.group(1) + "\n/* tc-style */" + body + m.group(3) if "--tc-black" in body else m.group(0)
+
+    def script(m):
+        body = m.group(2)
+        if "tacto-design:" in body[:200] or "tacto.js" in body[:200]:
+            body = "\n/* tc-script */\n" + re.sub(r"^\s*/\*.*?\*/", "", body, count=1, flags=re.S).lstrip()
+        return m.group(1) + body + m.group(3)
+
+    text = re.sub(r"(<style\b[^>]*>)(.*?)(</style>)", style, text, flags=re.S)
+    text = re.sub(r"(<script\b[^>]*>)(.*?)(</script>)", script, text, flags=re.S)
+    parts = re.split(r"(<script\b.*?</script>|<style\b.*?</style>)", text, flags=re.S)
+    for i in range(0, len(parts), 2):          # only between scripts and styles
+        parts[i] = re.sub(r"<!--(?!\s*tc-lint-(?:off|on)\b).*?-->\n?", "", parts[i], flags=re.S)
+    return "".join(parts)
+
+
 def main() -> int:
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if len(args) != 2:
@@ -262,6 +289,8 @@ def main() -> int:
         else:
             problems.append(note)
 
+    if "--keep-comments" not in sys.argv:
+        text = strip_comments(text)
     out.write_text(text, encoding="utf-8")
     print(f"{out}: {counts['css']} stylesheet(s), {counts['js']} script(s), {n_img} image(s) embedded, {brand_note}, {len(text) // 1024} KB")
     if problems:

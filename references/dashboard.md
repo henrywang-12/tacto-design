@@ -91,7 +91,7 @@ Lucide (lucide.dev, ISC licence), the set the product uses. 146 of them ship in 
 
 ## KPI card — `tc-app__kpi`
 
-Title (14px medium), a period chip (`tc-app__period`, 11px on grey), the figure in blue at 30px semibold with its change in 14px beside it, then last period in grey with its own chip. Numbers are written out in full with separators (€8,432,015, not €8.4M). On a record page the period chip sits to the right of the title (`tc-app__kpi-head`). A value that is words ("30 days net") uses `tc-app__kpi-value--text`. Cards sit in `tc-app__kpis`, at least 220px wide.
+Title (14px medium), a period chip (`tc-app__period`, 11px on grey), the figure in blue at 30px semibold with its change in 14px beside it, then last period in grey with its own chip. Numbers are written out in full with separators (€91,754,300, not €91.8M). On a record page the period chip sits to the right of the title (`tc-app__kpi-head`). A value that is words ("30 days net") uses `tc-app__kpi-value--text`. Cards sit in `tc-app__kpis`, at least 220px wide.
 
 ## Market index card — `tc-app__index`
 

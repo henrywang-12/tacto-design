@@ -15,6 +15,7 @@
    data-explode = "scroll" | a number 0..1 · data-explode-range="0.15,0.7" (part of the scene's
    progress over which it comes apart) · data-turn="1.6" (radians it turns across the scene) ·
    data-spin="false" · data-status="false" (no status colours) · data-look="metal" | "drawing" ·
+   data-view="-35,22" (where it is seen from at first: turn and tilt in degrees; 0,0 is the front) ·
    data-grid (floor grid) · data-theme="dark" · data-highlight="Housing|Gear" (parts shown in orange;
    with data-explode="scroll" add data-highlight-from="0.75": only from that point of the scene on) ·
    data-dust (fine specks that spread as it comes apart; for one story object on black, nowhere else)
@@ -197,6 +198,8 @@
     this.sun = new T.DirectionalLight(0xffffff, metal ? 0.9 : 0.72); scene.add(this.sun);
     this.fill = new T.DirectionalLight(dark ? 0xff6414 : 0xffffff, dark ? 0.3 : 0.2); scene.add(this.fill);   /* on black, a little ember from behind */
     this.yaw = -0.62; this.pitch = this.multi ? 0.36 : 0.42; this.vy = 0; this.vp = 0;
+    var view = (host.getAttribute('data-view') || '').split(',').map(Number);      /* data-view="yaw,pitch" in degrees: 0,0 is the front view */
+    if (view.length === 2 && !isNaN(view[0]) && !isNaN(view[1])) { this.yaw = view[0] * PI / 180; this.pitch = Math.min(1.45, view[1] * PI / 180); }
     this.spinOn = host.getAttribute('data-spin') !== 'false' && !REDUCE;
     this.ex = 0; this.tex = 0; this.hot = null; this.sel = null; this.only = null; this.on = false; this.raf = 0; this.t0 = 0; this.scroll = 0; this.turn = 0;
     this.marks = (host.getAttribute('data-highlight') || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean); this.hl = this.marks.length > 0 && !host.hasAttribute('data-highlight-from');

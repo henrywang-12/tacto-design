@@ -12,12 +12,12 @@ An industrial company that happens to build AI. It speaks to heads of purchasing
 
 ## Eight habits
 
-1. **Short declaratives, in a row.** A headline is two or three very short sentences, each with a full stop: a claim, then what follows from it. "You set the direction. Agents do the work." The first sentence is set in black, the rest dimmed.
+1. **Short declaratives, in a row.** A headline is two or three very short sentences, each with a full stop: a claim, then what follows from it. "You set the targets. Agents do the legwork." The first sentence is set in black, the rest dimmed.
 2. **The buyer is the hero, the AI is the hand.** The person decides, sets strategy, keeps control. The agents read, compare, prepare, flag and execute. Never "our AI replaces".
-3. **Claims are big and stated flat.** "The leading", "the best buyers", "for good reason". No hedging words (maybe, can help to, aims to). The proof stands directly next to the claim: a customer's logo, a quote, a number.
+3. **Claims are big and stated flat.** Superlatives stand without hedging ("the leading", "the best"). No hedging words (maybe, can help to, aims to). The proof stands directly next to the claim: a customer's logo, a quote, a number.
 4. **Every number has a currency or a percent, and a customer.** "€310,000 in 9 months", "3.4% lower material costs", "75% time saved". A number without an owner is not used.
 5. **Industry is named with pride.** Manufacturing, plants, parts, machines, supply chains, Europe, Germany. Procurement is where profit is made, not a back office.
-6. **Parallel structure.** Three or four items built the same way: "Read everything. Price every part. Negotiate with proof." Feature lines start with a verb or name the outcome first, then say how: "Negotiate with facts: the agent compares 20,000 indices and prepares the cost breakdown."
+6. **Parallel structure.** Three or four items built the same way: "Read everything. Price every part. Negotiate with proof." Feature lines start with a verb or name the outcome first, then say how: "Price defence: the agent checks each increase against the indices that drive the part."
 7. **Before and after.** A story is told as "without us" and "with us", then the proven impact as a short list that starts with the numbers.
 8. **Labels are tiny and factual.** Above every headline sits a mono line in capitals that says what this is or who says so: "120 manufacturers buy with Northdesk", "Made in Germany", "Success story", "Powered by ...".
 
@@ -57,12 +57,12 @@ Not this voice: jokes, puns, questions as headlines, "imagine if", first-person 
 
 | Element | Pattern | Example (written for this file) |
 |---|---|---|
-| Mono label above a headline | who or what, 2 to 5 words | Used by 120+ manufacturers · Made for manufacturing · Success story |
-| Hero headline | claim. then two or three dimmed fragments | Industrial AI for procurement in manufacturing. *Built for thousands of parts. Automating what takes time.* |
-| Section headline | one confident sentence, sometimes two | Buyers who run real plants work with us. For good reason. |
-| Card title | outcome in plain words | The profit of a manufacturer is decided in procurement. |
-| Mega title in a wide card | verb + object, 2 to 3 words | Reduce material costs · Work strategically |
-| Line under a mega title | what the agents do, one sentence, dimmed | Agents find savings across parts, suppliers and markets. |
+| Mono label above a headline | who or what, 2 to 5 words | 120 manufacturers buy with Northdesk · Made for manufacturers · Success story |
+| Hero headline | claim. then two or three dimmed fragments | Every part you buy has a fair price. *Agents work it out from your drawings, your orders and the market.* |
+| Section headline | one confident sentence, sometimes two | The companies behind these plants know what their parts should cost. |
+| Card title | outcome in plain words | Most of a machine's cost is bought, not made. |
+| Mega title in a wide card | verb + object, 2 to 3 words | Pay what a part should cost · Give buyers their week back |
+| Line under a mega title | what the agents do, one sentence, dimmed | Agents compare every price you pay with what the part should cost. |
 | Feature line | name, then verb-first sentence with the mechanism | Order confirmations: agents read each one, match it to the order and only come to you when something deviates. |
 | Agent message | what was read, then the finding (orange), then a question or the next step | 412 documents were read. **9 certificates expire within 90 days.** Request renewals? |
 | Button | verb + object, 2 to 3 words, mono capitals | Book a demo · Watch the mission · Draft the reply · View success story |
@@ -108,7 +108,7 @@ Set `<html lang="de">` so numbers count up in the German format and long words h
 | Generic | In this voice |
 |---|---|
 | We're thrilled to announce our powerful new AI platform that seamlessly empowers procurement teams! | Industrial AI for procurement. Built for thousands of parts. |
-| Our solution can help you potentially reduce costs. | Reduce material costs. Agents find savings across parts, suppliers and markets. |
+| Our solution can help you potentially reduce costs. | Reduce material costs. Agents compare every price you pay with what the part should cost. |
 | Leverage cutting-edge automation to supercharge your workflows. | Agents take over the operational work. Buyers decide. |
 | Customers love us. | "For the first time we know what a part should cost before the supplier tells us." Jana Petrovic, head of purchasing |
 | Significant savings were achieved. | €310,000 saved in 9 months. €95,000 of it through better negotiations. |

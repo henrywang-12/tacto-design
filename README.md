@@ -139,7 +139,7 @@ The values were read from the live site in November 2026: computed styles, the s
 
 This is an independent study of a public website's design language, made for learning and for producing your own on-brand work. It is not affiliated with, sponsored by or endorsed by Tacto (Tacto Technology GmbH). "Tacto" and its logo are trademarks of their owner.
 
-The repository contains no Tacto logo, image or illustration. The templates use a fictional company (Northdesk), fictional customers and original text; every figure, name and quote in them is invented. The voice guide quotes a handful of two- or three-word phrases from the site to show a pattern, and nothing longer; the four-point spark is this project's own drawing of a common sparkle shape. Do not use this skill to pass anything off as an official Tacto communication, and do not present invented customers, testimonials or figures as real.
+The repository contains no Tacto logo, image or illustration. The templates use a fictional company (Northdesk), fictional customers and original text; every figure, name and quote in them is invented. The voice guide names a few two-word phrases and German labels from the site to show a pattern, and nothing longer; the four-point spark is this project's own drawing of a common sparkle shape. Do not use this skill to pass anything off as an official Tacto communication, and do not present invented customers, testimonials or figures as real.
 
 If you represent Tacto and want something changed or removed, open an issue.
 

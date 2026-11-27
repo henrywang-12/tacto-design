@@ -127,7 +127,7 @@ def lint_scripts(rep, text, allow):
     built = 0
     for m in re.finditer(r"<script\b[^>]*>(.*?)</script>", text, flags=re.S | re.I):
         js, base = m.group(1), m.start(1)
-        if "tacto.js" in js[:200] or "tacto-design:" in js[:200] or "Three.js Authors" in js[:200] or not js.strip():
+        if "tacto.js" in js[:200] or "tacto-design:" in js[:200] or "/* tc-script */" in js[:40] or "Three.js Authors" in js[:200] or not js.strip():
             continue      # the skill's own scripts and the vendored three.js
         for c in re.finditer(r"#([0-9a-fA-F]{6})\b", js):
             check_color(rep, base + c.start(), c.group(1).lower(), 1, c.group(0), allow)
@@ -291,7 +291,7 @@ def lint_copy(rep, text, is_html, check_samples=True, lang=""):
         for m in re.finditer(r"(?<![\w-])" + re.escape(word) + r"(?![\w-])", low):
             rep.add("warn", m.start(), "copy", f"hype word '{word}': say what it does, with a number")
     if check_samples:
-        for m in re.finditer(r"northdesk(?:\.example)?|hollweg(?: präzision)?|auerberg(?: guss)?|lindqvist|jana petrovic|brenner zerspanung|feldmark stanztechnik|sentec antriebe|your company", low):
+        for m in re.finditer(r"northdesk(?:\.example)?|hollweg(?: präzision)?|auerberg(?: guss)?|lindqvist|jana petrovic|brenner zerspanung|feldmark stanztechnik|kessler drehteile|sentec antriebe|your company", low):
             rep.add("error", m.start(), "copy", f"template sample name '{body[m.start():m.end()]}' left in: use the real company, customer and people")
     for m in re.finditer(r"iso(?:/iec)?\s?(?:27001|9001|14001)|\bsoc\s?2\b|\btisax\b|gdpr[- ]compliant|dsgvo[- ]konform|\bcertified\b|\bzertifiziert\b|of the year\b|des jahres\b", low):
         rep.add("warn", m.start(), "copy", f"certificate, compliance or award claim “{body[m.start():m.end()]}”: keep it only if the sender really holds it; never invent one")
@@ -324,7 +324,7 @@ def lint_file(path: Path, allow) -> Report:
         styled = re.sub(r"<script\b.*?</script>", blank, text, flags=re.S | re.I)
         app = bool(re.search(r"class\s*=\s*[\"'][^\"']*\btc-app\b", text))
         for off, css in css_contexts(styled, suffix):
-            trusted = "tacto.css" in css[:400] and "the Tacto-style design language" in css[:400]
+            trusted = ("tacto.css" in css[:400] and "the Tacto-style design language" in css[:400]) or "/* tc-style */" in css[:40]
             lint_css(rep, off, css, allow, trusted or path.resolve() == SKILL_ROOT / "assets" / "tacto.css", app)
     if suffix in (".html", ".htm"):
         lint_scripts(rep, text, allow)
