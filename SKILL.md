@@ -24,6 +24,12 @@ Tacto's product does not look like its website, and this skill carries both.
 
 Never mix them on one screen. The check enforces it: Inter or the product colours outside `.tc-app` fail, and so do Aspekta-era rules broken inside it (weight 700, unknown icons).
 
+## Motion and 3D: possible, not the default
+
+- **3D parts.** A part or an assembly in 3D always looks the same: soft grey solids, dark edge lines, turning slowly, draggable and throwable, with an exploded view for assemblies. Write `<div class="tc-part" data-tc-part="housing"></div>` and load `tacto-3d.js`; never write three.js, materials or lights yourself. Read `references/3d.md`.
+- **Scroll scenes.** A page that tells one story may pin one stage and let chapters change while an object comes apart, as Tacto's Atoms & Bits page does. One scene per page, never in a dashboard, document or deck, and the still version must read well on its own. Read the "Scroll scenes" part of `references/motion.md` before building one.
+- Everything else keeps the quiet motion: things rise once and fade in. If you are unsure whether a page needs a scene, it does not.
+
 ## Workflow
 
 0. **Know who is speaking.** If `brand.local/brand.md` exists in this skill folder, read it now: it names the company everything is made for by default and holds its logo. If the work is for or about a customer, read `references/cobranding.md` and fetch their logo with `python3 scripts/logo.py "<Customer>" [their-domain]` (without a domain it only looks in the saved logos). If the user names a different sender, that company is the sender: write its name in the wordmark and use its logo file if they give you one. Only wordmarks that carry the private brand's own name or a template sample name are turned into the private brand's logo.
@@ -40,7 +46,9 @@ Never mix them on one screen. The check enforces it: Inter or the product colour
 | You are making | Start from | Read |
 |---|---|---|
 | Landing page, website, any marketing section | `assets/templates/landing.html` | `components.md`, `imagery.md`, `motion.md` |
-| Dashboard, admin, internal tool, app screen | `assets/templates/dashboard.html` (home), `dashboard-detail.html` (record page: tabs, KPIs, chart, table) | `dashboard.md` |
+| Dashboard, admin, internal tool, app screen | `assets/templates/dashboard.html` (home), `dashboard-detail.html` (record page: tabs, KPIs, chart, table), `dashboard-article.html` (a part in 3D and its assembly) | `dashboard.md` |
+| Anything with a part or an assembly in 3D (prototype, article page, BOM, comparison) | `assets/templates/dashboard-article.html` | `3d.md` |
+| A page that tells one story with scroll (launch, event, opening of a prototype) | `assets/templates/scroll-story.html` | `motion.md` (scroll scenes), `3d.md` |
 | Product fragment inside a page, deck or post | stage and agent blocks in `landing.html` | `dashboard.md` (fragments), `imagery.md` |
 | Success story, case study | `assets/templates/case-study.html` | `formats.md`, `voice.md` |
 | Customer POV, one-pager, brief, value report (A4) | `assets/templates/pov.html` | `formats.md`, `voice.md` |
@@ -125,13 +133,16 @@ Look at the rendered result and answer these honestly:
 assets/tacto.css            tokens and every component (the source of truth for values)
 assets/tacto.js             reveal on scroll, count-up numbers, tabs, rail arrows
 assets/fonts/               Aspekta 250/300/400 and Geist Mono, with their OFL licences
-assets/templates/           landing, dashboard, dashboard-detail, case-study, pov, deck, article, cover, cover-landscape
+assets/templates/           landing, scroll-story, dashboard, dashboard-detail, dashboard-article, case-study, pov, deck, article, cover, cover-landscape
+assets/tacto-scroll.js      scroll scenes: a pinned stage, chapters, progress (web pages only)
+assets/tacto-3d.js          the 3D part viewer: one look for every part, drag, throw, exploded view (needs assets/vendor/three.min.js)
 assets/icons/               146 Lucide icons for the product screen (scripts/icons.py lists them)
 assets/maps/                country outlines for the supplier map (scripts/map.py)
 references/foundations.md   the artboard, colour, type, spacing, radius, elevation, breakpoints
 references/components.md    anatomy and measurements of each component
 references/imagery.md       ember, veil, noir, fragments, photography, line drawings, charts, covers
 references/dashboard.md     the product screen, measured from Tacto's product film: Inter, greys, icons, cards, table, chart
+references/3d.md            3D parts and assemblies: the look, the parts that ship, your own geometry, exploded view
 references/motion.md        what moves, how far, how long
 references/voice.md         how the copy is written, with patterns per format, English and German
 references/formats.md       recipe per deliverable, and PPTX / DOCX / email / image translations

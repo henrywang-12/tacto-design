@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bearing housing, stepped - Drawing Parts</title>
+<!-- The product screen, third template: an article (a drawing part) with its 3D geometry, rebuilt from
+     the article page in Tacto's product film, plus the assembly it belongs to. Use it whenever a
+     screen shows a part or an assembly in 3D.
+     Replace the workspace (Auerberg Guss), the maker's wordmark (Northdesk), the part and every
+     number. All figures here are invented.
+     Top to bottom, each part reusable on its own:
+     sidebar (same as dashboard.html) · breadcrumb · title with the one black button ·
+     Geometry: the part turns slowly, drag it, throw it · price paid, the target with the orange
+     spark (the AI's number), recent orders · key and value rail ·
+     the assembly: 148 parts coloured by what is known about each one, hover and click a part,
+     the keys filter, "Exploded view" pulls it apart.
+     Every 3D part has the same look and it comes from assets/tacto-3d.js: do not restyle it.
+     Parts and your own geometry: references/3d.md.
+     Then: python3 scripts/inline.py this.html out.html && python3 scripts/tacto_check.py out.html -->
+<link rel="stylesheet" href="../tacto.css">
+</head>
+<body>
+<div class="tc-app">
+
+  <aside class="tc-app__side">
+    <div class="tc-app__ws">
+      <span class="tc-app__ws-logo"><b>AG</b></span>
+      <span class="tc-app__ws-name">Auerberg Guss</span>
+      <i data-tc-icon="chevron-down"></i>
+      <i data-tc-icon="panel-left"></i>
+    </div>
+    <nav class="tc-app__nav">
+      <a class="tc-app__item tc-app__item--quiet" href="#"><i data-tc-icon="search"></i>Search</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="layout-grid"></i>Dashboard</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="square-check-big"></i>Tasks</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="bell"></i>Notifications<span class="tc-app__count">73</span></a>
+
+      <div class="tc-app__label">Supply chain data<i data-tc-icon="chevron-down"></i></div>
+      <a class="tc-app__item" href="#"><i data-tc-icon="building-2"></i>Suppliers</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="user-round"></i>Contacts</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="scan-barcode"></i>Articles</a>
+      <div class="tc-app__sub">
+        <a class="tc-app__item is-active" href="#">Drawing Parts</a>
+      </div>
+      <a class="tc-app__item" href="#"><i data-tc-icon="tag"></i>Categories</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="network"></i>Supply Sources</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="receipt-text"></i>Transactions<i data-tc-icon="chevron-right"></i></a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="file-lock-2"></i>Documents</a>
+
+      <div class="tc-app__label">Tools<i data-tc-icon="chevron-down"></i></div>
+      <a class="tc-app__item" href="#"><i data-tc-icon="list-checks"></i>Order confirmations</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="chart-no-axes-column"></i>Analytics</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="piggy-bank"></i>Savings<i data-tc-icon="chevron-right"></i></a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="handshake"></i>RFQs</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="drafting-compass"></i>Drawing Analysis</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="list-tree"></i>BOM<i data-tc-icon="chevron-right"></i></a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="arrow-left-right"></i>Requests</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="clipboard-check"></i>Evaluations</a>
+      <a class="tc-app__item" href="#"><i data-tc-icon="bot"></i>Agents</a>
+    </nav>
+    <div class="tc-app__side-foot">
+      <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+      <span>·</span>
+      <i data-tc-icon="bug"></i>
+      <a class="tc-app__help" href="#" aria-label="Help"><i data-tc-icon="circle-help"></i></a>
+    </div>
+  </aside>
+
+  <main class="tc-app__main">
+    <header class="tc-app__top">
+      <nav class="tc-app__crumbs">
+        <a href="#">Articles</a><i data-tc-icon="chevron-right"></i><a href="#">Drawing Parts</a><i data-tc-icon="chevron-right"></i>
+        <i data-tc-icon="scan-barcode" class="is-green"></i><small>30458371</small>Bearing housing, stepped
+      </nav>
+      <div class="tc-app__actions">
+        <a class="tc-app__btn tc-app__btn--outline tc-app__btn--sm" href="#">EUR <i data-tc-icon="chevron-down"></i></a>
+      </div>
+    </header>
+
+    <div class="tc-app__content">
+      <div class="tc-app__page">
+
+        <div class="tc-app__head">
+          <h1 class="tc-app__h tc-app__h--page">Bearing housing, stepped, 6 holes · Ø94 × 88 · 1.4301</h1>
+          <a class="tc-app__btn" href="#"><i data-tc-icon="send"></i>Start RFQ</a>
+        </div>
+
+        <div class="tc-app__grid">
+          <!-- the part itself: data-tc-part names it. It turns on its own and can be dragged and thrown. -->
+          <section class="tc-app__section" style="grid-column: span 5;">
+            <div>
+              <h2 class="tc-app__card-title">Geometry</h2>
+              <p class="tc-app__lead">Rotate the model to inspect the part.</p>
+            </div>
+            <div class="tc-app__viewer">
+              <div class="tc-part" data-tc-part="housing" aria-label="3D model of the bearing housing"></div>
+              <div class="tc-app__viewer-bar">
+                <a class="tc-app__btn tc-app__btn--outline tc-app__btn--sm" href="#"><i data-tc-icon="file"></i>All drawings</a>
+              </div>
+            </div>
+          </section>
+
+          <!-- what was paid, and the AI's target: the spark and the orange belong to the AI's number only -->
+          <section class="tc-app__section" style="grid-column: span 4;">
+            <div>
+              <h2 class="tc-app__card-title">Procurement price</h2>
+              <p class="tc-app__lead">Current paid price per unit.</p>
+            </div>
+            <p class="tc-app__price">179.20 € <small>per piece</small></p>
+            <p class="tc-app__target">Target <i data-tc-icon="sparkles" class="is-orange"></i> 170.20 € <span class="tc-app__pill tc-app__pill--amber">-5%</span></p>
+            <h3 class="tc-app__group"><i data-tc-icon="receipt-text"></i>Recent transactions</h3>
+            <ul class="tc-app__rows">
+              <li><span><b>31 May 2026</b><small>15 units</small></span><b>179.20 €</b></li>
+              <li><span><b>13 Feb 2026</b><small>18 units</small></span><b>179.05 €</b></li>
+              <li><span><b>28 Oct 2025</b><small>30 units</small></span><b>178.90 €</b></li>
+              <li><span><b>13 Jul 2025</b><small>25 units</small></span><b>178.75 €</b></li>
+            </ul>
+          </section>
+
+          <aside class="tc-app__rail" style="grid-column: span 3;">
+            <div>
+              <h3 class="tc-app__group">Article information <i data-tc-icon="chevron-down"></i></h3>
+              <dl class="tc-app__kv">
+                <dt>Article number</dt><dd>30458371</dd>
+                <dt>Commodity group</dt><dd><span class="tc-app__chip"><i data-tc-icon="tag" class="is-pink"></i><span>Castings</span></span></dd>
+                <dt>Net weight</dt><dd>5.15 kg</dd>
+                <dt>Dimensions</dt><dd>Ø94 × 88 mm</dd>
+              </dl>
+            </div>
+            <div>
+              <h3 class="tc-app__group">Drawing features <i data-tc-icon="chevron-down"></i></h3>
+              <dl class="tc-app__kv">
+                <dt>Material</dt><dd>1.4301</dd>
+                <dt>Raw material</dt><dd>Bar</dd>
+                <dt>Manufacturing</dt><dd>Turning, drilling</dd>
+                <dt>Tolerance</dt><dd>ISO 2768-mK</dd>
+                <dt>Setups</dt><dd>2</dd>
+              </dl>
+            </div>
+          </aside>
+        </div>
+
+        <!-- the assembly. Parts are coloured by what is known about each one; the keys are filters. -->
+        <section class="tc-app__section">
+          <div>
+            <h2 class="tc-app__h">Where it is used</h2>
+            <p class="tc-app__lead">Folding station FS-2291. Point at a part to see its name, click a key to show only that group.</p>
+          </div>
+          <div class="tc-app__viewer tc-app__viewer--tall">
+            <div class="tc-part" id="asm" data-tc-part="station" data-grid aria-label="3D model of the folding station with 148 drawing parts"></div>
+            <div class="tc-app__viewer-title"><span id="asm-name">Folding station</span><small>148 drawing parts</small></div>
+            <div class="tc-app__viewer-bar">
+              <div class="tc-app__keys">
+                <button type="button" data-tc-filter="same" data-tc-target="#asm"><i class="tc-part__key tc-part__key--same"></i>Carried over 41</button>
+                <button type="button" data-tc-filter="exists" data-tc-target="#asm"><i class="tc-part__key tc-part__key--exists"></i>Exists already 4</button>
+                <button type="button" data-tc-filter="near" data-tc-target="#asm"><i class="tc-part__key tc-part__key--near"></i>Nearly the same 12</button>
+                <button type="button" data-tc-filter="new" data-tc-target="#asm"><i class="tc-part__key tc-part__key--new"></i>New 68</button>
+                <button type="button" data-tc-filter="format" data-tc-target="#asm"><i class="tc-part__key tc-part__key--format"></i>Format parts 23</button>
+              </div>
+              <button type="button" class="tc-app__btn tc-app__btn--outline tc-app__btn--sm" data-tc-explode="#asm" aria-pressed="false"><i data-tc-icon="boxes"></i>Exploded view</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+<script src="../vendor/three.min.js"></script>
+<script src="../tacto-3d.js"></script>
+<script>
+  /* a clicked part reports itself: show its name over the model */
+  document.getElementById('asm').addEventListener('tc:pick', function (ev) {
+    document.getElementById('asm-name').textContent = ev.detail.name || 'Folding station';
+  });
+</script>
+</body>
+</html>

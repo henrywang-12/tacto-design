@@ -10,6 +10,10 @@ Unofficial. Not affiliated with or endorsed by Tacto. See [Disclaimer](#disclaim
 |---|---|
 | ![Dashboard](docs/dashboard.jpg) | ![Success story](docs/case-study.jpg) |
 
+| Part in 3D with its exploded assembly | A page that tells a story with scroll |
+|---|---|
+| ![Article page with 3D part viewer](docs/dashboard-article.jpg) | ![Scroll scene: an assembly comes apart](docs/scroll-story.jpg) |
+
 | Deck | Customer POV | Cover |
 |---|---|---|
 | ![Deck](docs/deck.jpg) | ![POV](docs/pov.jpg) | ![Cover](docs/cover.jpg) |
@@ -57,12 +61,14 @@ SKILL.md                    the rules that carry the likeness, the workflow, the
 assets/tacto.css            every token and component (drop-in stylesheet)
 assets/tacto.js             reveal on scroll, count-up numbers, tabs, rail arrows
 assets/fonts/               Aspekta and Geist Mono (SIL Open Font License)
-assets/templates/           landing · dashboard · dashboard-detail · case-study · pov · deck · article · cover · cover-landscape
+assets/templates/           landing · scroll-story · dashboard · dashboard-detail · dashboard-article · case-study · pov · deck · article · cover · cover-landscape
+assets/tacto-scroll.js · assets/tacto-3d.js   scroll scenes and the 3D part viewer (three.js r128 in assets/vendor/)
 assets/icons/ · assets/maps/  Lucide icons and map outlines for the product screen
 references/foundations.md   the artboard, colour, type scale, spacing, radius, elevation
 references/components.md    anatomy and measurements of each component
 references/imagery.md       ember, veil and noir panels, fragments, photography, line drawings, charts
 references/dashboard.md     the product screen, measured from Tacto's product film
+references/3d.md            3D parts: one look, drag and throw, exploded view
 references/motion.md        what moves, how far, how long
 references/voice.md         how the copy is written, English and German
 references/formats.md       recipe per deliverable; PPTX, DOCX, email and image translations

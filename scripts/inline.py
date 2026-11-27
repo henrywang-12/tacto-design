@@ -6,8 +6,9 @@
     python3 scripts/inline.py in.html out.html --allow-missing   (missing images only warn)
 
 What it does:
-1. Inlines tacto.css, with its fonts, and tacto.js (found next to the input, or in
-   this skill's assets/).
+1. Inlines tacto.css, with its fonts, and the scripts a page links: tacto.js,
+   tacto-scroll.js, tacto-3d.js and three.min.js (found next to the input, in this
+   skill's assets/ or in assets/vendor/).
 2. Applies the private brand, if this installation has one (brand.local/brand.json):
    every wordmark that carries the brand's name or a template sample name, and
    every <span data-tc-logo></span>, becomes the real logo. Dark and white
@@ -50,7 +51,7 @@ def outside_comments(text: str, fn) -> str:
 
 def find(ref: str, base: Path) -> Path:
     ref = ref.split("?")[0].split("#")[0]
-    for candidate in (base / ref, ASSETS / Path(ref).name):
+    for candidate in (base / ref, ASSETS / Path(ref).name, ASSETS / "vendor" / Path(ref).name):
         if candidate.is_file():
             return candidate
     raise FileNotFoundError(f"cannot find {ref} (looked next to the input and in {ASSETS})")
@@ -229,7 +230,7 @@ def main() -> int:
 
     def bundle(part):
         part = re.sub(r"""<link\b[^>]*\bhref\s*=\s*(["'])([^"']*\btacto\.css(?:[?#][^"']*)?)\1[^>]*>""", swap("css", "<style>", "</style>"), part)
-        return re.sub(r"""<script\b[^>]*\bsrc\s*=\s*(["'])([^"']*\btacto\.js(?:[?#][^"']*)?)\1[^>]*>\s*</script>""", swap("js", "<script>", "</script>"), part)
+        return re.sub(r"""<script\b[^>]*\bsrc\s*=\s*(["'])([^"']*\b(?:tacto(?:-scroll|-3d)?|three\.min)\.js(?:[?#][^"']*)?)\1[^>]*>\s*</script>""", swap("js", "<script>", "</script>"), part)
     text = outside_comments(text, bundle)
 
     brand_note = "no private brand"

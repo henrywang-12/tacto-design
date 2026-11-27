@@ -12,6 +12,7 @@
 #   scripts/shoot.sh "demo.html?demo=1" out.png 1440 full   # query strings work for local files
 #   scripts/shoot.sh deck.html deck.pdf             # PDF, one slide per page (uses the file's @page size)
 #   scripts/shoot.sh pov.html pov.pdf               # PDF, A4; also writes pov-page-1.png ... to look at
+#   TC_MOTION=1 scripts/shoot.sh story.html step2.png 1440 900 1800   # motion on, scrolled 1800px down: a scroll scene mid-way
 #
 # Exit codes: 0 rendered and fine · 1 nothing was rendered · 2 bad input ·
 # 3 the PDF was written but a page or slide does not fit (read the message).
@@ -20,9 +21,9 @@
 # the PDF mode counts pages, checks every sheet and slide for overflow, and
 # writes a picture of each PDF page. Read those pictures.
 set -uo pipefail
-usage="usage: shoot.sh <file.html|url> <out.png|out.pdf> [width] [height|full]"
+usage="usage: shoot.sh <file.html|url> <out.png|out.pdf> [width] [height|full] [scroll-px]"
 if [ $# -lt 2 ]; then echo "$usage" >&2; exit 2; fi
-src="$1"; out="$2"; w="${3:-1440}"; h="${4:-900}"
+src="$1"; out="$2"; w="${3:-1440}"; h="${4:-900}"; scroll="${5:-}"
 here="$(cd "$(dirname "$0")" && pwd)"
 
 chrome=""
@@ -52,7 +53,11 @@ out_dir="$(dirname "$out")"
 if ! mkdir -p "$out_dir" 2>/dev/null; then echo "shoot.sh: cannot create the output folder: $out_dir" >&2; exit 2; fi
 out_abs="$(cd "$out_dir" && pwd)/$(basename "$out")"
 rm -f "$out_abs"
-common=(--headless=new --disable-gpu --hide-scrollbars --force-prefers-reduced-motion --virtual-time-budget=8000)
+# Motion is off by default, so reveals and count-ups are pictured in their final state and a scroll
+# scene as the ordinary section it falls back to. TC_MOTION=1 keeps motion on: use it with a
+# scroll position to look at a pinned scene step by step.
+common=(--headless=new --enable-unsafe-swiftshader --hide-scrollbars --allow-file-access-from-files --virtual-time-budget=8000)
+if [ "${TC_MOTION:-}" != "1" ]; then common+=(--force-prefers-reduced-motion); fi
 
 if [[ "$out_abs" == *.pdf ]]; then
   "$chrome" "${common[@]}" --no-pdf-header-footer --print-to-pdf-no-header \
@@ -126,6 +131,26 @@ if [ -n "$inner" ] && [ "$inner" -lt 600 ] && [ "$inner" -gt 400 ]; then gap=$((
 crop=""
 if [ "$gap" -gt 0 ]; then
   if python3 -c "import PIL" >/dev/null 2>&1; then crop="pil"; elif command -v sips >/dev/null 2>&1; then crop="sips"; else gap=0; fi
+fi
+
+if [ -n "$scroll" ]; then          # picture the page scrolled down by that many px
+  # A headless screenshot always shows the top of the document, so the page is put in a frame of
+  # the asked size and scrolled inside it. In the frame 100vh is exactly the asked height.
+  if [ -z "$local_file" ]; then echo "shoot.sh: a scroll position needs a local file." >&2; exit 2; fi
+  stmp="$(dirname "$local_file")/.tc-shoot-scroll-$$.html"; sout="$(dirname "$local_file")/.tc-shoot-frame-$$.html"
+  trap 'rm -f "$stmp" "$sout" "${tmp:-}"' EXIT
+  python3 - "$local_file" "$stmp" "$sout" "$scroll" "$w" "$h" "$query" <<'PYS'
+import os, sys
+src, dst, outer, y, w, h, query = sys.argv[1], sys.argv[2], sys.argv[3], int(float(sys.argv[4])), sys.argv[5], sys.argv[6], sys.argv[7]
+html = open(src, encoding="utf-8").read()
+probe = "<script>window.addEventListener('load',function(){setTimeout(function(){window.scrollTo(0,%d);},300);});</script>" % y
+html = html.replace("</body>", probe + "</body>") if "</body>" in html else html + probe
+snap = "<script>window.TC_SNAP=1</script>"       # the scripts then jump to the end state instead of easing towards it
+html = html.replace("<head>", "<head>" + snap, 1) if "<head>" in html else snap + html
+open(dst, "w", encoding="utf-8").write(html)
+open(outer, "w", encoding="utf-8").write('<!doctype html><meta charset="utf-8"><body style="margin:0;overflow:hidden"><iframe src="%s%s" style="display:block;border:0;width:%spx;height:%spx"></iframe>' % (os.path.basename(dst), query, w, h))
+PYS
+  url="file://$sout"
 fi
 
 "$chrome" "${common[@]}" --force-device-scale-factor=1 --window-size="${w},$((h + gap))" \

@@ -6,7 +6,7 @@ Tacto's product does not look like Tacto's website. The website is Aspekta light
 - **Estimated within that:** exact hex values (video compression blurs colour; they were matched to the nearest steps of a neutral grey scale and to the usual blue, emerald, red, amber and fuchsia steps), hairline colour, corner radii to about 2px, and what the cards cut off by the film's frame contain.
 - **Not seen:** hover and focus states, dialogs, forms, empty states, dark mode. Do not invent a dark mode.
 
-Templates: `assets/templates/dashboard.html` (home dashboard) and `assets/templates/dashboard-detail.html` (a record page with tabs, KPI cards, a chart and a table). Start from one of them.
+Templates: `assets/templates/dashboard.html` (home dashboard), `dashboard-detail.html` (a record page with tabs, KPI cards, a chart and a table) and `dashboard-article.html` (a part with its 3D geometry, price and target, and the assembly it belongs to; 3D rules in `3d.md`). Start from one of them.
 
 Contents: Type and colour · Frame · Sidebar · Icons · KPI card · Market index card · Shortcuts · Map · Controls · Table · Chart · Whose logo goes where · Fragments on a page or slide · Mistakes
 

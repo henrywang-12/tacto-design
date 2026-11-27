@@ -127,8 +127,8 @@ def lint_scripts(rep, text, allow):
     built = 0
     for m in re.finditer(r"<script\b[^>]*>(.*?)</script>", text, flags=re.S | re.I):
         js, base = m.group(1), m.start(1)
-        if "tacto.js" in js[:200] or not js.strip():
-            continue
+        if "tacto.js" in js[:200] or "tacto-design:" in js[:200] or "Three.js Authors" in js[:200] or not js.strip():
+            continue      # the skill's own scripts and the vendored three.js
         for c in re.finditer(r"#([0-9a-fA-F]{6})\b", js):
             check_color(rep, base + c.start(), c.group(1).lower(), 1, c.group(0), allow)
         for c in re.finditer(r"rgba?\(\s*(\d{1,3})[\s,]+(\d{1,3})[\s,]+(\d{1,3})(?:\s*[,/]\s*([\d.]+))?\s*\)", js):
@@ -141,7 +141,7 @@ def lint_scripts(rep, text, allow):
     if built:
         rep.add("note", 0, "scripts", f"{built} script block(s) build content at runtime: this lint cannot read that; scripts/tacto_check.py checks the rendered page")
     for m in re.finditer(r"<script\b[^>]*\bsrc\s*=\s*[\"']([^\"']+)", text, flags=re.I):
-        if not m.group(1).endswith("tacto.js"):
+        if not re.search(r"(?:tacto(?:-scroll|-3d)?|three\.min)\.js$", m.group(1)):
             rep.add("note", m.start(), "scripts", f"external script {m.group(1)[:50]} is not read by this lint; scripts/tacto_check.py checks the rendered page")
 
 

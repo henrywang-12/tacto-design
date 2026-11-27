@@ -268,7 +268,7 @@ def run_probe(chrome, src: Path, query: str, width: int, height: int = 900, fram
         if frame:
             outer.write_text(FRAME.replace("__SRC__", tmp.name + query).replace("__W__", str(width)), encoding="utf-8")
             target, width = f"file://{outer}", max(width, 500)
-        done = subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-prefers-reduced-motion",
+        done = subprocess.run([chrome, "--headless=new", "--enable-unsafe-swiftshader", "--hide-scrollbars", "--force-prefers-reduced-motion",
                                "--allow-file-access-from-files", f"--window-size={width},{height}", "--virtual-time-budget=9000", "--dump-dom", target],
                               capture_output=True, text=True, timeout=120)
     finally:
@@ -283,7 +283,7 @@ def run_probe(chrome, src: Path, query: str, width: int, height: int = 900, fram
 def pdf_pages(chrome, src: Path, query: str):
     with tempfile.TemporaryDirectory() as d:
         out = Path(d) / "check.pdf"
-        subprocess.run([chrome, "--headless=new", "--disable-gpu", "--force-prefers-reduced-motion", "--virtual-time-budget=9000",
+        subprocess.run([chrome, "--headless=new", "--enable-unsafe-swiftshader", "--force-prefers-reduced-motion", "--virtual-time-budget=9000",
                         "--no-pdf-header-footer", f"--print-to-pdf={out}", f"file://{src}{query}"], capture_output=True, timeout=120)
         if not out.is_file():
             return None

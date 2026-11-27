@@ -26,7 +26,7 @@ A shorter page keeps 1, 2, 3 or 6, 4, one of 7 to 9, 12, 13.
 
 ## Dashboard — `templates/dashboard.html`
 
-See `dashboard.md`. The product has its own system (Inter, greys, Lucide icons, blue figures), measured from Tacto's product film. Two templates: the home dashboard (KPI cards, market indices, shortcuts, supplier map) and `dashboard-detail.html` (breadcrumb, tabs, KPI cards, chart, filter row, table). Look at it at 1440x960.
+See `dashboard.md`. The product has its own system (Inter, greys, Lucide icons, blue figures), measured from Tacto's product film. Three templates: the home dashboard (KPI cards, market indices, shortcuts, supplier map), `dashboard-detail.html` (breadcrumb, tabs, KPI cards, chart, filter row, table) and `dashboard-article.html` (a part in 3D, price and target, the exploded assembly). Look at it at 1440x960.
 
 ## Success story — `templates/case-study.html`
 

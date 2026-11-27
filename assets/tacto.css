@@ -11,7 +11,7 @@
    06 labels, chips, dots, spark · 07 cards · 08 tabs, lists, steps
    09 panels: ember, veil, noir, photo · 10 numbers · 11 quotes, logos
    12 UI fragments · 13 app: the product screen · 14 footer, closing band
-   15 deck, sheet, cover · 16 motion · 17 long-form · 18 icons
+   15 deck, sheet, cover · 16 motion · 17 long-form · 18 icons · 19 scroll scenes · 20 3D parts
    ========================================================================== */
 
 /* 01 tokens --------------------------------------------------------------- */
@@ -1220,3 +1220,90 @@ a.tc-card:hover { opacity: 0.6; }
 [data-tc-icon="x"] { --tc-i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18'/%3E%3Cpath d='m6 6 12 12'/%3E%3C/svg%3E"); }
 [data-tc-icon="zap"] { --tc-i: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z'/%3E%3C/svg%3E"); }
 /* icons:end */
+
+/* 19 scroll scenes ---------------------------------------------------------------------------------
+   Read from Tacto's Atoms & Bits site: a stage stays pinned while its chapters change, one object
+   carries the story and comes apart on the way, big type drifts. Driven by assets/tacto-scroll.js,
+   which sets --p (0 to 1) and the classes; without it, or with reduced motion, everything below
+   that starts with .tc-moving is off and the scene is an ordinary section. Only transform and
+   opacity move. One scene per page, see references/motion.md. */
+[data-tc-scene] { position: relative; }
+.tc-scene__stage { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: var(--tc-gap); padding: var(--tc-section-end) var(--tc-gutter); }
+.tc-scene__stage--solo { grid-template-columns: minmax(0, 1fr); }
+.tc-scene__steps { display: grid; gap: 3rem; align-content: center; min-width: 0; }
+.tc-scene__step { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; min-width: 0; }
+.tc-scene__stage .tc-part { --tc-part-h: min(34rem, 60vh); }
+.tc-scene__count { font-family: var(--tc-mono); font-size: 0.75rem; line-height: 1.3; text-transform: uppercase; color: var(--tc-grey); }
+.tc-scene__bar { position: absolute; left: var(--tc-gutter); right: var(--tc-gutter); bottom: 2rem; height: 1px; background: var(--tc-chip-line); display: none; }
+.tc-scene__bar::after { content: ""; position: absolute; left: 0; top: -0.5px; height: 2px; width: 100%; background: var(--tc-orange); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
+.tc-black .tc-scene__bar, .tc-scene--black .tc-scene__bar { background: var(--tc-white-10); }
+.tc-scene--black { background: var(--tc-black); color: var(--tc-white); }
+.tc-scene--black .tc-muted, .tc-scene--black .tc-dim { color: var(--tc-white-50); }
+.tc-moving [data-tc-scene] { height: calc(var(--tc-screens, 3) * 100vh); }
+.tc-moving .tc-scene__stage { position: sticky; top: 0; height: 100vh; padding-top: 6rem; padding-bottom: 4rem; overflow: clip; }
+.tc-moving .tc-scene__bar { display: block; }
+.tc-moving .tc-scene__steps { gap: 0; }
+.tc-moving .tc-scene__steps > [data-tc-step] { grid-area: 1 / 1; opacity: 0; transform: translate3d(0, 1.5rem, 0); pointer-events: none; transition: opacity 0.6s var(--tc-ease), transform 0.6s var(--tc-ease); }
+.tc-moving .tc-scene__steps > [data-tc-step].is-past { transform: translate3d(0, -1.5rem, 0); }
+.tc-moving .tc-scene__steps > [data-tc-step].is-active { opacity: 1; transform: none; pointer-events: auto; }
+/* a list that stays whole: every line is there, the current one is lit (people, stages, a route) */
+.tc-scene__list { display: flex; flex-direction: column; gap: 1.5rem; }
+.tc-moving .tc-scene__list > [data-tc-step] { opacity: 0.3; transition: opacity 0.35s, color 0.35s; }
+.tc-moving .tc-scene__list > [data-tc-step].is-active { opacity: 1; color: var(--tc-orange); }
+/* things that drift with the page: put data-tc-progress on the element itself */
+.tc-moving .tc-drift { transform: translate3d(0, calc((0.5 - var(--p, 0.5)) * var(--tc-drift, 6rem)), 0); will-change: transform; }
+.tc-moving .tc-cross { transform: translate3d(calc((0.5 - var(--p, 0.5)) * var(--tc-cross, 24%)), 0, 0); will-change: transform; white-space: nowrap; }
+/* for pictures (scripts/shoot.sh with a scroll position): every state at once, nothing half-way */
+.tc-snap *, .tc-snap *::before, .tc-snap *::after { transition: none !important; }
+.tc-snap .tc-reveal { opacity: 1; transform: none; animation: none; }
+.tc-moving .tc-swell { transform: scale(calc(0.86 + 0.14 * min(1, var(--p, 1) * 2.2))); transform-origin: 0 100%; will-change: transform; }
+@media (max-width: 991px) {
+  .tc-scene__stage { grid-template-columns: minmax(0, 1fr); padding-top: 5rem; padding-bottom: 3rem; }
+  .tc-moving .tc-scene__stage { align-content: center; }
+  .tc-scene__stage .tc-part { --tc-part-h: min(20rem, 38vh); }
+}
+
+/* 20 3D parts -----------------------------------------------------------------------------------
+   The viewer of assets/tacto-3d.js. The look is fixed in the script (grey solids, dark edge lines,
+   light from above); here is only the box it sits in. Give it a height. */
+.tc-part { position: relative; height: var(--tc-part-h, 20rem); min-width: 0; overflow: hidden; touch-action: pan-y; }
+.tc-part > canvas { display: block; width: 100%; height: 100%; cursor: grab; outline: 0; }
+.tc-part > canvas:active { cursor: grabbing; }
+.tc-part.is-hot > canvas { cursor: pointer; }
+.tc-part__tip { position: absolute; left: 0; top: 0; z-index: 2; display: inline-flex; align-items: center; gap: 0.375rem; padding: 0.25rem 0.5rem; border: 1px solid var(--tc-line); border-radius: var(--tc-r-sm); background: var(--tc-white); color: var(--tc-black); font-size: 0.75rem; line-height: 1rem; white-space: nowrap; pointer-events: none; }
+.tc-part__tip[hidden] { display: none; }
+.tc-part__key { display: inline-block; flex: none; width: 0.5rem; height: 0.5rem; border-radius: var(--tc-r-xs); border: 1px solid transparent; background: var(--tc-grey-key, #cbcbcb); }
+.tc-part.is-flat { display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.tc-part__draw { width: 100%; height: 100%; overflow: visible; }
+.tc-part__draw > * { fill: var(--tc-white); stroke: var(--tc-black); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+/* inside the product screen: the viewer card of an article or an assembly */
+.tc-app .tc-part__tip { border-color: var(--tca-line-strong); border-radius: 6px; color: var(--tca-ink); font-weight: 500; }
+.tc-app .tc-part__key--same { background: var(--tca-control); } .tc-app .tc-part__key--exists { background: var(--tca-green-mark); }
+.tc-app .tc-part__key--near { background: var(--tca-amber-mark); } .tc-app .tc-part__key--new { background: var(--tca-blue-bar); }
+.tc-app .tc-part__key--format { background: var(--tca-white); border-color: var(--tca-control); } .tc-app .tc-part__key--diff { background: var(--tc-orange); }
+.tc-app__viewer { position: relative; border: 1px solid var(--tca-line); border-radius: 12px; background: var(--tca-hover); overflow: hidden; }
+.tc-app__viewer > .tc-part { --tc-part-h: 320px; }
+.tc-app__viewer--tall > .tc-part { --tc-part-h: 440px; }
+.tc-app__viewer-title { position: absolute; z-index: 1; left: 16px; top: 12px; font-size: 16px; line-height: 24px; font-weight: 500; pointer-events: none; }
+.tc-app__viewer-title > small { display: block; font-size: 14px; line-height: 20px; font-weight: 400; color: var(--tca-muted); }
+.tc-app__viewer-bar { position: absolute; z-index: 2; left: 12px; right: 12px; bottom: 12px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; pointer-events: none; }
+.tc-app__viewer-bar > * { pointer-events: auto; }
+.tc-app__viewer-bar .tc-app__btn--outline[aria-pressed="true"] { background: var(--tca-fill); border-color: var(--tca-control); }
+.tc-app__keys { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; line-height: 16px; color: var(--tca-muted); }
+.tc-app__keys > * { display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 6px; background: var(--tca-white); cursor: pointer; }
+.tc-app__keys > [aria-pressed="true"] { color: var(--tca-ink); background: var(--tca-line-strong); }
+/* the pieces of a part's page: price paid, the AI's target, order rows, the key and value rail */
+.tc-app__price { display: flex; align-items: baseline; gap: 8px; font-size: 24px; line-height: 32px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tc-app__price > small { font-size: 14px; line-height: 20px; font-weight: 400; color: var(--tca-muted); }
+.tc-app__target { display: flex; align-items: center; gap: 8px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.tc-app__group { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-size: 14px; line-height: 20px; font-weight: 600; }
+.tc-app__group > [data-tc-icon] { width: 14px; height: 14px; color: var(--tca-muted); }
+.tc-app__rows { border: 1px solid var(--tca-line); border-radius: 12px; background: var(--tca-white); }
+.tc-app__rows > li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; font-variant-numeric: tabular-nums; }
+.tc-app__rows > li + li { border-top: 1px solid var(--tca-line); }
+.tc-app__rows b { display: block; font-weight: 500; }
+.tc-app__rows > li > b { font-weight: 600; }
+.tc-app__rows small { display: block; font-size: 12px; line-height: 16px; color: var(--tca-muted); }
+.tc-app__rail { display: flex; flex-direction: column; gap: 20px; padding-left: 24px; border-left: 1px solid var(--tca-line); }
+@media (max-width: 991px) { .tc-app__rail { padding-left: 0; border-left: 0; } .tc-app__viewer-title { position: static; padding: 12px 16px 0; } }
+

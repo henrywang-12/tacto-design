@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Northdesk - What a machine is made of</title>
+<!-- A page that tells one story with scroll, in the Tacto design language. The motion is read from
+     Tacto's Atoms & Bits site: one object carries the story and comes apart on the way, a stage stays
+     pinned while its chapters change, big type drifts, text rises once.
+     Start from this file when a page should feel alive: a launch page, an event page, the opening of a
+     prototype. Do NOT use it for dashboards, documents or decks, and keep it to ONE scene per page.
+     Replace the sample company (Northdesk), the copy and every number.
+     Parts, top to bottom:
+     hero on black with a 3D object that turns slowly (drag it, throw it) and a giant word that
+     crosses the screen · the scene: pinned for four screens, four chapters, the object comes apart
+     as you scroll and turns a little · a figure that swells as it arrives beside text that rises ·
+     closing band · footer.
+     With reduced motion, or without the scripts, the scene is an ordinary section: the chapters
+     stand under each other and the object rests half apart. Read that version too: it is what
+     scripts/tacto_check.py and a plain screenshot see.
+     To look at the moving page: TC_MOTION=1 scripts/shoot.sh out.html step2.png 1440 900 1800
+     (the last number is how far down the page is scrolled, in px).
+     3D parts: references/3d.md. Scroll scenes: references/motion.md.
+     Then: python3 scripts/inline.py this.html out.html && python3 scripts/tacto_check.py out.html -->
+<link rel="stylesheet" href="../tacto.css">
+<style>
+  /* layout only: every colour, type size and movement comes from tacto.css */
+  .ss-hero { padding-top: 12rem; padding-bottom: 0; overflow: clip; }
+  .ss-hero__grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: var(--tc-gap); align-items: center; }
+  .ss-hero__grid .tc-part { --tc-part-h: 30rem; }
+  .ss-word { margin-top: 3rem; padding-left: var(--tc-gutter); line-height: 1; }
+  @media (max-width: 991px) {
+    .ss-hero { padding-top: 9rem; }
+    .ss-hero__grid { grid-template-columns: minmax(0, 1fr); }
+    .ss-hero__grid .tc-part { --tc-part-h: 18rem; }
+    .ss-figure { grid-column: span 12 !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="tc-nav">
+  <div class="tc-container">
+    <div class="tc-nav__bar">
+      <div class="tc-nav__left">
+        <a class="tc-wordmark" href="#"><span class="tc-wordmark__mark"></span>Northdesk</a>
+        <nav class="tc-nav__links">
+          <a class="tc-nav__link" href="#product">Product</a>
+          <a class="tc-nav__link" href="#agents">Agents</a>
+          <a class="tc-nav__link" href="#customers">Customers</a>
+          <a class="tc-nav__link" href="#industries">Industries</a>
+        </nav>
+      </div>
+      <div class="tc-nav__right">
+        <span class="tc-nav__meta">EN</span>
+        <div class="tc-nav__cta">
+          <a class="tc-btn tc-btn--quiet" href="#">Login</a>
+          <a class="tc-btn tc-btn--header" href="#contact">Book a demo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- hero on black: one sentence and one object. The object turns slowly on its own; drag it and let go
+     and it keeps turning. data-tc-crop: the giant word runs off the edge on purpose. -->
+<section class="tc-section tc-section--black ss-hero" data-tc-crop>
+  <div class="tc-container">
+    <div class="ss-hero__grid">
+      <div class="tc-stack">
+        <span class="tc-label tc-hl">Engineering and procurement</span>
+        <h1 class="tc-display" style="letter-spacing: -0.05rem;">Every machine is a list of parts. <em>Every part is a price somebody agreed to.</em></h1>
+        <div class="tc-row" style="margin-top: 2rem;">
+          <a class="tc-btn tc-btn--white tc-btn--lg" href="#contact">Book a meeting</a>
+        </div>
+      </div>
+      <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" aria-label="A bearing unit, turning slowly"></div>
+    </div>
+  </div>
+  <p class="tc-giant tc-cross ss-word" data-tc-progress aria-hidden="true">Parts &amp; prices</p>
+</section>
+
+<!-- the scene. --tc-screens is how long it stays pinned (4 = four screens of scrolling, one per chapter).
+     Each data-tc-step is one chapter. The part comes apart between 15% and 70% of the way and turns
+     half a radian towards its side across the scene, so the row of parts is seen from the side. -->
+<section class="tc-scene--black" data-tc-scene style="--tc-screens: 4">
+  <div class="tc-scene__stage">
+    <div class="tc-scene__steps">
+      <div class="tc-scene__step" data-tc-step>
+        <span class="tc-scene__count">01 / 04</span>
+        <h2 class="tc-title-36">It ships as one unit.</h2>
+        <p class="tc-text-19 tc-muted">On the order it is a single line: bearing unit, complete. That is how it is bought and how it is priced.</p>
+      </div>
+      <div class="tc-scene__step" data-tc-step>
+        <span class="tc-scene__count">02 / 04</span>
+        <h2 class="tc-title-36">Inside are 18 parts.</h2>
+        <p class="tc-text-19 tc-muted">A housing, a shaft, two bearings, a gear, six screws. Each one was drawn by someone and bought from someone.</p>
+      </div>
+      <div class="tc-scene__step" data-tc-step>
+        <span class="tc-scene__count">03 / 04</span>
+        <h2 class="tc-title-36">Each part has a history.</h2>
+        <p class="tc-text-19 tc-muted">What it cost last time, who made it, how long it took. Most of that sits in orders nobody reads twice.</p>
+      </div>
+      <div class="tc-scene__step" data-tc-step>
+        <span class="tc-scene__count">04 / 04</span>
+        <h2 class="tc-title-36">Northdesk reads all of it.</h2>
+        <p class="tc-text-19 tc-muted">Agents match every part to what you paid before and point at the 3 that cost more than they should.</p>
+      </div>
+    </div>
+    <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" data-explode="scroll" data-turn="-0.5" aria-label="The bearing unit, taken apart into its 18 parts"></div>
+    <span class="tc-scene__bar"></span>
+  </div>
+</section>
+
+<!-- after the scene the page is calm again: a figure that swells as it arrives, text that rises once -->
+<section class="tc-section">
+  <div class="tc-container">
+    <div class="tc-grid" style="align-items: end;">
+      <div class="tc-figure tc-swell ss-figure" style="grid-column: span 6;" data-tc-progress>
+        <b>38%</b>
+        <span>of this unit's cost sits in 3 of its 18 parts.</span>
+      </div>
+      <div class="tc-stack ss-figure" style="grid-column: span 6;">
+        <h2 class="tc-title-30 tc-reveal">Take it apart before you negotiate.</h2>
+        <p class="tc-text-19 tc-muted tc-reveal">A buyer who knows which three parts carry the price asks a different question. Northdesk shows them for every assembly you buy, with the orders they come from.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="tc-band" id="contact">
+  <div class="tc-container">
+    <h2 class="tc-giant tc-giant--xl">Building</h2>
+    <div class="tc-band__row">
+      <h2 class="tc-giant">Stronger</h2>
+      <a class="tc-btn tc-btn--white" href="#" style="padding: 1.375rem 3.125rem; margin-bottom: 1.25rem;">Book a demo</a>
+    </div>
+    <h2 class="tc-giant">Procurement</h2>
+  </div>
+</section>
+</main>
+
+<footer class="tc-footer">
+  <div class="tc-container">
+    <div class="tc-footer__grid">
+      <div class="tc-footer__col">
+        <span class="tc-wordmark"><span class="tc-wordmark__mark"></span>Northdesk</span>
+        <div class="tc-footer__certs">
+          <div class="tc-footer__cert"><b>ISO 27001 certified</b><span>Information security to ISO/IEC 27001</span></div>
+          <div class="tc-footer__cert"><b>GDPR compliant</b><span>Hosted in the EU</span></div>
+        </div>
+      </div>
+      <div class="tc-footer__col"><span>Product</span><a href="#">Suppliers</a><a href="#">Spend and cost</a><a href="#">Sourcing</a><a href="#">Compliance</a></div>
+      <div class="tc-footer__col"><span>Customers</span><a href="#">Success stories</a><a href="#">Industries</a><a href="#">References</a></div>
+      <div class="tc-footer__col"><span>Resources</span><a href="#">Blog</a><a href="#">Events</a><a href="#">Glossary</a></div>
+      <div class="tc-footer__col"><span>Company</span><a href="#">About us</a><a href="#">Careers</a><a href="#">Contact</a></div>
+    </div>
+    <div class="tc-footer__base">
+      <p>© 2026 Northdesk GmbH.</p>
+      <div class="tc-row" style="gap: 1.75rem;"><a href="#">Imprint</a><a href="#">Privacy</a><a href="#">Cookie settings</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="../tacto.js"></script>
+<script src="../tacto-scroll.js"></script>
+<script src="../vendor/three.min.js"></script>
+<script src="../tacto-3d.js"></script>
+</body>
+</html>
