@@ -355,9 +355,10 @@ a.tc-card:hover { opacity: 0.6; }
    Every screenshot, UI fragment and diagram sits on one of these, never on a plain
    coloured box. Ember is the signature: black burning into orange, with film grain. */
 .tc-ember, .tc-veil, .tc-noir, .tc-photo { position: relative; border-radius: var(--tc-r-md); overflow: clip; isolation: isolate; }
-.tc-ember { background-color: var(--tc-black); background-image: radial-gradient(130% 100% at 10% 105%, var(--tc-orange) 0%, var(--tc-orange) 30%, var(--tc-ember-mid) 48%, var(--tc-ember-deep) 66%, #00000000 90%); color: var(--tc-white); }
-.tc-ember--right { background-image: radial-gradient(130% 100% at 90% 105%, var(--tc-orange) 0%, var(--tc-orange) 30%, var(--tc-ember-mid) 48%, var(--tc-ember-deep) 66%, #00000000 90%); }
-.tc-ember--streak { background-image: linear-gradient(118deg, #00000000 18%, var(--tc-ember-deep) 38%, var(--tc-ember-mid) 48%, var(--tc-orange) 56%, var(--tc-ember-mid) 64%, var(--tc-ember-deep) 74%, #00000000 92%); }
+.tc-ember { background-color: var(--tc-black); background-image: radial-gradient(130% 100% at 10% 105%, var(--tc-orange) 0%, var(--tc-orange) 12%, var(--tc-ember-mid) 40%, var(--tc-ember-deep) 62%, #00000000 88%); color: var(--tc-white); }
+.tc-ember--right { background-image: radial-gradient(130% 100% at 90% 105%, var(--tc-orange) 0%, var(--tc-orange) 12%, var(--tc-ember-mid) 40%, var(--tc-ember-deep) 62%, #00000000 88%); }
+/* the streak is a cloud, not a band: three soft lights along a diagonal, dark all around */
+.tc-ember--streak { background-image: radial-gradient(40% 32% at 28% 72%, #ff641480 0%, #c2410c4d 45%, #5c1c0000 100%), radial-gradient(46% 36% at 54% 50%, #ff6414b3 0%, #c2410c66 42%, #5c1c0000 100%), radial-gradient(38% 30% at 78% 30%, #ff641466 0%, #c2410c40 45%, #5c1c0000 100%); }
 .tc-ember--full { background-color: var(--tc-orange); background-image: linear-gradient(100deg, #ffffff00 0%, #ffffff26 34%, #ffffff00 52%, #ffffff1a 74%, #ffffff00 100%); }
 .tc-noir { background-color: var(--tc-black); background-image: radial-gradient(90% 70% at 70% 0%, #ffffff1a 0%, #ffffff00 70%); color: var(--tc-white); }
 .tc-veil { background-color: var(--tc-paper); background-image: radial-gradient(42% 46% at 24% 30%, #ff641433 0%, #ff641400 100%), radial-gradient(40% 44% at 78% 34%, #2170ec26 0%, #2170ec00 100%), linear-gradient(180deg, var(--tc-line) 0%, var(--tc-paper) 100%); }
@@ -549,7 +550,7 @@ a.tc-card:hover { opacity: 0.6; }
 .tc-app__ws-logo { flex: none; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
 .tc-app__ws-logo > img, .tc-app__ws-logo > svg { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
 .tc-app__ws-logo > b { width: 24px; height: 24px; border-radius: 6px; background: var(--tca-primary); color: var(--tca-white); font-size: 11px; line-height: 24px; text-align: center; }
-.tc-app__ws-name { min-width: 0; max-width: 108px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.tc-app__ws-name { min-width: 0; max-width: 120px; max-height: 32px; overflow: hidden; line-height: 16px; overflow-wrap: anywhere; font-weight: 600; }
 .tc-app__ws > [data-tc-icon] { color: var(--tca-muted); }
 .tc-app__ws > [data-tc-icon]:last-child { margin-left: auto; color: var(--tca-ink); }
 .tc-app__nav { flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; padding: 12px; display: flex; flex-direction: column; gap: 4px; }
@@ -604,14 +605,15 @@ a.tc-card:hover { opacity: 0.6; }
 /* KPI card: title, period chip, the figure in blue with its change, last period in grey */
 .tc-app__kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
 .tc-app__kpi { min-width: 0; background: var(--tca-white); border: 1px solid var(--tca-line); border-radius: 12px; padding: 16px 16px 10px; display: flex; flex-direction: column; align-items: flex-start; }
-.tc-app__kpi-head { align-self: stretch; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tc-app__kpi-head { align-self: stretch; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 8px; }   /* the chip drops under the title when the card is narrow */
+.tc-app__kpi-head > .tc-app__kpi-title { flex: 0 1 auto; max-width: 100%; }
 .tc-app__kpi-title { min-width: 0; font-size: 14px; line-height: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tc-app__period { flex: none; display: inline-flex; align-items: center; height: 14px; padding: 0 5px; border-radius: 3px; background: var(--tca-fill); color: var(--tca-muted); font-size: 11px; line-height: 14px; font-weight: 500; white-space: nowrap; }
 .tc-app__kpi > .tc-app__period { margin-top: 8px; }
 .tc-app__kpi-value { margin-top: 20px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 8px; font-size: 30px; line-height: 36px; font-weight: 600; color: var(--tca-blue); white-space: nowrap; }
 .tc-app__kpi-value > small { font-size: 14px; line-height: 20px; font-weight: 500; }
 .tc-app__kpi-value--text { font-size: 22px; }
-.tc-app__kpi-prev { margin-top: 10px; display: flex; align-items: center; gap: 8px; font-weight: 500; color: var(--tca-muted); white-space: nowrap; }
+.tc-app__kpi-prev { margin-top: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-weight: 500; color: var(--tca-muted); }
 
 /* market index card: name, value with unit and direction, the change, a small trend line */
 .tc-app__indices { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
@@ -755,7 +757,7 @@ a.tc-card:hover { opacity: 0.6; }
 
 /* 14 footer, closing band ----------------------------------------------------------------- */
 /* closing band: a full-width picture or ember with three giant words and one white button */
-.tc-band { position: relative; min-height: 60rem; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 9.375rem; color: var(--tc-white); overflow: clip; isolation: isolate; background-color: var(--tc-black); background-image: linear-gradient(118deg, #00000000 24%, var(--tc-ember-deep) 42%, var(--tc-ember-mid) 52%, var(--tc-orange) 60%, var(--tc-ember-mid) 68%, var(--tc-ember-deep) 78%, #00000000 94%); }
+.tc-band { position: relative; min-height: 60rem; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 9.375rem; color: var(--tc-white); overflow: clip; isolation: isolate; background-color: var(--tc-black); background-image: radial-gradient(40% 32% at 34% 70%, #ff641480 0%, #c2410c4d 45%, #5c1c0000 100%), radial-gradient(46% 36% at 58% 48%, #ff6414b3 0%, #c2410c66 42%, #5c1c0000 100%), radial-gradient(38% 30% at 80% 28%, #ff641466 0%, #c2410c40 45%, #5c1c0000 100%); }
 .tc-band > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; }
 .tc-band__row { display: flex; align-items: flex-end; gap: 2rem; flex-wrap: wrap; }
 .tc-band--short { min-height: 34rem; padding-bottom: 5rem; }
@@ -856,7 +858,7 @@ a.tc-card:hover { opacity: 0.6; }
 .tc-slide .tc-person__img { width: 64px; height: 64px; }
 .tc-slide .tc-person b, .tc-slide .tc-person span { font-size: 18px; line-height: 27px; }
 /* close: the closing band on a slide, giant light words and one white button */
-.tc-slide--ember.tc-slide--streak { background-image: linear-gradient(118deg, #00000000 22%, var(--tc-ember-deep) 40%, var(--tc-ember-mid) 50%, var(--tc-orange) 58%, var(--tc-ember-mid) 66%, var(--tc-ember-deep) 76%, #00000000 94%); }
+.tc-slide--ember.tc-slide--streak { background-image: radial-gradient(40% 32% at 30% 72%, #ff641480 0%, #c2410c4d 45%, #5c1c0000 100%), radial-gradient(46% 36% at 55% 50%, #ff6414b3 0%, #c2410c66 42%, #5c1c0000 100%), radial-gradient(38% 30% at 78% 30%, #ff641466 0%, #c2410c40 45%, #5c1c0000 100%); }
 /* Fixed canvases never reflow. Chrome prints a slide or an A4 page into a viewport narrower
    than 992px, so the responsive rules at the end of this file would stack rows in the PDF.
    These win over them by specificity. */
@@ -1238,7 +1240,12 @@ a.tc-card:hover { opacity: 0.6; }
 .tc-scene__bar::after { content: ""; position: absolute; left: 0; top: -0.5px; height: 2px; width: 100%; background: var(--tc-orange); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); }
 .tc-black .tc-scene__bar, .tc-scene--black .tc-scene__bar { background: var(--tc-white-10); }
 .tc-scene--black { background: var(--tc-black); color: var(--tc-white); }
-.tc-scene--black .tc-muted, .tc-scene--black .tc-dim { color: var(--tc-white-50); }
+.tc-scene--black .tc-muted, .tc-scene--black .tc-dim { color: #ffffffb3; }
+.tc-nav { transition: opacity var(--tc-fast); }
+.tc-in-scene .tc-nav { opacity: 0; pointer-events: none; }
+/* one full orange section, straight after a black scene: black type on flat orange */
+.tc-section--orange { background: var(--tc-orange); color: var(--tc-black); }
+.tc-section--orange .tc-muted, .tc-section--orange .tc-dim { color: #000000b3; }
 .tc-moving [data-tc-scene] { height: calc(var(--tc-screens, 3) * 100vh); }
 .tc-moving .tc-scene__stage { position: sticky; top: 0; height: 100vh; padding-top: 6rem; padding-bottom: 4rem; overflow: clip; }
 .tc-moving .tc-scene__bar { display: block; }
@@ -1260,7 +1267,7 @@ a.tc-card:hover { opacity: 0.6; }
 @media (max-width: 991px) {
   .tc-scene__stage { grid-template-columns: minmax(0, 1fr); padding-top: 5rem; padding-bottom: 3rem; }
   .tc-moving .tc-scene__stage { align-content: center; }
-  .tc-scene__stage .tc-part { --tc-part-h: min(20rem, 38vh); }
+  .tc-scene__stage .tc-part { --tc-part-h: min(26rem, 46vh); }
 }
 
 /* 20 3D parts -----------------------------------------------------------------------------------

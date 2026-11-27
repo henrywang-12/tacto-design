@@ -9,8 +9,10 @@
      screen shows a part or an assembly in 3D.
      Replace the workspace (Auerberg Guss), the maker's wordmark (Northdesk), the part and every
      number. All figures here are invented.
+     It is also the all-in-one screen: KPI cards, a 3D part, a price block, an assembly and a table in one
+     file. Delete the sections you do not need; that is quicker than merging two templates.
      Top to bottom, each part reusable on its own:
-     sidebar (same as dashboard.html) · breadcrumb · title with the one black button ·
+     sidebar (same as dashboard.html) · breadcrumb · title with the one black button · KPI cards ·
      Geometry: the part turns slowly, drag it, throw it · price paid, the target with the orange
      spark (the AI's number), recent orders · key and value rail ·
      the assembly: 148 parts coloured by what is known about each one, hover and click a part,
@@ -86,6 +88,25 @@
           <a class="tc-app__btn" href="#"><i data-tc-icon="send"></i>Start RFQ</a>
         </div>
 
+        <!-- KPI cards for this part: delete the row if the page does not need it -->
+        <section class="tc-app__kpis">
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Pieces bought</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">1,095 <small>5.3%</small></p>
+            <p class="tc-app__kpi-prev">1,040 <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Spend on this part</h2><span class="tc-app__period">Current 12 months</span></div>
+            <p class="tc-app__kpi-value">€196,220 <small>5.5%</small></p>
+            <p class="tc-app__kpi-prev">€186,040 <span class="tc-app__period">Previous 12 months</span></p>
+          </article>
+          <article class="tc-app__kpi">
+            <div class="tc-app__kpi-head"><h2 class="tc-app__kpi-title">Potential savings</h2><span class="tc-app__period">At target price</span></div>
+            <p class="tc-app__kpi-value">€9,860 <small>5.0%</small></p>
+            <p class="tc-app__kpi-prev">9.00 € per piece</p>
+          </article>
+        </section>
+
         <div class="tc-app__grid">
           <!-- the part itself: data-tc-part names it. It turns on its own and can be dragged and thrown. -->
           <section class="tc-app__section" style="grid-column: span 5;">
@@ -108,7 +129,7 @@
               <p class="tc-app__lead">Current paid price per unit.</p>
             </div>
             <p class="tc-app__price">179.20 € <small>per piece</small></p>
-            <p class="tc-app__target">Target <i data-tc-icon="sparkles" class="is-orange"></i> 170.20 € <span class="tc-app__pill tc-app__pill--amber">-5%</span></p>
+            <p class="tc-app__target">Target <span class="tc-spark"></span> 170.20 € <span class="tc-app__pill tc-app__pill--amber">-5%</span></p>
             <h3 class="tc-app__group"><i data-tc-icon="receipt-text"></i>Recent transactions</h3>
             <ul class="tc-app__rows">
               <li><span><b>31 May 2026</b><small>280 units</small></span><b>179.20 €</b></li>
@@ -161,6 +182,26 @@
               <button type="button" class="tc-app__btn tc-app__btn--outline tc-app__btn--sm" data-tc-explode="#asm" aria-pressed="false"><i data-tc-icon="boxes"></i>Exploded view</button>
             </div>
           </div>
+        </section>
+
+        <!-- a table of related records: delete the section if the page does not need it -->
+        <section class="tc-app__section">
+          <h2 class="tc-app__h">Findings on similar parts</h2>
+          <article class="tc-app__card tc-app__card--bare">
+            <div class="tc-app__tablewrap">
+              <table>
+                <thead><tr><th><i data-tc-icon="scan-barcode" class="is-green"></i>Article</th><th>Material</th><th class="num">Paid</th><th class="num">Target</th><th>Finding</th><th class="num"><i data-tc-icon="arrow-down"></i>Potential</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>30458371</small><span>Bearing housing, stepped</span></span></td><td>1.4301</td><td class="num">179.20 €</td><td class="num">170.20 €</td><td><span class="tc-app__type is-pink"><i data-tc-icon="lightbulb"></i>Cheaper sourcing alternative</span></td><td class="num">€9,860</td></tr>
+                  <tr><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>30458402</small><span>Pump body</span></span></td><td>C45</td><td class="num">88.40 €</td><td class="num">81.90 €</td><td><span class="tc-app__type is-lime"><i data-tc-icon="lightbulb"></i>Index deviation: steel</span></td><td class="num">€6,410</td></tr>
+                  <tr><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>84572394</small><span>Flat profile 40 x 5</span></span></td><td>1.4301</td><td class="num">12.60 €</td><td class="num">11.20 €</td><td><span class="tc-app__type is-green"><i data-tc-icon="lightbulb"></i>Inefficient volume split</span></td><td class="num">€4,980</td></tr>
+                  <tr><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>77120045</small><span>Cover plate 4 mm</span></span></td><td>S235JR</td><td class="num">23.80 €</td><td class="num">21.90 €</td><td><span class="tc-app__type is-amber"><i data-tc-icon="lightbulb"></i>Supplier consolidation</span></td><td class="num">€3,120</td></tr>
+                  <tr><td><span class="tc-app__chip"><i data-tc-icon="scan-barcode" class="is-green"></i><small>11935069</small><span>Flange, turned</span></span></td><td>C45</td><td class="num">46.10 €</td><td class="num">44.30 €</td><td><span class="tc-app__type is-cyan"><i data-tc-icon="lightbulb"></i>Significant price increase</span></td><td class="num">€2,240</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="tc-app__tablefoot"><span>Findings: <b>5</b></span><span>Potential: <b>€26,610</b></span></div>
+          </article>
         </section>
 
       </div>

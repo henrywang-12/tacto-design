@@ -15,7 +15,9 @@
    data-explode = "scroll" | a number 0..1 · data-explode-range="0.15,0.7" (part of the scene's
    progress over which it comes apart) · data-turn="1.6" (radians it turns across the scene) ·
    data-spin="false" · data-status="false" (no status colours) · data-look="metal" | "drawing" ·
-   data-grid (floor grid) · data-theme="dark"
+   data-grid (floor grid) · data-theme="dark" · data-highlight="Housing|Gear" (parts shown in orange;
+   with data-explode="scroll" add data-highlight-from="0.75": only from that point of the scene on) ·
+   data-dust (fine specks that spread as it comes apart; for one story object on black, nowhere else)
    Script: el.tcPart.explode(0..1 | true | false) · .spin(bool) · .filter('new' | null) ·
    .pick(i | null) · event "tc:pick" with detail { index, name, status }. No other dependencies. */
 (function () {
@@ -197,6 +199,7 @@
     this.yaw = -0.62; this.pitch = this.multi ? 0.36 : 0.42; this.vy = 0; this.vp = 0;
     this.spinOn = host.getAttribute('data-spin') !== 'false' && !REDUCE;
     this.ex = 0; this.tex = 0; this.hot = null; this.sel = null; this.only = null; this.on = false; this.raf = 0; this.t0 = 0; this.scroll = 0; this.turn = 0;
+    this.marks = (host.getAttribute('data-highlight') || '').split('|').map(function (s) { return s.trim(); }).filter(Boolean); this.hl = this.marks.length > 0 && !host.hasAttribute('data-highlight-from');
     this.build(dark);
     var ex = host.getAttribute('data-explode');
     if (ex === 'scroll') this.bindScroll(); else if (ex && !isNaN(+ex)) { this.tex = +ex; this.ex = REDUCE ? +ex : 0; }
@@ -227,7 +230,7 @@
     if (window.IntersectionObserver) new IntersectionObserver(function (es) { self.on = es[0].isIntersecting; if (self.on) self.start(); }, { rootMargin: '120px' }).observe(host);
     else { this.on = true; }
     this.size(); this.on = true; this.start();
-    host.tcPart = { viewer: this, explode: function (v) { return self.explode(v); }, spin: function (b) { self.spinOn = !!b && !REDUCE; }, filter: function (g) { self.only = g || null; }, pick: function (i) { self.pick(i === undefined ? null : i); } };
+    host.tcPart = { viewer: this, highlight: function (names) { self.marks = names ? [].concat(names) : []; self.hl = self.marks.length > 0; self.start(); }, explode: function (v) { return self.explode(v); }, spin: function (b) { self.spinOn = !!b && !REDUCE; }, filter: function (g) { self.only = g || null; }, pick: function (i) { self.pick(i === undefined ? null : i); } };
   }
   Viewer.prototype.fail = function () { this.host.classList.add('is-flat'); this.host.innerHTML = flat(this.list); };
   Viewer.prototype.build = function (dark) {
@@ -264,6 +267,18 @@
       fade.addColorStop(0, this.metal ? 'rgba(0,0,0,.2)' : 'rgba(0,0,0,.24)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = fade; g2.fillRect(0, 0, 128, 128);
       var shade = new T.Mesh(new T.PlaneGeometry(size.x * 1.9 + size.z, size.z * 1.9 + size.x * 0.6), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
       shade.rotation.x = -PI / 2; shade.position.set(c.x, this.floor - size.y * (this.multi ? 0.002 : 0.16), c.z); this.scene.add(shade);
+    }
+    if (this.host.hasAttribute('data-dust')) {      /* small square specks, mostly white, a few orange and blue: the "bits" */
+      var n = 520, pos = new Float32Array(n * 3), cols = new Float32Array(n * 3), seed = 7, c3 = new T.Color(), i;
+      var rnd = function () { seed = (seed * 16807) % 2147483647; return seed / 2147483647; };
+      for (i = 0; i < n; i++) {
+        var a = rnd() * 2 * PI, b = Math.acos(2 * rnd() - 1), rr = this.rad2 * (0.35 + rnd() * 1.05);
+        pos[i * 3] = rr * Math.sin(b) * Math.cos(a); pos[i * 3 + 1] = rr * Math.cos(b) * 0.62; pos[i * 3 + 2] = rr * Math.sin(b) * Math.sin(a);
+        var pick = rnd(); c3.setHex(pick < 0.16 ? 0xff6414 : pick < 0.21 ? 0x2170ec : 0xffffff); cols[i * 3] = c3.r; cols[i * 3 + 1] = c3.g; cols[i * 3 + 2] = c3.b;
+      }
+      var dg = new T.BufferGeometry(); dg.setAttribute('position', new T.BufferAttribute(pos, 3)); dg.setAttribute('color', new T.BufferAttribute(cols, 3));
+      this.dust = new T.Points(dg, new T.PointsMaterial({ size: this.rad2 * 0.011, vertexColors: true, transparent: true, opacity: 0, depthWrite: false }));
+      this.scene.add(this.dust);
     }
     if (this.host.hasAttribute('data-grid')) { var grid = new T.GridHelper(Math.ceil(this.rad * 4 / 100) * 100, 26, dark ? 0x3a3a3a : 0xdcdcdc, dark ? 0x262626 : 0xeaeaea); grid.position.set(c.x, this.floor - 1, c.z); this.scene.add(grid); }
   };
@@ -306,10 +321,10 @@
   /* comes apart with the page: bound to the scene it sits in (tacto-scroll.js), or to its own way across the screen */
   Viewer.prototype.bindScroll = function () {
     var self = this, host = this.host, scene = host.closest('[data-tc-scene]');
-    var range = (host.getAttribute('data-explode-range') || '0.15,0.7').split(',').map(Number), turn = +host.getAttribute('data-turn') || 0;
+    var range = (host.getAttribute('data-explode-range') || '0.15,0.7').split(',').map(Number), turn = +host.getAttribute('data-turn') || 0, from = host.getAttribute('data-highlight-from');
     this.scrollBound = true;
-    if (REDUCE) { this.tex = this.ex = +host.getAttribute('data-rest') || 0.6; return; }
-    function apply(p) { if (!self.scrollBound) return; self.tex = Math.max(0, Math.min(1, (p - range[0]) / (range[1] - range[0]))); self.turn = p * turn; if (SNAP) { self.on = true; self.frame(performance.now()); } else self.start(); }
+    if (REDUCE) { this.tex = this.ex = +host.getAttribute('data-rest') || 0.6; this.hl = this.marks.length > 0; return; }
+    function apply(p) { if (!self.scrollBound) return; self.tex = Math.max(0, Math.min(1, (p - range[0]) / (range[1] - range[0]))); self.turn = p * turn; if (from !== null) self.hl = self.marks.length > 0 && p >= +from; if (SNAP) { self.on = true; self.frame(performance.now()); } else self.start(); }
     if (scene) scene.addEventListener('tc:progress', function (ev) { apply(ev.detail.p); });
     else {
       var own = function () { var b = host.getBoundingClientRect(), vh = window.innerHeight; apply(Math.max(0, Math.min(1, (vh * 0.85 - (b.top + b.height / 2)) / (vh * 0.5)))); };
@@ -338,7 +353,7 @@
       u.grp.scale.setScalar(0.55 + 0.45 * u.vis);
       u.grp.position.set(u.home.x + u.out.x * self.ex, u.home.y + u.out.y * self.ex + (1 - u.vis) * self.h * 0.09, u.home.z + u.out.z * self.ex);
       var dim = self.only && p.g !== self.only, sel = !dim && (i === self.sel || i === self.hot);
-      tmp.setHex(u.vis > 0.85 || self.metal ? u.col : COL.raw); u.mat.color.lerp(tmp, k);
+      tmp.setHex(self.hl && self.marks.indexOf(p.n) >= 0 ? COL.diff : (u.vis > 0.85 || self.metal ? u.col : COL.raw)); u.mat.color.lerp(tmp, k);
       u.mat.opacity += ((dim ? 0.045 : u.vis) - u.mat.opacity) * k; u.mat.depthWrite = u.mat.opacity > 0.5;
       u.mat.emissive.setHex(sel ? (self.metal ? 0x3a2416 : 0x2a2a2a) : 0x000000);
       if (u.line) { u.line.opacity = dim ? 0.05 : (sel ? 0.95 : 0.46) * u.vis; if (sel) u.line.color.setHex(0x0a0a0a); else u.line.color.setHex(p.g === 'format' && self.status ? 0x8a8f98 : COL.edge); }
@@ -347,6 +362,7 @@
     var lx = this.c.x + (this.c2.x - this.c.x) * e, ly = this.c.y + (this.c2.y - this.c.y) * e, lz = this.c.z + (this.c2.z - this.c.z) * e;
     this.cam.position.set(lx + d * Math.sin(yaw) * cp, ly + d * Math.sin(this.pitch), lz + d * Math.cos(yaw) * cp);
     this.cam.lookAt(lx, ly, lz);
+    if (this.dust) { this.dust.position.set(lx, ly, lz); this.dust.scale.setScalar(0.3 + 0.8 * e); this.dust.rotation.y = now * 0.00004; this.dust.material.opacity = Math.min(1, e * 1.3) * 0.8; }
     this.r.render(this.scene, this.cam);
     var settled = REDUCE || (!this.spinOn && Math.abs(this.vy) < 1e-5 && Math.abs(this.tex - this.ex) < 1e-4 && now - this.t0 > 3000 && !this.dragging);
     if (!settled || this.hot !== null) this.start(); else { var again = function () { self.start(); }; this.el.addEventListener('pointerdown', again, { once: true }); this.el.addEventListener('pointermove', again, { once: true }); }

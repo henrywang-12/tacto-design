@@ -6,7 +6,7 @@ Tacto's product does not look like Tacto's website. The website is Aspekta light
 - **Estimated within that:** exact hex values (video compression blurs colour; they were matched to the nearest steps of a neutral grey scale and to the usual blue, emerald, red, amber and fuchsia steps), hairline colour, corner radii to about 2px, and what the cards cut off by the film's frame contain.
 - **Not seen:** hover and focus states, dialogs, forms, empty states, dark mode. Do not invent a dark mode.
 
-Templates: `assets/templates/dashboard.html` (home dashboard), `dashboard-detail.html` (a record page with tabs, KPI cards, a chart and a table) and `dashboard-article.html` (a part with its 3D geometry, price and target, and the assembly it belongs to; 3D rules in `3d.md`). Start from one of them.
+Templates: `assets/templates/dashboard.html` (home dashboard), `dashboard-detail.html` (a record page with tabs, KPI cards, a chart and a table) and `dashboard-article.html` (the all-in-one screen: KPI cards, a part with its 3D geometry, price and target, the assembly it belongs to, and a table; 3D rules in `3d.md`). Start from one of them. When a screen needs cards, a part and a table together, start from `dashboard-article.html` and delete what you do not need. KPI cards also stand on a phone: the check tests every screen at 375px.
 
 Contents: Type and colour · Frame · Sidebar · Icons · KPI card · Market index card · Shortcuts · Map · Controls · Table · Chart · Whose logo goes where · Fragments on a page or slide · Mistakes
 
@@ -30,7 +30,7 @@ Colour carries meaning. Use the tone classes (`is-blue`, `is-green`, `is-red`, `
 | green #047857 | a price that fell, money saved (the savings pill) |
 | pink, lime, green, amber, violet, cyan, blue | the type of a finding: each type keeps one colour everywhere it appears |
 | fuchsia #C026D3 | the second chart series, the findings tile |
-| orange #FF6414 | Tacto's spark, and anything the AI produced (a target price, the agent button) |
+| orange #FF6414 | Tacto's spark, and anything the AI produced. Next to an AI number (a target price) sits the single four-point spark, `<span class="tc-spark"></span>`, not an icon of several stars. |
 | grey | last period, units, ids |
 
 A change is not coloured by its sign on a KPI card: the figure and its change are both blue. Red and green are for prices and money only.
@@ -52,7 +52,7 @@ Look at an app screen at 1440x960 (`scripts/shoot.sh out.html out.png 1440 960`)
 
 Top to bottom, as in the product:
 
-1. **Workspace switcher** (`tc-app__ws`): a 32px slot for the workspace's own mark, its name in semibold (cut with an ellipsis after about 13 letters), `chevron-down`, and `panel-left` at the far right.
+1. **Workspace switcher** (`tc-app__ws`): a 32px slot for the workspace's own mark, its name in semibold, `chevron-down`, and `panel-left` at the far right. A long name runs to two lines; if it needs three, the check says it is cut: use the short form of the name.
 2. **Nav** (`tc-app__nav`): rows of 28px with 4px between (`tc-app__item`), a 16px icon in grey, 14px medium text. The open page is a grey pill with semibold text (`is-active`). The search row is grey and regular (`tc-app__item--quiet`). Counts are small grey badges (`tc-app__count`). A row that opens gets a `chevron-down` (open) or `chevron-right` (closed) at the right.
 3. **Second level** (`tc-app__sub`): no icons, hung on a hairline under the parent's icon.
 4. **Group labels** (`tc-app__label`): 12px grey with a small chevron: "Supply chain data", "Tools".
@@ -74,7 +74,7 @@ Tacto's own nav, in order, with its icons:
 | Transactions → Orders, Goods Receipts, Invoices, Quantity contracts | `receipt-text` | | Help | `circle-help` |
 | Documents | `file-lock-2` | | | |
 
-For another product, keep the structure and choose the icons that say what each item is.
+For another product, keep the structure and choose the icons that say what each item is. The sidebar is the same on every screen of one product: same items, same order, only the active item moves. All three templates carry the identical list.
 
 ## Icons
 

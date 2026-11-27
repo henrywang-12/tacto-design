@@ -23,7 +23,8 @@ Nothing image-like sits on a flat coloured rectangle, and nothing floats on the 
 The signature. Black that burns into orange from one lower corner, with heavy film grain: in the transition the orange breaks up into specks. White UI fragments float on it and may be cut off by its edge.
 
 - `tc-ember`: light from the lower left. `tc-ember--right`: lower right. Choose the corner away from the content.
-- `tc-ember--streak`: a diagonal band, for wide full-bleed sections and the closing band.
+- `tc-ember--streak`: a soft diagonal cloud of light, dark all around, for wide full-bleed sections and the closing band. Never a hard-edged band.
+- Orange is rare. One or two orange surfaces on a page (an ember panel, the closing band, an orange section), not one in every section: the check warns from the third.
 - `tc-ember--full`: solid orange with soft lighter streaks: one per page, for the giant digit and a short quote in white.
 - Text on ember is white. Labels in mono, 50% white for secondary lines.
 - For PowerPoint, Figma or an image editor: `python3 scripts/panel.py out.png 1920 1080 [--right|--streak|--full]`.

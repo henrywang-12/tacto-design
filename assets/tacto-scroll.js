@@ -36,7 +36,9 @@
   function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
   function measure() {
     var vh = window.innerHeight;
-    scenes.forEach(function (s) { var b = s.el.getBoundingClientRect(), run = b.height - vh; s.to = run > 0 ? clamp(-b.top / run) : (b.top < 0 ? 1 : 0); });
+    var pinned = false;
+    scenes.forEach(function (s) { var b = s.el.getBoundingClientRect(), run = b.height - vh; s.to = run > 0 ? clamp(-b.top / run) : (b.top < 0 ? 1 : 0); var on = b.top <= 1 && b.bottom >= vh - 1; s.el.classList.toggle('is-pinned', on); pinned = pinned || on; });
+    root.classList.toggle('tc-in-scene', pinned);       /* the nav steps aside while a scene holds the screen */
     tracks.forEach(function (t) { var b = t.el.getBoundingClientRect(); t.to = clamp((vh - b.top) / (vh + b.height)); });
     if (SNAP) frame(performance.now()); else if (!raf) raf = requestAnimationFrame(frame);
   }

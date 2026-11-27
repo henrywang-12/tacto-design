@@ -74,12 +74,13 @@ And then:
     <div class="tc-scene__steps">
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">01 / 04</span>
-        <h2 class="tc-title-36">It ships as one unit.</h2>
+        <h2 class="tc-display">It ships as one unit.</h2>
         <p class="tc-text-19 tc-muted">Two lines that say what the reader is looking at.</p>
       </div>
       <!-- three more steps -->
     </div>
-    <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" data-explode="scroll" data-turn="-0.5"></div>
+    <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" data-explode="scroll" data-turn="-0.5"
+         data-dust data-highlight="Housing|Gear|Cover" data-highlight-from="0.76"></div>
     <span class="tc-scene__bar"></span>
   </div>
 </section>
@@ -89,6 +90,10 @@ And then:
 - `tc-scene__stage` is the pinned screen: two columns (text, object). `--solo` for one column.
 - The script sets `--p` (0 to 1) on the scene and `.is-active` on the current step. Anything else you want to tie to the scene can read `--p` in CSS (`transform: scale(calc(1 + var(--p) * 0.2))`) or listen to the scene's `tc:progress` event.
 - `tc-scene__bar` is the thin orange line that shows how far the scene has come.
+- While a scene holds the screen the nav fades out, so the stage is clear. It comes back when the scene ends.
+- On the object: `data-dust` lets fine specks (white, a few orange and blue) spread as it comes apart, which is the Atoms & Bits feeling of something dissolving into bits. `data-highlight="Housing|Gear|Cover"` with `data-highlight-from="0.76"` turns the named parts orange from that point on: when the last chapter says "the three that cost too much", the picture must show which three.
+- Chapter headlines are large (`tc-display`) and white; the two lines under them are lighter, not smaller.
+- After a black scene, one flat orange section (`tc-section--orange`, black type) is the strongest change of key the page has. Use it once, for the one number or sentence the story was leading to.
 - `tc-scene--black` for a scene on black. On the grey page leave it off and drop `data-theme="dark"`.
 - Things outside a scene that should move with the page get `data-tc-progress` and one of `tc-drift`, `tc-cross`, `tc-swell`.
 - Movement is eased towards the scroll position, so it never jumps and never lags more than a moment.

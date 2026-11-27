@@ -221,6 +221,7 @@ window.addEventListener('load', function () { setTimeout(function () {
   var loaded = {}; try { document.fonts.forEach(function (f) { if (f.status === 'loaded') loaded[f.family.replace(/["']/g, '').toLowerCase()] = 1; }); } catch (e) {}
   ['aspekta', 'inter'].forEach(function (f) { if (used[f] && !loaded[f]) add('warn', 'look', f.charAt(0).toUpperCase() + f.slice(1) + ' did not load: the text is set in a fallback font (run scripts/inline.py, which embeds the fonts)'); });
 
+  if (!document.querySelector('.tc-slide, .tc-sheet, .tc-cover')) { var em = [].filter.call(document.querySelectorAll('.tc-ember, .tc-band, .tc-section--orange'), function (e) { return e.getClientRects().length > 0; }).length; if (em > 2) add('warn', 'look', 'orange surfaces appear ' + em + ' times on this page (ember panels, closing band, orange section): one or two per page, so each keeps its force'); }
   /* slots a template leaves open: a photograph, a customer logo, a film thumbnail, a portrait */
   var slots = { photo: document.querySelectorAll('.tc-photo--empty').length, logo: 0, film: 0, portrait: 0 };
   [].forEach.call(document.querySelectorAll('[data-tc-slot], .tc-logos > *'), function (el) { if (el.hasAttribute('data-tc-slot') || (!el.querySelector('img, svg') && /^(customer|customer logo|logo)$/i.test((el.textContent || '').trim()))) slots.logo++; });

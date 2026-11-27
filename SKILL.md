@@ -46,7 +46,7 @@ Never mix them on one screen. The check enforces it: Inter or the product colour
 | You are making | Start from | Read |
 |---|---|---|
 | Landing page, website, any marketing section | `assets/templates/landing.html` | `components.md`, `imagery.md`, `motion.md` |
-| Dashboard, admin, internal tool, app screen | `assets/templates/dashboard.html` (home), `dashboard-detail.html` (record page: tabs, KPIs, chart, table), `dashboard-article.html` (a part in 3D and its assembly) | `dashboard.md` |
+| Dashboard, admin, internal tool, app screen | `assets/templates/dashboard.html` (home), `dashboard-detail.html` (record page: tabs, KPIs, chart, table), `dashboard-article.html` (all in one: KPIs, a part in 3D, its assembly, a table) | `dashboard.md` |
 | Anything with a part or an assembly in 3D (prototype, article page, BOM, comparison) | `assets/templates/dashboard-article.html` | `3d.md` |
 | A page that tells one story with scroll (launch, event, opening of a prototype) | `assets/templates/scroll-story.html` | `motion.md` (scroll scenes), `3d.md` |
 | Product fragment inside a page, deck or post | stage and agent blocks in `landing.html` | `dashboard.md` (fragments), `imagery.md` |

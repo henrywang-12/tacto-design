@@ -78,43 +78,46 @@
       <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" aria-label="A bearing unit, turning slowly"></div>
     </div>
   </div>
-  <p class="tc-giant tc-cross ss-word" data-tc-progress aria-hidden="true">Parts &amp; prices</p>
+  <p class="tc-giant tc-cross ss-word" data-tc-progress aria-hidden="true">Parts <span class="tc-hl">&amp;</span> prices</p>
 </section>
 
 <!-- the scene. --tc-screens is how long it stays pinned (4 = four screens of scrolling, one per chapter).
-     Each data-tc-step is one chapter. The part comes apart between 15% and 70% of the way and turns
+     Each data-tc-step is one chapter. data-dust lets fine specks spread as it opens. In the last chapter
+     (from 76% on) the three parts named in data-highlight turn orange: the picture shows what the text says.
+     The nav fades out while the scene holds the screen. The part comes apart between 15% and 70% of the way and turns
      half a radian towards its side across the scene, so the row of parts is seen from the side. -->
 <section class="tc-scene--black" data-tc-scene style="--tc-screens: 4">
   <div class="tc-scene__stage">
     <div class="tc-scene__steps">
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">01 / 04</span>
-        <h2 class="tc-title-36">It ships as one unit.</h2>
+        <h2 class="tc-display">It ships as one unit.</h2>
         <p class="tc-text-19 tc-muted">On the order it is a single line: bearing unit, complete. That is how it is bought and how it is priced.</p>
       </div>
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">02 / 04</span>
-        <h2 class="tc-title-36">Inside are 18 parts.</h2>
+        <h2 class="tc-display">Inside are 18 parts.</h2>
         <p class="tc-text-19 tc-muted">A housing, a shaft, two bearings, a gear, six screws. Each one was drawn by someone and bought from someone.</p>
       </div>
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">03 / 04</span>
-        <h2 class="tc-title-36">Each part has a history.</h2>
+        <h2 class="tc-display">Each part has a history.</h2>
         <p class="tc-text-19 tc-muted">What it cost last time, who made it, how long it took. Most of that sits in orders nobody reads twice.</p>
       </div>
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">04 / 04</span>
-        <h2 class="tc-title-36">Northdesk reads all of it.</h2>
+        <h2 class="tc-display">Northdesk reads all of it.</h2>
         <p class="tc-text-19 tc-muted">Agents match every part to what you paid before and point at the 3 that cost more than they should.</p>
       </div>
     </div>
-    <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" data-explode="scroll" data-turn="-0.5" aria-label="The bearing unit, taken apart into its 18 parts"></div>
+    <div class="tc-part" data-tc-part="unit" data-status="false" data-theme="dark" data-explode="scroll" data-turn="-0.5" data-dust data-highlight="Housing|Gear|Cover" data-highlight-from="0.76" aria-label="The bearing unit, taken apart into its 18 parts"></div>
     <span class="tc-scene__bar"></span>
   </div>
 </section>
 
-<!-- after the scene the page is calm again: a figure that swells as it arrives, text that rises once -->
-<section class="tc-section">
+<!-- after the scene the page is calm again: one flat orange section, black type. A figure that swells as it
+     arrives, text that rises once. This is the only orange surface besides the closing band. -->
+<section class="tc-section tc-section--orange">
   <div class="tc-container">
     <div class="tc-grid" style="align-items: end;">
       <div class="tc-figure tc-swell ss-figure" style="grid-column: span 6;" data-tc-progress>
