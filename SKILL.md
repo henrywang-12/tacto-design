@@ -32,7 +32,7 @@ Never mix them on one screen. The check enforces it: Inter or the product colour
 
 ## Workflow
 
-0. **Know who is speaking.** If `brand.local/brand.md` exists in this skill folder, read it now: it names the company everything is made for by default and holds its logo. If the work is for or about a customer, read `references/cobranding.md` and fetch their logo with `python3 scripts/logo.py "<Customer>" [their-domain]` (without a domain it only looks in the saved logos). If the user names a different sender, that company is the sender: write its name in the wordmark and use its logo file if they give you one. Only wordmarks that carry the private brand's own name or a template sample name are turned into the private brand's logo.
+0. **Know who is speaking.** If `brand.local/brand.md` exists in this skill folder, read it now: it names the company everything is made for by default and holds its logo. If the work is for or about a customer, read `references/cobranding.md` and fetch their logo with `python3 scripts/logo.py "<Customer>" [their-domain]` (without a domain it only looks in the saved logos). An invented or anonymous customer has no logo: skip `logo.py`, write the name as text and use its initials in a dashboard's workspace tile. If the user names a different sender, that company is the sender: write its name in the wordmark and use its logo file if they give you one. Only wordmarks that carry the private brand's own name or a template sample name are turned into the private brand's logo.
 1. **Pick the format** from the table below and open its template and the references listed for it. Templates are working files, not inspiration: start from them.
 2. **Use the tokens, never invent values.** Every colour, size, radius and spacing you need is in `assets/tacto.css` (and explained in `references/foundations.md`). If you are about to type a hex code or a font size that is not in there, stop and find the token or class. Write sizes in rem: on web pages the root scales with the window as the site does (1rem = 16px at 1512px wide); decks, A4 sheets, covers and the app pin it to 16px. Writing layout CSS (a grid, a width) is ordinary work.
 3. **Write the copy in the house voice** before polishing layout - `references/voice.md`. The voice is half of the likeness.
@@ -60,6 +60,19 @@ Never mix them on one screen. The check enforces it: Inter or the product colour
 | PowerPoint, Word, PDF, email, Figma, images | - | `formats.md` (translation tables) |
 
 All references live in `references/`. `foundations.md` is the full token table; open it whenever you need an exact value.
+
+### A product screen in ten lines
+
+1. Copy `assets/templates/dashboard-article.html` next to your work as `page.html`. It has every block: sidebar, KPI cards, a 3D part, an assembly, a table.
+2. Keep its three `../` paths working, or change them to where the skill is: `../tacto.css`, `../vendor/three.min.js`, `../tacto-3d.js`. The bundler finds them either way.
+3. Workspace: the customer's name and initials in `tc-app__ws-name` and `tc-app__ws-logo`. Keep the sidebar items as they are and move `is-active` to the page you show.
+4. Delete the sections you do not need. A row of two or three KPI cards takes `tc-app__kpis--fit`.
+5. Your own part: `data-tc-part='[...]'` as described in `references/3d.md`, then `python3 scripts/part.py '<the JSON>' part.png` and read the picture.
+6. Exploded view and status keys belong to an assembly, not to a single part.
+7. Replace every name and every figure. The check refuses the templates' sample names and sample figures.
+8. `python3 scripts/inline.py page.html out.html`
+9. `python3 scripts/tacto_check.py out.html` until it prints PASS.
+10. `scripts/shoot.sh out.html out.png 1440 960` and read the picture next to `references/dashboard.md`.
 
 ## The rules that carry the likeness
 
@@ -110,7 +123,7 @@ motion 0.6s cubic-bezier(.645,.045,.355,1) · hover 0.2s
 - **Typefaces.** Aspekta (Ivo Dolenc) and Geist Mono (Vercel) are both open source under the SIL Open Font License and ship in `assets/fonts/` with their licences. `inline.py` embeds them, so a delivered file needs no network.
 - **Real names in public.** Before a real customer is named in anything public (a post, a success story, a logo wall), tell the user it needs that customer's consent.
 - **Language.** Write in the language the user writes in, unless they name the audience's language. Set it on the page (`<html lang="de">`): numbers then count up in that language's format and long German words hyphenate. German notes: `references/voice.md`.
-- **Customer logos, photographs, figures.** Never invent a customer logo, a testimonial, a certificate or a metric and present it as real. The brand leans on industrial photography that you cannot produce: use the labelled placeholder (`tc-photo--empty`) or an ember panel, and say which photograph belongs there.
+- **Customer logos, photographs, figures.** Never invent a customer logo, a testimonial, a certificate or a metric and present it as real. Every figure in a deliverable is the user's or the customer's own, with whose it is in its label ("Auerberg Guss, 9 months"), or it is marked "(est.)", or it goes. No market statistic, study or counter ("37% of all parts", "120+ customers") unless the user gives the source: under a real logo it reads as that company's own research. No price, guarantee or pay-only-if term unless the user gives it: an offer is theirs to make. The templates' own figures are fiction and the check refuses them. The brand leans on industrial photography that you cannot produce: use the labelled placeholder (`tc-photo--empty`) or an ember panel, and say which photograph belongs there.
 
 ## Before you hand it over
 

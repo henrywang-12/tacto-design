@@ -293,6 +293,11 @@ def lint_copy(rep, text, is_html, check_samples=True, lang=""):
     if check_samples:
         for m in re.finditer(r"northdesk(?:\.example)?|hollweg(?: präzision)?|auerberg(?: guss)?|lindqvist|jana petrovic|carla wiesner|brenner zerspanung|feldmark stanztechnik|kessler drehteile|sentec antriebe|your company", low):
             rep.add("error", m.start(), "copy", f"template sample name '{body[m.start():m.end()]}' left in: use the real company, customer and people")
+        # the templates' invented figures: long ones cannot be a coincidence, short ones might be
+        for m in re.finditer(r"€310,000|€91,754,300|€96,380,000|€1,284,560|€1,083,120|€197,230|€185,770|€108,548|€47,672|€34,800|€9,860|410,000|2,700 drawing parts|3,870 drawing parts", low):
+            rep.add("error", m.start(), "copy", f"template sample figure '{body[m.start():m.end()]}' left in: every figure is the customer's own or yours, with its source, or it goes")
+        for m in re.finditer(r"€4\.2m|€1\.1m|€1\.2m|€340k|€12b|120\+|(?<![\d.,])3\.4%", low):
+            rep.add("warn", m.start(), "copy", f"'{body[m.start():m.end()]}' is also a figure from the templates: keep it only if it is really yours")
     for m in re.finditer(r"iso(?:/iec)?\s?(?:27001|9001|14001)|\bsoc\s?2\b|\btisax\b|gdpr[- ]compliant|dsgvo[- ]konform|\bcertified\b|\bzertifiziert\b|of the year\b|des jahres\b", low):
         rep.add("warn", m.start(), "copy", f"certificate, compliance or award claim “{body[m.start():m.end()]}”: keep it only if the sender really holds it; never invent one")
     if re.search(r"lorem ipsum", low):

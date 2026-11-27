@@ -42,7 +42,7 @@ What the Atoms & Bits page does, and what `assets/tacto-scroll.js` and `assets/t
 | A pinned stage with chapters | the stage stays while "Atoms", "Bits", "Connect", "Explore" follow each other | `data-tc-scene` with `data-tc-step` chapters |
 | One object carries the story | a metal star turns, breaks into pieces and comes back | a `tc-part` with `data-explode="scroll"`: it comes apart as the scene advances |
 | A pinned list | the speaker names stay, the current one is orange | `tc-scene__list` |
-| Giant type that drifts | "Atoms & Bits" crosses the first screen, wider than the screen | `tc-giant tc-giant--bleed tc-cross` with `data-tc-progress`, inside a section with `data-tc-crop` |
+| Giant type that drifts | the event's name crosses the first screen, wider than the screen | `tc-giant tc-giant--bleed tc-cross` with `data-tc-progress`, inside a section with `data-tc-crop`. Two or three plain words of your own ("Part by part"). Not two nouns joined by an orange "&": that is their event's wordmark |
 | A huge number arriving | "25%" fills half the screen | `tc-figure tc-figure--huge tc-swell` with `data-tc-progress` |
 | Background that moves slower | the machined-metal picture behind the agenda | `tc-drift` with `data-tc-progress` |
 | Text | rises 24px and fades, once | `tc-reveal`, as everywhere |
@@ -74,7 +74,7 @@ And then:
     <div class="tc-scene__steps">
       <div class="tc-scene__step" data-tc-step>
         <span class="tc-scene__count">01 / 04</span>
-        <h2 class="tc-title-68">You sell it as one unit.</h2>
+        <h2 class="tc-title-68">It leaves your plant as one unit.</h2>
         <p class="tc-title-23 tc-muted">Two lines that say what the reader is looking at.</p>
       </div>
       <!-- three more steps -->
@@ -114,4 +114,4 @@ The last number is how many px the page is scrolled down. Take one picture per c
 
 ## Never
 
-Bounce or overshoot, typing effects, parallax on text that is meant to be read, spinning or pulsing icons, animated gradients, confetti, hover lifts with growing shadows, scroll-jacking that stops or slows the reader, counters that keep counting, a second scene because the first one worked, motion in the product screen beyond a turning part.
+Bounce or overshoot, typing effects, parallax on text that is meant to be read, spinning or pulsing icons, animated gradients, confetti, hover lifts with growing shadows, scroll-jacking that stops or slows the reader, counters that keep counting, a second scene because the first one worked, a headline built like the Atoms &amp; Bits wordmark (two nouns and an orange "&"), motion in the product screen beyond a turning part.

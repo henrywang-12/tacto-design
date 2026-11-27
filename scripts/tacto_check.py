@@ -55,6 +55,15 @@ window.addEventListener('load', function () { setTimeout(function () {
   var PAL = __PALETTE__, APP = __APP__, ALPHA_OK = __ALPHA__, out = [], seen = {}, used = {};
   function add(level, kind, msg) { var k = level + kind + msg; if (seen[k]) { seen[k].n++; return; } seen[k] = { level: level, kind: kind, msg: msg, n: 1 }; out.push(seen[k]); }
   function name(el) { var c = (el.getAttribute && el.getAttribute('class') || '').split(' ')[0]; var t = (el.innerText || el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 42); return '<' + el.tagName.toLowerCase() + (c ? '.' + c : '') + '>' + (t ? ' "' + t + '"' : ''); }
+  if (window.innerWidth >= 900) [].forEach.call(document.querySelectorAll('.tc-app__viewer > .tc-part'), function (p) {
+    if (!p.tcPart || !p.tcPart.reach) return;
+    var b = p.getBoundingClientRect(), r = p.tcPart.reach();
+    [].forEach.call(p.parentNode.querySelectorAll('.tc-app__viewer-bar > *, .tc-app__viewer-title'), function (c) {
+      var q = c.getBoundingClientRect(); if (!q.width) return;
+      var ox = Math.min(b.left + r.x1, q.right) - Math.max(b.left + r.x0, q.left), oy = Math.min(b.top + r.y1, q.bottom) - Math.max(b.top + r.y0, q.top);
+      if (ox > 6 && oy > 6) add('warn', 'fit', 'the 3D part reaches into ' + name(c) + ' in its card: lower data-zoom on the part, or move the control');
+    });
+  });
   var cv = document.createElement('canvas'); cv.width = cv.height = 1; var cx = cv.getContext('2d', { willReadFrequently: true }), cache = {};
   function rgba(c) { if (cache[c]) return cache[c]; var mm = /^rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)(?:[,\s\/]+([\d.]+)(%?))?\s*\)$/.exec(c); if (mm) { var hx = [mm[1], mm[2], mm[3]].map(function (v) { return ('0' + Math.min(255, parseInt(v, 10)).toString(16)).slice(-2); }).join(''); return cache[c] = { hex: hx, a: mm[4] === undefined ? 1 : (mm[5] ? parseFloat(mm[4]) / 100 : parseFloat(mm[4])) }; } cx.clearRect(0, 0, 1, 1); cx.fillStyle = '#000'; cx.fillStyle = c; cx.fillRect(0, 0, 1, 1); var d = cx.getImageData(0, 0, 1, 1).data; var hex = [d[0], d[1], d[2]].map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join(''); return cache[c] = { hex: hex, a: d[3] / 255 }; }
   function near(a, b) { for (var i = 0, s = 0; i < 6; i += 2) s += Math.abs(parseInt(a.substr(i, 2), 16) - parseInt(b.substr(i, 2), 16)); return s <= 3; }
@@ -400,7 +409,8 @@ def main() -> int:
     warns = sum(1 for f in uniq if f[0] == "warn")
     verdict = "PASS" if errors == 0 and not (strict and warns) else "FAIL"
     kind = (f"{first['slides']} slide(s)" if first["slides"] else f"{first['sheets']} page(s)" if first["sheets"]
-            else f"{covers} cover(s)" if covers else "web page, checked at 1440px and 375px")
+            else f"{covers} cover(s)" if covers
+            else ("product screen" if re.search(r"class\s*=\s*[\"'][^\"']*\btc-app\b", src.read_text(encoding="utf-8", errors="replace")) else "web page") + ", checked at 1440px and 375px")
     print(f"{verdict}: {errors} error(s), {warns} warning(s) - {src.name} ({kind})")
     if verdict == "PASS":
         print("Now look at it: scripts/shoot.sh for the screenshot" + (" and the PDF page pictures." if canvases else "."))

@@ -21,7 +21,7 @@
    data-grid (floor grid) · data-theme="dark" · data-highlight="Housing|Gear" (parts shown in orange;
    with data-explode="scroll" add data-highlight-from="0.75": only from that point of the scene on) ·
    data-dust (a cloud of small squares and cubes that spreads as it comes apart; for one story object on black, nowhere else)
-   Script: el.tcPart.explode(0..1 | true | false) · .spin(bool) · .filter('new' | null) ·
+   Script: el.tcPart.explode(0..1 | true | false) · .spin(bool) · .filter('new' | null) · .reach() ·
    .pick(i | null) · event "tc:pick" with detail { index, name, status }. No other dependencies. */
 (function () {
   'use strict';
@@ -237,7 +237,14 @@
     if (window.IntersectionObserver) new IntersectionObserver(function (es) { self.on = es[0].isIntersecting; if (self.on) self.start(); }, { rootMargin: '120px' }).observe(host);
     else { this.on = true; }
     this.size(); this.on = true; this.start();
-    host.tcPart = { viewer: this, highlight: function (names) { self.marks = names ? [].concat(names) : []; self.hl = self.marks.length > 0; self.start(); }, explode: function (v) { return self.explode(v); }, spin: function (b) { self.spinOn = !!b && !REDUCE; }, filter: function (g) { self.only = g || null; }, pick: function (i) { self.pick(i === undefined ? null : i); } };
+    host.tcPart = { viewer: this, highlight: function (names) { self.marks = names ? [].concat(names) : []; self.hl = self.marks.length > 0; self.start(); }, explode: function (v) { return self.explode(v); }, spin: function (b) { self.spinOn = !!b && !REDUCE; }, filter: function (g) { self.only = g || null; }, pick: function (i) { self.pick(i === undefined ? null : i); },
+      /* the box, in px of the host, that the model can cover while it turns: scripts/tacto_check.py uses it to see a part running into a button */
+      reach: function () {
+        var h = host.clientHeight, w = host.clientWidth, e = self.ex || 0, d = (self.dist + (self.dist2 - self.dist) * e) * (self.fit || 1), k = (h / 2) / (d * Math.tan(15 * PI / 180));
+        var grow = 1 + (self.rad2 / self.rad - 1) * e, rx = Math.sqrt(self.half[0] * self.half[0] + self.half[2] * self.half[2]) * grow;
+        var hw = rx * k, hh = (self.half[1] * grow * Math.cos(self.pitch) + rx * Math.sin(Math.abs(self.pitch))) * k;
+        return { x0: w / 2 - hw, y0: h / 2 - hh, x1: w / 2 + hw, y1: h / 2 + hh };
+      } };
   }
   Viewer.prototype.fail = function () { this.host.classList.add('is-flat'); this.host.innerHTML = flat(this.list); };
   Viewer.prototype.build = function (dark) {
@@ -254,7 +261,7 @@
       grp.position.copy(home); self.root.add(grp);
       units.push({ grp: grp, mat: mat, line: line, home: home, col: col, edge: edge, metalness: mat.metalness, roughness: mat.roughness, box: bb.clone(), vis: self.multi && INTRO ? 0 : 1 });
     });
-    var c = this.c = all.getCenter(new T.Vector3()), size = all.getSize(new T.Vector3());
+    var c = this.c = all.getCenter(new T.Vector3()), size = all.getSize(new T.Vector3()); this.half = [size.x / 2, size.y / 2, size.z / 2];
     this.h = size.y; this.rad = size.length() / 2; this.floor = all.min.y;
     /* where each part goes in the exploded view: its own offset, or away from the middle and a little up */
     var apart = new T.Box3();
@@ -272,8 +279,8 @@
     if (!dark) {                                   /* a soft shadow on the floor, no hard edge */
       var cv = document.createElement('canvas'); cv.width = cv.height = 128;
       var g2 = cv.getContext('2d'), fade = g2.createRadialGradient(64, 64, 6, 64, 64, 64);
-      fade.addColorStop(0, this.metal ? 'rgba(0,0,0,.2)' : 'rgba(0,0,0,.24)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = fade; g2.fillRect(0, 0, 128, 128);
-      var wide = this.metal ? 1.15 : 1.9;
+      fade.addColorStop(0, this.metal ? 'rgba(0,0,0,.13)' : 'rgba(0,0,0,.24)'); fade.addColorStop(1, 'rgba(0,0,0,0)'); g2.fillStyle = fade; g2.fillRect(0, 0, 128, 128);
+      var wide = this.metal ? 0.95 : 1.9;
       var shade = new T.Mesh(new T.PlaneGeometry(size.x * wide + size.z * 0.6, size.z * wide + size.x * 0.4), new T.MeshBasicMaterial({ map: new T.CanvasTexture(cv), transparent: true, depthWrite: false }));
       shade.rotation.x = -PI / 2; shade.position.set(c.x, this.floor - size.y * (this.multi ? 0.002 : 0.16), c.z); this.scene.add(shade);
     }
